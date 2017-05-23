@@ -37,4 +37,17 @@ public class User {
     public void setManager(Boolean manager) {
         isManager = manager;
     }
+
+    public String toFileString() {
+        return username + "," + password + "," + isManager;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", isManager=" + isManager +
+                '}';
+    }
 }
