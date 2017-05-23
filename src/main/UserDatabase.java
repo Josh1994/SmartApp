@@ -97,8 +97,8 @@ public class UserDatabase {
 
             StringBuilder stringBuilder = new StringBuilder();
             fileWriter.append("username,password,isManager").append(System.lineSeparator()); // Header
-            for(int i = 0; i < users.size(); i++) {
-                stringBuilder.append(users.get(i).toFileString()).append(System.lineSeparator());
+            for (User user : users) {
+                stringBuilder.append(user.toFileString()).append(System.lineSeparator());
             }
             fileWriter.write(stringBuilder.toString());
             fileWriter.flush();
