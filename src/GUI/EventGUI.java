@@ -4,12 +4,14 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -45,18 +47,47 @@ public class EventGUI extends Application {
 		Button button = new Button ("Transport Cost Update", transportView);
 		button.setMaxSize(150, 100);
 		button.setWrapText(true);
+		//Mouse event handling for Transport Cost
+		button.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+			    new EventHandler<MouseEvent>() {
+			        @Override public void handle(MouseEvent e) {
+			            System.out.println("Transport Cost Update button clicked");
+			        }
+			});
 		
 		Button button2 = new Button ("Mail Delivery", mailView);
 		button2.setMaxSize(150, 100);
 		button2.setWrapText(true);
-		
+		//Mouse event handling for Mail Delivery
+		button2.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+			    new EventHandler<MouseEvent>() {
+			        @Override public void handle(MouseEvent e) {
+			            System.out.println("Mail Delivery button clicked");
+			        }
+			});
+	
 		Button button3 = new Button ("Customer Price Update", customerView);
 		button3.setMaxSize(150, 100);
 		button3.setWrapText(true);
+		//Mouse event handling for Customer Price Update
+		button3.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+			    new EventHandler<MouseEvent>() {
+			        @Override public void handle(MouseEvent e) {
+			            System.out.println("Customer Price Update button clicked");
+			        }
+			});
+		
 		
 		Button button4 = new Button ("Transport Discontinued", tdView);
 		button4.setMaxSize(150, 100);
 		button4.setWrapText(true);
+		//Mouse event handling for Transport Discontinued
+		button4.addEventHandler(MouseEvent.MOUSE_CLICKED, 
+			    new EventHandler<MouseEvent>() {
+			        @Override public void handle(MouseEvent e) {
+			            System.out.println("Transport Discontinuted button clicked");
+			        }
+			});
 		
 		Scene scene = new Scene(root, 600, 400);
 		VBox box = new VBox();
@@ -74,6 +105,7 @@ public class EventGUI extends Application {
 		root.setCenter(box);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
 		
 	}
     public static void main(String[] args) {
