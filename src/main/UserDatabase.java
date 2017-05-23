@@ -124,6 +124,23 @@ public class UserDatabase {
     }
 
     /**
+     * Change a user's username.
+     *
+     * @param oldUsername the username of the account you would like to modify.
+     * @param newUsername the new username for this user account.
+     */
+    public void changeUserUsername(String oldUsername, String newUsername) {
+        User user = getUser(oldUsername);
+        if(user == null) {
+            throw new UserDatabaseException("You cannot change the username for a user that does not exist.");
+        } else {
+            user.setUsername(newUsername);
+            updateUserDatabase();
+        }
+
+    }
+
+    /**
      * Change a user's password.
      *
      * @param username the username of the account you would like to modify.
