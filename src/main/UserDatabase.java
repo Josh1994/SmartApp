@@ -8,13 +8,22 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by Prashant on 23/05/2017.
+ * This class is the manages the access of the user database.
  */
 public class UserDatabase {
-    private static final String USER_DATABASE = "user.config";
+    public class UserDatabaseException extends RuntimeException {
+
+        public UserDatabaseException() { super(); }
+        public UserDatabaseException(String message) { super(message); }
+        public UserDatabaseException(String message, Throwable cause) { super(message, cause); }
+        public UserDatabaseException(Throwable cause) { super(cause); }
+    }
+
+
+    private static final String USER_DATABASE = "users.kpsdb";
 
     private List<User> users;
-    private User loggedIn;
+    private User loggedIn; // TODO: UNKNOWN IF THIS SHOULD BE IN SINGLETON OR NOT
 
     public UserDatabase() {
         // Declare class variables
@@ -30,13 +39,15 @@ public class UserDatabase {
         }
     }
 
+    /**
+     * Load user accounts from user database file
+     */
     private void loadUserDatabase() {
         // Declare class variables
         users = new ArrayList<>();
 
-        File userDatabaseFile = new File(USER_DATABASE);
-
         // Create Initial User Database if it doesn't exist yet
+        File userDatabaseFile = new File(USER_DATABASE);
         if(!userDatabaseFile.exists()) {
             createInitialDatabase();
         }
@@ -63,11 +74,13 @@ public class UserDatabase {
         }
     }
 
+    /**
+     * Creates initial database (only used on first-time program launch)
+     */
     private void createInitialDatabase() {
         try {
             FileWriter fileWriter = new FileWriter(USER_DATABASE);
-            // Header
-            fileWriter.append("username,password,isManager").append(System.lineSeparator());
+            fileWriter.append("username,password,isManager").append(System.lineSeparator()); // Header
             fileWriter.flush();
             fileWriter.close();
         } catch (IOException e) {
@@ -75,15 +88,32 @@ public class UserDatabase {
         }
     }
 
-    public boolean userExists(String username) {
-        for(User user: users) {
-            if(user.getUsername().equals(username)) {
-                return true;
+    /**
+     * Update the user database file based on the data stored in the program.
+     */
+    private void updateUserDatabase() {
+        try {
+            FileWriter fileWriter = new FileWriter(USER_DATABASE);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            fileWriter.append("username,password,isManager").append(System.lineSeparator()); // Header
+            for(int i = 0; i < users.size(); i++) {
+                stringBuilder.append(users.get(i).toFileString()).append(System.lineSeparator());
             }
+            fileWriter.write(stringBuilder.toString());
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return false;
     }
 
+    /**
+     * Gets a user's account information
+     *
+     * @param username the user name of the user account you would like to retrieve
+     * @return the User instance if the username exists, otherwise return null/
+     */
     public User getUser(String username) {
         for(User user: users) {
             if(user.getUsername().equals(username)) {
@@ -93,20 +123,16 @@ public class UserDatabase {
         return null;
     }
 
-    private int getUserIndexInFile(String username) {
-        for(int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            if(user.getUsername().equals(username)) {
-                return i+1;
-            }
-        }
-        return -1;
-    }
-
-    public void updateUserPassword(String username, String password) {
+    /**
+     * Change a user's password.
+     *
+     * @param username the username of the account you would like to modify.
+     * @param password the new password for this user account.
+     */
+    public void changeUserPassword(String username, String password) {
         User user = getUser(username);
         if(user == null) {
-            throw new RuntimeException("You cannot update password for a user that does not exist.");
+            throw new UserDatabaseException("You cannot update password for a user that does not exist.");
         } else {
             user.setPassword(password);
             updateUserDatabase();
@@ -114,25 +140,65 @@ public class UserDatabase {
 
     }
 
-    public void updateUserIsManager(String username, boolean isManager) {
+    /**
+     * Change a user's permission level.
+     *
+     * @param username the username of the account you would like to modify.
+     * @param isManager the new permission level. Set to true to make a user a manager, otherwise set to false
+     *                  if you would the user to be a clerk.
+     */
+    public void changeUserPermission(String username, boolean isManager) {
         User user = getUser(username);
         if(user == null) {
-            throw new RuntimeException("You cannot update manager permissions for a user that does not exist.");
+            throw new UserDatabaseException("You cannot update manager permissions for a user that does not exist.");
         } else {
             user.setManager(isManager);
             updateUserDatabase();
         }
     }
 
-    private void updateUserDatabase() {
-        try {
-            FileWriter fileWriter = new FileWriter(USER_DATABASE);
 
-            StringBuilder stringBuilder = new StringBuilder();
-            for(int i = 0; i < users.size(); i++) {
-                stringBuilder.append(users.get(i).toFileString()).append(System.lineSeparator());
-            }
-            fileWriter.write(stringBuilder.toString());
+    /**
+     * Deletes user from user database.
+     *
+     * @param username the username of the account you would like to delete.
+     */
+    public void deleteUser(String username) {
+        User userToDelete = getUser(username);
+
+        // Produce error if username does not exists
+        if(userToDelete == null) {
+            throw new UserDatabaseException("Cannot delete user that does not exists.");
+        }
+
+        // Delete user from program
+        users.remove(userToDelete);
+
+        // Update changes to database file
+        updateUserDatabase();
+    }
+
+    /**
+     * Adds a new user to the user database
+     *
+     * @param username the username of the new account.
+     * @param password the password used to authenticate this account.
+     * @param isManager determines if the new user is a manager or not.
+     */
+    public void addUser(String username, String password, boolean isManager) {
+        // Produce error if username already exists
+        if(getUser(username) != null) {
+            throw new UserDatabaseException("Cannot add a this new user as the choosen username already exists in the database.");
+        }
+
+        // Create User
+        User newUser = new User(username, password, isManager);
+        users.add(newUser);
+
+        // Appends new user to the end of the file
+        try {
+            FileWriter fileWriter = new FileWriter(USER_DATABASE,true);
+            fileWriter.append(newUser.toFileString()).append(System.lineSeparator());
             fileWriter.flush();
             fileWriter.close();
         } catch (IOException e) {
