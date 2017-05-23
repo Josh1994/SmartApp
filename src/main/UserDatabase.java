@@ -17,7 +17,17 @@ public class UserDatabase {
     private User loggedIn;
 
     public UserDatabase() {
-        loadUserDatabase();
+        // Declare class variables
+        users = new ArrayList<>();
+
+        File userDatabaseFile = new File(USER_DATABASE);
+
+        // Create Initial User Database if it doesn't exist yet
+        if(!userDatabaseFile.exists()) {
+            createInitialDatabase();
+        } else {
+            loadUserDatabase();
+        }
     }
 
     private void loadUserDatabase() {
@@ -33,6 +43,8 @@ public class UserDatabase {
 
         try {
             Scanner scanner = new Scanner(userDatabaseFile);
+            scanner.nextLine(); // skip header line in config file
+
             while(scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] lineSplit = line.split(",");
@@ -62,7 +74,5 @@ public class UserDatabase {
             e.printStackTrace();
         }
     }
-
-
 
 }
