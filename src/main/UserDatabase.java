@@ -92,4 +92,51 @@ public class UserDatabase {
         }
         return null;
     }
+
+    private int getUserIndexInFile(String username) {
+        for(int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            if(user.getUsername().equals(username)) {
+                return i+1;
+            }
+        }
+        return -1;
+    }
+
+    public void updateUserPassword(String username, String password) {
+        User user = getUser(username);
+        if(user == null) {
+            throw new RuntimeException("You cannot update password for a user that does not exist.");
+        } else {
+            user.setPassword(password);
+            updateUserDatabase();
+        }
+
+    }
+
+    public void updateUserIsManager(String username, boolean isManager) {
+        User user = getUser(username);
+        if(user == null) {
+            throw new RuntimeException("You cannot update manager permissions for a user that does not exist.");
+        } else {
+            user.setManager(isManager);
+            updateUserDatabase();
+        }
+    }
+
+    private void updateUserDatabase() {
+        try {
+            FileWriter fileWriter = new FileWriter(USER_DATABASE);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for(int i = 0; i < users.size(); i++) {
+                stringBuilder.append(users.get(i).toFileString()).append(System.lineSeparator());
+            }
+            fileWriter.write(stringBuilder.toString());
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
