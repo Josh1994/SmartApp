@@ -28,20 +28,20 @@ public class Login implements EventHandler<ActionEvent>{
 		loginButton = new Button();
 		loginButton.setText("Login");
 		loginButton.setOnAction(this);
-		
+
 		Label usernameLabel = new Label("Username");
 		usernameText = new TextField();
 		usernameText.setMaxHeight(10);
 		usernameText.setMaxWidth(200);
-		
+
 		Label passwordLabel = new Label("Password");
 		passwordText = new PasswordField();
-		
+
 		passwordText.setMaxHeight(10);
 		passwordText.setMaxWidth(200);
-		
-		
-	
+
+
+
 		VBox vbox = new VBox(10);
 		vbox.setPadding(new Insets(50, 50, 50, 50));
 		vbox.getChildren().add(usernameLabel);
@@ -51,7 +51,7 @@ public class Login implements EventHandler<ActionEvent>{
 		vbox.getChildren().add(loginButton);
 
 
-		
+
 		scene = new Scene(vbox, 600, 400);
 
 		if(controller.getUserDatabase().getUsers().size() == 0) {
@@ -69,7 +69,6 @@ public class Login implements EventHandler<ActionEvent>{
 			System.out.println("LoginButton");
 			System.out.println(usernameText.getText());
 			System.out.println(passwordText.getText());
-
 			String input_Username = usernameText.getText();
 			String input_password = passwordText.getText();
 
@@ -77,7 +76,7 @@ public class Login implements EventHandler<ActionEvent>{
 			for(User user : users) {
 				if(user.getUsername().equals(input_Username)
 				&& user.getPassword().equals(input_password)) {
-					controller.handleEvent(Controller.MAIL);
+					controller.handleEvent(Controller.EVENTGUI);
 					return;
 				}
 			}
@@ -86,12 +85,12 @@ public class Login implements EventHandler<ActionEvent>{
 
 
 		}
-		
+
 	}
 
 	public static Scene scene() {
 		return scene;
 	}
-	
+
 }
 

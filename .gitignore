@@ -1,1 +1,4 @@
 /bin/
+/out/
+.idea/
+SmartApp.iml
