@@ -1,5 +1,8 @@
 package gui;
 
+import controller.Controller;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,11 +16,22 @@ import javafx.stage.Stage;
 /**
  * Created by Prashant on 24/05/2017.
  */
-public class LoginFirstTimeInputDialog {
+public class LoginFirstTimeInputDialog implements EventHandler<ActionEvent> {
     private Stage window;
+    private Controller controller;
 
-    public static void display(){
-        Stage window = new Stage();
+    private TextField usernameTextField;
+    private TextField passwordTextField;
+
+    private String username;
+    private String password;
+
+    public LoginFirstTimeInputDialog(Controller controller) {
+        this.controller = controller;
+    }
+
+    public void display(){
+        window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("First Time Login");
@@ -27,19 +41,19 @@ public class LoginFirstTimeInputDialog {
         Label bodyLabel = new Label("Please create the first manager account for the system.");
 
         Label usernameLabel = new Label("Username:");
-        TextField usernameTextField = new TextField();
+        usernameTextField = new TextField();
         HBox usernameHBox = new HBox(usernameLabel, usernameTextField);
         usernameHBox.setSpacing(10);
         usernameHBox.setAlignment(Pos.CENTER);
 
         Label passwordLabel = new Label("Password:");
-        TextField passwordField = new TextField();
-        HBox passwordHBox = new HBox(passwordLabel, passwordField);
+        passwordTextField = new TextField();
+        HBox passwordHBox = new HBox(passwordLabel, passwordTextField);
         passwordHBox.setSpacing(10);
         passwordHBox.setAlignment(Pos.CENTER);
 
         Button okayButton = new Button("Okay");
-        okayButton.setOnAction(e -> window.close());
+        okayButton.setOnAction(this);
         okayButton.setAlignment(Pos.CENTER);
 
         VBox vBox = new VBox(bodyLabel, usernameHBox, passwordHBox, okayButton, new Label());
@@ -51,4 +65,31 @@ public class LoginFirstTimeInputDialog {
         window.showAndWait();
     }
 
+    @Override
+    public void handle(ActionEvent event) {
+        String tmpUsername = usernameTextField.getText();
+        String tmpPassword = passwordTextField.getText();
+
+        if(tmpUsername.length() == 0) {
+            // ERROR MESSAGE - TOO SHORT
+            return;
+        }
+
+        if (controller.getUserDatabase().getUser(tmpUsername) != null) {
+            // ERROR MESSAGE - USER EXISTS ALREADY
+            return;
+        }
+
+        username = tmpUsername;
+        password = tmpPassword;
+        window.close();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

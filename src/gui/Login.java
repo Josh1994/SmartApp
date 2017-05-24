@@ -10,6 +10,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import model.User;
+
+import java.util.List;
+
 
 public class Login implements EventHandler<ActionEvent>{
 	Button loginButton;
@@ -45,10 +49,17 @@ public class Login implements EventHandler<ActionEvent>{
 		vbox.getChildren().add(passwordLabel);
 		vbox.getChildren().add(passwordText);
 		vbox.getChildren().add(loginButton);
-		
+
 
 		
 		scene = new Scene(vbox, 600, 400);
+
+		if(controller.getUserDatabase().getUsers().size() == 0) {
+            LoginFirstTimeInputDialog loginFirstTimeInputDialog = new LoginFirstTimeInputDialog(controller);
+            loginFirstTimeInputDialog.display();
+            controller.getUserDatabase().addUser(loginFirstTimeInputDialog.getUsername(),
+                    loginFirstTimeInputDialog.getPassword(), true);
+        }
 	}
 
 	@Override
@@ -58,7 +69,22 @@ public class Login implements EventHandler<ActionEvent>{
 			System.out.println("LoginButton");
 			System.out.println(usernameText.getText());
 			System.out.println(passwordText.getText());
-			controller.handleEvent(Controller.MAIL);
+
+			String input_Username = usernameText.getText();
+			String input_password = passwordText.getText();
+
+			List<User> users = controller.getUserDatabase().getUsers();
+			for(User user : users) {
+				if(user.getUsername().equals(input_Username)
+				&& user.getPassword().equals(input_password)) {
+					controller.handleEvent(Controller.MAIL);
+					return;
+				}
+			}
+
+			// Display Error message here
+
+
 		}
 		
 	}
