@@ -24,7 +24,7 @@ public class UserDatabase {
     private static final String USER_DATABASE = "users.kpsdb";
 
     private List<User> users;
-    private User loggedIn; // TODO: UNKNOWN IF THIS SHOULD BE IN SINGLETON OR NOT
+    private User loggedIn;
 
     public UserDatabase() {
         // Declare class variables
