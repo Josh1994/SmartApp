@@ -64,11 +64,10 @@ public class Login implements EventHandler<ActionEvent>{
 
 	@Override
 	public void handle(ActionEvent event) {
-		// TODO Auto-generated method stub
 		if(event.getSource() == loginButton){
-			System.out.println("LoginButton");
-			System.out.println(usernameText.getText());
-			System.out.println(passwordText.getText());
+			//System.out.println("LoginButton");
+			//System.out.println(usernameText.getText());
+			//System.out.println(passwordText.getText());
 			String input_Username = usernameText.getText();
 			String input_password = passwordText.getText();
 
@@ -76,13 +75,15 @@ public class Login implements EventHandler<ActionEvent>{
 			for(User user : users) {
 				if(user.getUsername().equals(input_Username)
 				&& user.getPassword().equals(input_password)) {
+				    controller.getUserDatabase().setLoggedInUser(user);
 					controller.handleEvent(Controller.EVENTGUI);
 					return;
 				}
 			}
 
 			// Display Error message here
-
+            AlertBox.display("Incorrect Login Information",
+                    "Please input the correct credentials to login to KPSmart");
 
 		}
 
