@@ -113,7 +113,7 @@ public class MailDelivery implements EventHandler<ActionEvent>{
 			controller.handleEvent(Controller.MAIL);
 		}
 		if(event.getSource() == backButton){
-			controller.handleEvent(Controller.LOGIN);
+			controller.handleEvent(Controller.EVENTGUI);
 		}
 
 	}
