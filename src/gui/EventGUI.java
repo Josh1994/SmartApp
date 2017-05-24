@@ -74,6 +74,7 @@ private Scene scene = null;
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
 			            System.out.println("Mail Delivery button clicked");
+			            controller.handleEvent(Controller.MAIL);
 			        }
 			});
 

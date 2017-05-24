@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.ArrayList;
+
 import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,7 +23,7 @@ public class MailDelivery implements EventHandler<ActionEvent>{
 	TextField weight;
 	TextField volume;
 	TextField priority;
-
+	ArrayList <String> critLabels = new ArrayList();
 	static Scene scene;
 	Controller controller;
 
@@ -89,9 +91,13 @@ public class MailDelivery implements EventHandler<ActionEvent>{
 		vbox2.getChildren().add(priority);
 		vbox2.getChildren().add(eventButton);
 
+
+		critLabels.add("Revenue");
+		critLabels.add("Expenditure");
 		HBox hbox = new HBox(20);
+		VBox vbox = new BusinessMonitor(critLabels).vbox();
 		hbox.setPadding(new Insets(20, 20, 20, 20));
-		hbox.getChildren().addAll( vbox1, vbox2);
+		hbox.getChildren().addAll( vbox,vbox1, vbox2);
 
 		scene = new Scene(hbox, 600, 400);
 	}
