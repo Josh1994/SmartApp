@@ -10,8 +10,12 @@ public class Controller {
 
 	Stage primaryStage;
 
+	// Global System Components
+	private UserDatabase userDatabase;
+
 	public Controller(Stage primaryStage) {
 		this.primaryStage = primaryStage;
+		this.userDatabase = new UserDatabase();
 	}
 
 	public void handleEvent(String event) {
@@ -25,4 +29,7 @@ public class Controller {
 
 	}
 
+	public UserDatabase getUserDatabase() {
+		return userDatabase;
+	}
 }
