@@ -4,6 +4,7 @@ import model.User;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -121,6 +122,10 @@ public class UserDatabase {
             }
         }
         return null;
+    }
+
+    public List<User> getUsers() {
+        return Collections.unmodifiableList(users);
     }
 
     /**
