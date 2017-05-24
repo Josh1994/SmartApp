@@ -1,5 +1,5 @@
-# SWEN301KPSmart
-KPSmart system application for SWEN301 project
+# SmartApp
+System application for online Mail proccessing
 <hr>
 <b>Project Team Members:</b>
 <ul>
