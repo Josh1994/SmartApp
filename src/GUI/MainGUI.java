@@ -45,7 +45,7 @@ public class MainGUI extends Application {
 			loginButton = new Button();
 			loginButton.setText("Login");
 			loginButton.setOnAction(this);
-			
+			// Test
 			Label usernameLabel = new Label("Username");
 			usernameText = new TextField();
 			usernameText.setMaxHeight(10);
