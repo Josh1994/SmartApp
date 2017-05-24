@@ -14,15 +14,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * Created by Prashant on 24/05/2017.
+ * This is a custom dialog box that is displayed when the database has no users. This allows the new user to create
+ * a new account so they can use the application. Should only appear on first run of the application.
  */
 public class LoginFirstTimeInputDialog implements EventHandler<ActionEvent> {
+    // Global Components
     private Stage window;
     private Controller controller;
 
+    // Textfields
     private TextField usernameTextField;
     private TextField passwordTextField;
 
+    //
     private String username;
     private String password;
 
@@ -67,29 +71,38 @@ public class LoginFirstTimeInputDialog implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
+        // Retrieve inputs
         String tmpUsername = usernameTextField.getText();
         String tmpPassword = passwordTextField.getText();
 
-        if(tmpUsername.length() == 0) {
-            // ERROR MESSAGE - TOO SHORT
+        // Validate Inputs
+        if(tmpUsername.length() == 0 || tmpPassword.length() == 0) {
+            // Not enough characters
+            AlertBox.display("Invalid Fields", "Please input a valid username and/or password.");
             return;
         }
 
+        /* Should never get to the code below, because being in execution path implies that the database has no users.
         if (controller.getUserDatabase().getUser(tmpUsername) != null) {
             // ERROR MESSAGE - USER EXISTS ALREADY
+            AlertBox.display("Username already in use", "Please input a another username, as this " +
+                    "is already taken.");
             return;
-        }
+        }*/
 
+        // Store new username and password
         username = tmpUsername;
         password = tmpPassword;
+
+        // Close window
         window.close();
     }
 
-    public String getUsername() {
+    String getUsername() {
         return username;
     }
 
-    public String getPassword() {
+    String getPassword() {
         return password;
     }
 }
