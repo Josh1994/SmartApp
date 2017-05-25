@@ -1,7 +1,10 @@
 package controller;
 
+import event.Event;
 import gui.*;
+import gui.base.DataEntryGUI;
 import javafx.stage.Stage;
+import model.BusinessModel;
 import model.User;
 
 import java.util.List;
@@ -13,8 +16,11 @@ public class Controller {
 	public static final String TRANSPORTDISC = "TRANSPORTDISC";
 
 	Stage primaryStage;
+	DataEntryGUI currentView;
+
 
 	// Global System Components
+	private BusinessModel model;
 	private UserDatabase userDatabase;
 	private User loggedIn;
 
@@ -23,24 +29,42 @@ public class Controller {
 		this.userDatabase = new UserDatabase();
 	}
 
-	public void handleEvent(String event) {
+	public void handleEvent(Event entry, DataEntryGUI sourceView) {
+		this.currentView = sourceView;
 
-		if (event.equals(MAIL)) {
-			MailDelivery mailDelivery = new MailDelivery(this);
-			primaryStage.setScene(mailDelivery.scene());
+		// first check for accuracy
+		if (validateEvent(entry)) {
+
+			// Then send it to model
+			model.processEvent(entry);
 		}
-		if (event.equals(EVENTGUI)) {
+		model.processEvent(entry);
+	}
+
+	public void handleEvent(String nextScreen) {
+
+		if (nextScreen.equals(MAIL)) {
+			MailDelivery mailDeliveryGUI = new MailDelivery(this);
+			primaryStage.setScene(mailDeliveryGUI.scene());
+		}
+		if (nextScreen.equals(EVENTGUI)) {
 			EventGUI eventGUI = new EventGUI(this);
 			primaryStage.setScene(eventGUI.scene());
 		}
-		if (event.equals(LOGIN)) {
+		if (nextScreen.equals(LOGIN)) {
 			primaryStage.setScene(Login.scene());
 		}
-		if (event.equals(TRANSPORTDISC)) {
+		if (nextScreen.equals(TRANSPORTDISC)) {
 			TransportDiscontinued transdisc = new TransportDiscontinued(this);
 			primaryStage.setScene(transdisc.scene());
 		}
 
+	}
+
+	private boolean validateEvent(Event entry) {
+		// if entry not valid call the source GUI e.g.
+		// currentView.setError(errormsg)
+		return true;
 	}
 
 	public UserDatabase getUserDatabase() {
