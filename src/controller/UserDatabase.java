@@ -1,9 +1,10 @@
-package main;
+package controller;
 
 import model.User;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,7 +24,6 @@ public class UserDatabase {
     private static final String USER_DATABASE = "users.kpsdb";
 
     private List<User> users;
-    private User loggedIn; // TODO: UNKNOWN IF THIS SHOULD BE IN SINGLETON OR NOT
 
     public UserDatabase() {
         // Declare class variables
@@ -121,6 +121,10 @@ public class UserDatabase {
             }
         }
         return null;
+    }
+
+    public List<User> getUsers() {
+        return Collections.unmodifiableList(users);
     }
 
     /**

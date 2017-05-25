@@ -10,6 +10,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import model.User;
+
+import java.util.List;
+
 
 public class Login implements EventHandler<ActionEvent>{
 	Button loginButton;
@@ -49,16 +53,22 @@ public class Login implements EventHandler<ActionEvent>{
 
 
 		scene = new Scene(vbox, 600, 400);
+
+		if(controller.getUserDatabase().getUsers().size() == 0) {
+            LoginFirstTimeInputDialog loginFirstTimeInputDialog = new LoginFirstTimeInputDialog(controller);
+            loginFirstTimeInputDialog.display();
+            controller.getUserDatabase().addUser(loginFirstTimeInputDialog.getUsername(),
+                    loginFirstTimeInputDialog.getPassword(), true);
+        }
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
-		// TODO Auto-generated method stub
 		if(event.getSource() == loginButton){
-			System.out.println("LoginButton");
-			System.out.println(usernameText.getText());
-			System.out.println(passwordText.getText());
-			controller.handleEvent(Controller.EVENTGUI);
+			String inputUsername = usernameText.getText();
+			String inputPassword = passwordText.getText();
+
+			controller.login(inputUsername, inputPassword);
 		}
 
 	}
