@@ -24,7 +24,6 @@ public class UserDatabase {
     private static final String USER_DATABASE = "users.kpsdb";
 
     private List<User> users;
-    private User loggedIn;
 
     public UserDatabase() {
         // Declare class variables
@@ -126,23 +125,6 @@ public class UserDatabase {
 
     public List<User> getUsers() {
         return Collections.unmodifiableList(users);
-    }
-
-    /**
-     * @return the {@link User} logged in.
-     */
-    public User getLoggedInUser() {
-        return loggedIn;
-    }
-
-    /**
-     * Set the current logged in user. To retrieve a user to set for this method, use the {@link #getUser(String)} or
-     * implicitly through {@link #getUsers()}
-     *
-     * @param loggedIn set the user that is logged in to the application
-     */
-    public void setLoggedInUser(User loggedIn) {
-        this.loggedIn = loggedIn;
     }
 
     /**
