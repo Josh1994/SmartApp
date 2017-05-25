@@ -3,6 +3,7 @@ package gui;
 import java.util.ArrayList;
 
 import controller.Controller;
+import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,7 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class MailDelivery implements EventHandler<ActionEvent>{
+public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	Button eventButton;
 	Button backButton;
@@ -108,13 +109,20 @@ public class MailDelivery implements EventHandler<ActionEvent>{
 
 	@Override
 	public void handle(ActionEvent event) {
-		// TODO Auto-generated method stub
+
 		if(event.getSource() == eventButton){
-			controller.handleEvent(Controller.MAIL);
+			/**
+			 * Create MailDelivery( from fields ) Event
+			 * call controller.handleEvent(maildeliveryEvent, this)
+			 */
+
 		}
 		if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
 		}
+
+	}
+	public void showError(String errormsg) {
 
 	}
 
