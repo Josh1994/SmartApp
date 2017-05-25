@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.Controller;
+import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,7 +20,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class TransportCostUpdate implements EventHandler<ActionEvent>{
+public class TransportCostUpdateGUI implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	Button eventButton;
 	Button backButton;
@@ -47,7 +48,7 @@ public class TransportCostUpdate implements EventHandler<ActionEvent>{
 
 
 	
-	public TransportCostUpdate(Controller controller){
+	public TransportCostUpdateGUI(Controller controller){
 		
 		this.controller = controller;
 		
@@ -212,5 +213,8 @@ public class TransportCostUpdate implements EventHandler<ActionEvent>{
 		
 	}
 
+	public void showError(String errormsg) {
+
+	}
 }
 
