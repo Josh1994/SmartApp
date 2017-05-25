@@ -5,6 +5,7 @@ import gui.EventGUI;
 import gui.Login;
 import gui.MailDeliveryGUI;
 import gui.TransportDiscontinuedGUI;
+import gui.base.DataEntryGUI;
 import javafx.stage.Stage;
 import model.BusinessModel;
 
@@ -17,6 +18,7 @@ public class Controller {
 	public static final String CUSTPRICEUPDATE = "CUSTPRICEUPDATE";
 
 	Stage primaryStage;
+	DataEntryGUI currentView;
 
 	// Global Business Components
 	private BusinessModel model;
@@ -28,7 +30,8 @@ public class Controller {
 		this.userDatabase = new UserDatabase();
 	}
 
-	public void handleEvent(Event entry) {
+	public void handleEvent(Event entry, DataEntryGUI sourceView) {
+		this.currentView = sourceView;
 		// first check for accuracy
 		if (validateEvent(entry)) {
 			model.processEvent(entry);
