@@ -22,7 +22,7 @@ public class MainGUI extends Application {
 
 		// Scenes
 		Login login = new Login(controller);
-		MailDelivery mailDelivery = new MailDelivery(controller);
+		MailDeliveryGUI mailDelivery = new MailDeliveryGUI(controller);
 		EventGUI eventgui = new EventGUI(controller);
 
 		primaryStage.setScene(login.scene());

@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,7 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class CustomerPriceUpdate implements EventHandler<ActionEvent>{
+public class CustomerPriceUpdateGUI implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	Button eventButton;
 	Button backButton;
@@ -27,7 +28,7 @@ public class CustomerPriceUpdate implements EventHandler<ActionEvent>{
 
 
 	
-	public CustomerPriceUpdate(Controller controller){
+	public CustomerPriceUpdateGUI(Controller controller){
 
 		this.controller = controller;
 
@@ -112,4 +113,7 @@ public class CustomerPriceUpdate implements EventHandler<ActionEvent>{
 		
 	}
 
+	public void showError(String errormsg) {
+
+	}
 }
