@@ -1,11 +1,14 @@
 package event;
 
+import java.time.ZonedDateTime;
+
 public class TransportDiscontinued extends Event {
 	String firm;
-	public TransportDiscontinued(String origin, String destination, String type, String firm) {
-		super(origin, destination, type);
-		this.firm = firm;
-		// TODO Auto-generated constructor stub
-	}
+	String type;
 
+	public TransportDiscontinued(ZonedDateTime dateTime, String user, String origin, String destination, String firm, String type) {
+		super(dateTime, user, origin, destination);
+		this.firm = firm;
+		this.type = type;
+	}
 }
