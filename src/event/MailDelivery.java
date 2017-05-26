@@ -13,4 +13,16 @@ public class MailDelivery extends Event {
 		this.volume = volume;
 		this.priority = priority;
 	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public double getVolume() {
+		return volume;
+	}
+
+	public String getPriority() {
+		return priority;
+	}
 }

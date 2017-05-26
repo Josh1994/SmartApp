@@ -11,4 +11,12 @@ public class TransportDiscontinued extends Event {
 		this.firm = firm;
 		this.type = type;
 	}
+
+	public String getFirm() {
+		return firm;
+	}
+
+	public String getType() {
+		return type;
+	}
 }

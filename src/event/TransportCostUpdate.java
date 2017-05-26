@@ -25,4 +25,36 @@ public class TransportCostUpdate extends Event{
 		this.day = day;
 		this.firm = firm;
 	}
+
+	public double getWeightCost() {
+		return weightCost;
+	}
+
+	public double getVolumeCost() {
+		return volumeCost;
+	}
+
+	public int getMaxWeight() {
+		return maxWeight;
+	}
+
+	public int getMaxVolume() {
+		return maxVolume;
+	}
+
+	public double getFrequency() {
+		return frequency;
+	}
+
+	public double getDuration() {
+		return duration;
+	}
+
+	public DayOfWeek getDay() {
+		return day;
+	}
+
+	public String getFirm() {
+		return firm;
+	}
 }
