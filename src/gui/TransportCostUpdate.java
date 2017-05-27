@@ -208,7 +208,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 			}
 		}
 		if(event.getSource() == backButton){
-			controller.handleEvent(Controller.LOGIN);
+			controller.handleEvent(Controller.EVENTGUI);
 		}
 		
 	}
