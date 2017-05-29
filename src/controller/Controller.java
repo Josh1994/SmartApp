@@ -14,6 +14,9 @@ public class Controller {
 	public static final String LOGIN = "LOGIN";
 	public static final String EVENTGUI = "EVENTGUI";
 	public static final String TRANSPORTDISC = "TRANSPORTDISC";
+	public static final String TRANSPORTUP = "TRANSPORTUP";
+	public static final String MAINSCREEN = "MAINSCREEN";
+	public static final String ACCOUNTMANAGE = "ACCOUNTMANAGE";
 
 	Stage primaryStage;
 	DataEntryGUI currentView;
@@ -42,8 +45,11 @@ public class Controller {
 	}
 
 	public void handleEvent(String nextScreen) {
-
-		if (nextScreen.equals(MAIL)) {
+		
+		if(nextScreen.equals(MAINSCREEN)){
+			MainScreen mainScreen = new MainScreen(this);
+			primaryStage.setScene(mainScreen.scene());
+		}if (nextScreen.equals(MAIL)) {
 			MailDelivery mailDeliveryGUI = new MailDelivery(this);
 			primaryStage.setScene(mailDeliveryGUI.scene());
 		}
@@ -57,6 +63,13 @@ public class Controller {
 		if (nextScreen.equals(TRANSPORTDISC)) {
 			TransportDiscontinued transdisc = new TransportDiscontinued(this);
 			primaryStage.setScene(transdisc.scene());
+		}
+		if (nextScreen.equals(TRANSPORTUP)) {
+			TransportCostUpdate transup = new TransportCostUpdate(this);
+			primaryStage.setScene(transup.scene());
+		}if(nextScreen.equals(ACCOUNTMANAGE)){
+			UserAccountManagement  userManage = new UserAccountManagement(this);
+			primaryStage.setScene(userManage.scene());
 		}
 
 	}
@@ -94,7 +107,7 @@ public class Controller {
 			if(user.getUsername().equals(inputUsername)
 					&& user.getPassword().equals(inputPassword)) {
 				setLoggedInUser(user);
-				handleEvent(Controller.EVENTGUI);
+				handleEvent(Controller.MAINSCREEN);
 				return;
 			}
 		}
@@ -102,5 +115,10 @@ public class Controller {
 		// Display Error message here if user
 		AlertBox.display("Incorrect Login Information",
 				"Please input the correct credentials to login to KPSmart");
+	}
+
+	public void logout() {
+		if(getLoggedInUser()!=null)setLoggedInUser(null);
+		handleEvent(Controller.LOGIN);
 	}
 }

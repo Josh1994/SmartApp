@@ -7,6 +7,7 @@ import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,6 +20,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	Button eventButton;
 	Button backButton;
+	Button logoutButton;
 	TextField fromText;
 	TextField toText;
 	TextField weight;
@@ -41,6 +43,10 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		backButton = new Button();
 		backButton.setText("Back");
 		backButton.setOnAction(this);
+		
+		logoutButton = new Button();
+		logoutButton.setText("Logout");
+		logoutButton.setOnAction(this);
 
 		Label fromLabel = new Label("Origin");
 		fromLabel.setMinHeight(25);
@@ -91,6 +97,11 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		vbox2.getChildren().add(volume);
 		vbox2.getChildren().add(priority);
 		vbox2.getChildren().add(eventButton);
+		
+		VBox vboxl = new VBox(10);
+		vboxl.setPadding(new Insets(10, 10, 10, 10));
+		vboxl.setAlignment(Pos.BOTTOM_RIGHT);
+		vboxl.getChildren().add(logoutButton);
 
 
 		critLabels.add("Revenue");
@@ -98,7 +109,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		HBox hbox = new HBox(20);
 		VBox vbox = new BusinessMonitor(critLabels).vbox();
 		hbox.setPadding(new Insets(20, 20, 20, 20));
-		hbox.getChildren().addAll( vbox,vbox1, vbox2);
+		hbox.getChildren().addAll( vbox,vbox1, vbox2, vboxl);
 
 		scene = new Scene(hbox, 600, 400);
 	}
@@ -119,6 +130,10 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		}
 		if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
+		}
+		if(event.getSource() == logoutButton){
+			 Logout logout = new Logout(controller);
+	         logout.display();
 		}
 
 	}

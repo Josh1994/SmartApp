@@ -4,6 +4,7 @@ import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class Login implements EventHandler<ActionEvent>{
 	Button loginButton;
+	Button createAccount;
 	TextField usernameText;
 	PasswordField passwordText;
 	Controller controller;
@@ -28,6 +30,9 @@ public class Login implements EventHandler<ActionEvent>{
 		loginButton = new Button();
 		loginButton.setText("Login");
 		loginButton.setOnAction(this);
+		
+		createAccount = new Button("New Account");
+		createAccount.setOnAction(this);
 
 		Label usernameLabel = new Label("Username");
 		usernameText = new TextField();
@@ -49,7 +54,11 @@ public class Login implements EventHandler<ActionEvent>{
 		vbox.getChildren().add(passwordLabel);
 		vbox.getChildren().add(passwordText);
 		vbox.getChildren().add(loginButton);
-
+		
+		VBox vbox2 = new VBox(10);
+		vbox2.setPadding(new Insets(50, 50, 50, 50));
+		vbox2.setAlignment(Pos.BOTTOM_CENTER);
+		vbox.getChildren().add(createAccount);
 
 
 		scene = new Scene(vbox, 600, 400);
@@ -69,6 +78,15 @@ public class Login implements EventHandler<ActionEvent>{
 			String inputPassword = passwordText.getText();
 
 			controller.login(inputUsername, inputPassword);
+			usernameText.clear();
+			passwordText.clear();
+		}
+		
+		if(event.getSource() == createAccount){
+			CreateAccount createAccount = new CreateAccount(controller);
+			createAccount.display();
+			controller.getUserDatabase().addUser(createAccount.getUsername(),
+					 createAccount.getPassword(), false);
 		}
 
 	}

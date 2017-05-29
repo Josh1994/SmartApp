@@ -18,71 +18,73 @@ import javafx.stage.Stage;
  * a new account so they can use the application. Should only appear on first run of the application.
  */
 public class LoginFirstTimeInputDialog implements EventHandler<ActionEvent> {
-    // Global Components
-    private Stage window;
-    private Controller controller;
+	// Global Components
+	private Stage window;
+	private Controller controller;
+	private Button okayButton;
 
-    // Textfields
-    private TextField usernameTextField;
-    private TextField passwordTextField;
+	// Textfields
+	private TextField usernameTextField;
+	private TextField passwordTextField;
 
-    //
-    private String username;
-    private String password;
+	//
+	private String username;
+	private String password;
 
-    public LoginFirstTimeInputDialog(Controller controller) {
-        this.controller = controller;
-    }
+	public LoginFirstTimeInputDialog(Controller controller) {
+		this.controller = controller;
+	}
 
-    public void display(){
-        window = new Stage();
+	public void display(){
+		window = new Stage();
 
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("First Time Login");
-        window.setMinWidth(250);
-        window.setMinHeight(100);
+		window.initModality(Modality.APPLICATION_MODAL);
+		window.setTitle("First Time Login");
+		window.setMinWidth(250);
+		window.setMinHeight(100);
 
-        Label bodyLabel = new Label("Please create the first manager account for the system.");
+		Label bodyLabel = new Label("Please create the first manager account for the system.");
 
-        Label usernameLabel = new Label("Username:");
-        usernameTextField = new TextField();
-        HBox usernameHBox = new HBox(usernameLabel, usernameTextField);
-        usernameHBox.setSpacing(10);
-        usernameHBox.setAlignment(Pos.CENTER);
+		Label usernameLabel = new Label("Username:");
+		usernameTextField = new TextField();
+		HBox usernameHBox = new HBox(usernameLabel, usernameTextField);
+		usernameHBox.setSpacing(10);
+		usernameHBox.setAlignment(Pos.CENTER);
 
-        Label passwordLabel = new Label("Password:");
-        passwordTextField = new TextField();
-        HBox passwordHBox = new HBox(passwordLabel, passwordTextField);
-        passwordHBox.setSpacing(10);
-        passwordHBox.setAlignment(Pos.CENTER);
+		Label passwordLabel = new Label("Password:");
+		passwordTextField = new TextField();
+		HBox passwordHBox = new HBox(passwordLabel, passwordTextField);
+		passwordHBox.setSpacing(10);
+		passwordHBox.setAlignment(Pos.CENTER);
 
-        Button okayButton = new Button("Okay");
-        okayButton.setOnAction(this);
-        okayButton.setAlignment(Pos.CENTER);
+		okayButton = new Button("Okay");
+		okayButton.setOnAction(this);
+		okayButton.setAlignment(Pos.CENTER);
 
-        VBox vBox = new VBox(bodyLabel, usernameHBox, passwordHBox, okayButton, new Label());
-        vBox.setSpacing(20);
+		VBox vBox = new VBox(bodyLabel, usernameHBox, passwordHBox, okayButton, new Label());
+		vBox.setSpacing(20);
 
-        vBox.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(vBox);
-        window.setScene(scene);
-        window.showAndWait();
-    }
+		vBox.setAlignment(Pos.CENTER);
+		Scene scene = new Scene(vBox);
+		window.setScene(scene);
+		window.showAndWait();
+	}
 
-    @Override
-    public void handle(ActionEvent event) {
-        // Retrieve inputs
-        String tmpUsername = usernameTextField.getText();
-        String tmpPassword = passwordTextField.getText();
+	@Override
+	public void handle(ActionEvent event) {
+		if(event.getEventType().equals(okayButton)){
+			// Retrieve inputs
+			String tmpUsername = usernameTextField.getText();
+			String tmpPassword = passwordTextField.getText();
 
-        // Validate Inputs
-        if(tmpUsername.length() == 0 || tmpPassword.length() == 0) {
-            // Not enough characters
-            AlertBox.display("Invalid Fields", "Please input a valid username and/or password.");
-            return;
-        }
+			// Validate Inputs
+			if(tmpUsername.length() == 0 || tmpPassword.length() == 0) {
+				// Not enough characters
+				AlertBox.display("Invalid Fields", "Please input a valid username and/or password.");
+				return;
+			}
 
-        /* Should never get to the code below, because being in execution path implies that the database has no users.
+			/* Should never get to the code below, because being in execution path implies that the database has no users.
         if (controller.getUserDatabase().getUser(tmpUsername) != null) {
             // ERROR MESSAGE - USER EXISTS ALREADY
             AlertBox.display("Username already in use", "Please input a another username, as this " +
@@ -90,19 +92,20 @@ public class LoginFirstTimeInputDialog implements EventHandler<ActionEvent> {
             return;
         }*/
 
-        // Store new username and password
-        username = tmpUsername;
-        password = tmpPassword;
+			// Store new username and password
+			username = tmpUsername;
+			password = tmpPassword;
 
-        // Close window
-        window.close();
-    }
+			// Close window
+			window.close();
+		}
+	}
 
-    String getUsername() {
-        return username;
-    }
+	String getUsername() {
+		return username;
+	}
 
-    String getPassword() {
-        return password;
-    }
+	String getPassword() {
+		return password;
+	}
 }
