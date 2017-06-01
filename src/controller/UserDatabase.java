@@ -21,15 +21,20 @@ public class UserDatabase {
     }
 
 
-    private static final String USER_DATABASE = "users.kpsdb";
+    private static String USER_DATABASE = "users.kpsdb";
+    private String pathname;
 
     private List<User> users;
 
     public UserDatabase() {
-        // Declare class variables
+        this(".");
+    }
+
+    public UserDatabase(String pathname) {
+        this.pathname = pathname + File.separator + USER_DATABASE;
         users = new ArrayList<>();
 
-        File userDatabaseFile = new File(USER_DATABASE);
+        File userDatabaseFile = new File(pathname);
 
         // Create Initial User Database if it doesn't exist yet
         if(!userDatabaseFile.exists()) {
@@ -37,6 +42,7 @@ public class UserDatabase {
         } else {
             loadUserDatabase();
         }
+
     }
 
     /**
@@ -47,7 +53,7 @@ public class UserDatabase {
         users = new ArrayList<>();
 
         // Create Initial User Database if it doesn't exist yet
-        File userDatabaseFile = new File(USER_DATABASE);
+        File userDatabaseFile = new File(pathname);
         if(!userDatabaseFile.exists()) {
             createInitialDatabase();
         }
@@ -68,7 +74,7 @@ public class UserDatabase {
                 User user = new User(username,password,isManager);
                 users.add(user);
             }
-
+            scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -79,7 +85,7 @@ public class UserDatabase {
      */
     private void createInitialDatabase() {
         try {
-            FileWriter fileWriter = new FileWriter(USER_DATABASE);
+            FileWriter fileWriter = new FileWriter(pathname);
             fileWriter.append("username,password,isManager").append(System.lineSeparator()); // Header
             fileWriter.flush();
             fileWriter.close();
@@ -93,7 +99,7 @@ public class UserDatabase {
      */
     private void updateUserDatabase() {
         try {
-            FileWriter fileWriter = new FileWriter(USER_DATABASE);
+            FileWriter fileWriter = new FileWriter(pathname);
 
             StringBuilder stringBuilder = new StringBuilder();
             fileWriter.append("username,password,isManager").append(System.lineSeparator()); // Header
@@ -137,11 +143,16 @@ public class UserDatabase {
         User user = getUser(oldUsername);
         if(user == null) {
             throw new UserDatabaseException("You cannot change the username for a user that does not exist.");
-        } else {
-            user.setUsername(newUsername);
-            updateUserDatabase();
         }
 
+        User newUser = getUser(newUsername);
+
+        if(newUser != null) {
+            throw new UserDatabaseException("You cannot change the username to one that already exists in the database.");
+        }
+
+        user.setUsername(newUsername);
+        updateUserDatabase();
     }
 
     /**
@@ -218,7 +229,7 @@ public class UserDatabase {
 
         // Appends new user to the end of the file
         try {
-            FileWriter fileWriter = new FileWriter(USER_DATABASE,true);
+            FileWriter fileWriter = new FileWriter(pathname,true);
             fileWriter.append(newUser.toFileString()).append(System.lineSeparator());
             fileWriter.flush();
             fileWriter.close();

@@ -1,12 +1,28 @@
 package event;
 
+import java.time.ZonedDateTime;
+
 public class CustomerPriceUpdate extends Event {
-	double weightPrice;
-	double volumePrice;
-	public CustomerPriceUpdate(String origin, String destination, String type, double weightPrice, double volumePrice) {
-		super(origin, destination, type);
-		// TODO Auto-generated constructor stub
-		this.weightPrice = weightPrice;
-		this.volumePrice = volumePrice;
+	private double weightCost;
+	private double volumeCost;
+	private String priority;
+
+	public CustomerPriceUpdate(ZonedDateTime dateTime, String user, String origin, String destination, double weightCost, double volumeCost, String priority) {
+		super(dateTime, user, origin, destination);
+		this.weightCost = weightCost;
+		this.volumeCost = volumeCost;
+		this.priority = priority;
 	}
+
+    public double getWeightCost() {
+        return weightCost;
+    }
+
+    public double getVolumeCost() {
+        return volumeCost;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
 }
