@@ -8,6 +8,7 @@ public class Event {
 	public static final String SEA = "SEA";
 	public static final String AIR = "AIR";
 	public static final String LAND = "LAND";
+	public static final String DOMESTIC = "DOMESTIC";
 
 	// General
 	ZonedDateTime dateTime;
@@ -16,15 +17,15 @@ public class Event {
 	// Event specific
 	String origin;
 	String destination;
-	//String type;
+	String priority;
 
 
-	public Event(ZonedDateTime dateTime, String user, String origin, String destination/*, String type*/) {
+	public Event(ZonedDateTime dateTime, String user, String origin, String destination, String priority) {
 		this.dateTime = dateTime;
 		this.user = user;
 		this.origin = origin;
 		this.destination = destination;
-		//this.type = type;
+		this.priority = priority;
 	}
 
 	public ZonedDateTime getDateTime() {
@@ -41,5 +42,9 @@ public class Event {
 
 	public String getDestination() {
 		return destination;
+	}
+	
+	public String getPriority(){
+		return this.priority;
 	}
 }

@@ -11,18 +11,19 @@ public class TransportCostUpdate extends Event{
 	int maxVolume;
 	double frequency;
 	double duration;
-	DayOfWeek day;
+	List<DayOfWeek> days;
 	String firm;
+	
 
-	public TransportCostUpdate(ZonedDateTime dateTime, String user, String origin, String destination, double weightCost, double volumeCost, int maxWeight, int maxVolume, double frequency, double duration, DayOfWeek day, String firm) {
-		super(dateTime, user, origin, destination);
+	public TransportCostUpdate(ZonedDateTime dateTime, String user, String origin, String destination, double weightCost, double volumeCost, int maxWeight, int maxVolume, double frequency, double duration, List<DayOfWeek> day, String firm, String priority) {
+		super(dateTime, user, origin, destination, priority);
 		this.weightCost = weightCost;
 		this.volumeCost = volumeCost;
 		this.maxWeight = maxWeight;
 		this.maxVolume = maxVolume;
 		this.frequency = frequency;
 		this.duration = duration;
-		this.day = day;
+		this.days = day;
 		this.firm = firm;
 	}
 
@@ -50,8 +51,8 @@ public class TransportCostUpdate extends Event{
 		return duration;
 	}
 
-	public DayOfWeek getDay() {
-		return day;
+	public List<DayOfWeek> getDay() {
+		return days;
 	}
 
 	public String getFirm() {
