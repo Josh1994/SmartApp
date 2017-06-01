@@ -1,0 +1,28 @@
+<events>
+  <mail>
+    <date></date>
+    <destination></destination>
+    <origin></origin>
+    <weight></weight>
+    <volume></volume>
+  </mail>
+
+  <transportCostUpdate>
+    <firm></firm>
+    <type></type>
+    <origin></origin>
+    <destination></destination>
+    <weightPrice></weightPrice>
+    <volumePrice></volumePrice>
+    <days></days>
+    <frequency></frequency>
+    <duration></duration>
+  </transportCostUpdate>
+
+  <transportDiscontinue>
+    <origin></origin>
+    <destination></destination>
+    <firm></firm>
+    <type></type>
+  </transportDiscontinue>
+</events>
