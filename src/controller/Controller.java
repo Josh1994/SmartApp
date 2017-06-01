@@ -100,7 +100,7 @@ public class Controller {
 		}
 
 		// Display Error message here if user
-		AlertBox.display("Incorrect Login Information",
-				"Please input the correct credentials to login to KPSmart");
+		AlertBox.display("Incorrect Credentials",
+				"Please input the correct credentials to login to KPSmart.");
 	}
 }
