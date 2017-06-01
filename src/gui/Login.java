@@ -14,19 +14,17 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import model.User;
-
-import java.util.List;
 
 
-public class Login implements EventHandler<ActionEvent>{
-	Button loginButton;
-	TextField usernameText;
-	PasswordField passwordText;
-	Controller controller;
-	static Scene scene;
+public class Login implements EventHandler<ActionEvent> {
+	private Controller controller;
+	private static Scene scene;
 
-	public Login(Controller controller){
+	private TextField usernameText;
+	private PasswordField passwordText;
+	private Button loginButton;
+
+	Login(Controller controller){
 
 		this.controller = controller;
 

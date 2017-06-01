@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class AlertBox {
 	private Stage window;
@@ -21,15 +23,16 @@ public class AlertBox {
 		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle(title);
 
-		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 300, 100, Color.WHITE);
-
 		GridPane gridpane = new GridPane();
 		gridpane.setPadding(new Insets(10));
 		gridpane.setHgap(10);
 		gridpane.setVgap(10);
-		
+
+		Scene scene = new Scene(gridpane);
+
+
 		Label label = new Label(message);
+		label.setMaxWidth(350);
 		label.setWrapText(true);
 
 		HBox hbLabel = new HBox(10);
@@ -42,16 +45,19 @@ public class AlertBox {
 		okayButton.setAlignment(Pos.CENTER);
 		okayButton.setPadding(new Insets(5, 20, 5,20));
 
-		HBox hbBtn = new HBox(10);
+		HBox hbBtn = new HBox();
 		hbBtn.setAlignment(Pos.CENTER);
 		hbBtn.getChildren().add(okayButton);
 		gridpane.add(hbBtn, 0, 1);
 
-		root.setCenter(gridpane);
-
 		window.setScene(scene);
 		window.showAndWait();
-		
+		/*window.setOnShown(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				window.sizeToScene();
+			}
+		});*/
 	}
 
 	
