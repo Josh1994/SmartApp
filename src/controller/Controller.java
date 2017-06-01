@@ -39,8 +39,9 @@ public class Controller {
 
 			// Then send it to model
 			model.processEvent(entry);
+			//notify the user all okay.
 		}
-		model.processEvent(entry);
+		// if event is not validated, we must notify the user.
 	}
 
 	public void handleEvent(String nextScreen) {

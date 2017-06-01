@@ -1,6 +1,12 @@
 package gui;
 
 
+import event.MailDelivery;
+
+import event.Event;
+
+import java.time.DayOfWeek;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.User;
 
 public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEvent>{
 
@@ -27,6 +34,10 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	TextField firm;
 	//land sea air
 	ToggleGroup type;
+	RadioButton land;
+	RadioButton sea;
+	RadioButton air;
+	RadioButton domestic;
 	//sunday to saturday
 	CheckBox sunday;
 	CheckBox monday;
@@ -42,6 +53,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	TextField volumePrice;
 	TextField frequency;
 	TextField duration;
+	TextField maxWeight;
+	TextField maxVolume;
 	
 	static Scene scene;
 	Controller controller;
@@ -85,6 +98,18 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		volumePrice = new TextField();
 		volumePrice.setMaxHeight(10);
 		volumePrice.setMaxWidth(200);
+		
+		Label maxWeightLabel = new Label("Max Weight: ");
+		maxWeightLabel.setMinHeight(25);
+		maxWeight = new TextField();
+		maxWeight.setMaxHeight(10);
+		maxWeight.setMaxWidth(200);
+		
+		Label maxVolumeLabel = new Label("Max Volume: ");
+		maxVolumeLabel.setMinHeight(25);
+		maxVolume = new TextField();
+		maxVolume.setMaxHeight(10);
+		maxVolume.setMaxWidth(200);
 		
 		Label firmLabel = new Label("Firm: ");
 		firmLabel.setMinHeight(25);
@@ -131,16 +156,18 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		Label typeLabel = new Label("Type: ");
 		typeLabel.setMinHeight(25);
 		type = new ToggleGroup();
-		RadioButton land = new RadioButton("Land");
-		RadioButton sea = new RadioButton("Sea");
-		RadioButton air = new RadioButton("Air");
+		land = new RadioButton("Land");
+		sea = new RadioButton("Sea");
+		air = new RadioButton("Air");
+		domestic = new RadioButton("Domestic");
 		
 		land.setToggleGroup(type);
 		sea.setToggleGroup(type);
 		air.setToggleGroup(type);
+		domestic.setToggleGroup(type);
 		
 		
-		HBox typeHBox = new HBox(land,sea,air);
+		HBox typeHBox = new HBox(land,sea,air, domestic);
 		
 		
 		
@@ -152,6 +179,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		vbox1.getChildren().add(toLabel);
 		vbox1.getChildren().add(weightLabel);
 		vbox1.getChildren().add(volumeLabel);
+		vbox1.getChildren().add(maxWeightLabel);
+		vbox1.getChildren().add(maxVolumeLabel);
 		vbox1.getChildren().add(daysLabel);
 		vbox1.getChildren().add(frequencyLabel);
 		vbox1.getChildren().add(durationLabel);
@@ -165,6 +194,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		vbox2.getChildren().add(destination);
 		vbox2.getChildren().add(weightPrice);
 		vbox2.getChildren().add(volumePrice);
+		vbox2.getChildren().add(maxWeight);
+		vbox2.getChildren().add(maxVolume);
 		vbox2.getChildren().add(days);
 		vbox2.getChildren().add(frequency);
 		vbox2.getChildren().add(duration);
@@ -174,7 +205,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		hbox.setPadding(new Insets(20, 20, 20, 20));
 		hbox.getChildren().addAll(vbox1, vbox2);
 		
-		scene = new Scene(hbox, 800, 400);
+		scene = new Scene(hbox, 800, 480);
 	}
 	
 	public static Scene scene() {
@@ -204,7 +235,70 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 			else{
 				
 				//Tell the controller that there is a price update
-				controller.handleEvent(Controller.MAIL);
+				ConfirmBox confirmBox = new ConfirmBox();
+				String message = "Are you sure you want to update transport cost for " + this.firm.getText();
+				String title = "Transport Cost Update Confirmation";
+				confirmBox.display(title, message);
+				if(confirmBox.confirm){
+					String priority;
+					event.TransportCostUpdate tcu;
+					
+					if(land.isSelected()){
+						priority = Event.LAND;
+					}
+					else if(air.isSelected()){
+						priority = Event.AIR;
+					}
+					else if(sea.isSelected()){
+						priority = Event.SEA;
+					}
+					else{
+						priority = Event.DOMESTIC;
+					}
+					List<DayOfWeek> days = new ArrayList<DayOfWeek>();
+					for(CheckBox cbox : daysOfWeek){
+						if(cbox.isSelected()){
+							if(cbox.getText().equals("Monday")){
+								days.add(DayOfWeek.MONDAY);
+							}
+							else if(cbox.getText().equals("Tuesday")){
+								days.add(DayOfWeek.TUESDAY);
+							}
+							else if(cbox.getText().equals("Wednesday")){
+								days.add(DayOfWeek.WEDNESDAY);
+							}
+							else if(cbox.getText().equals("Thursday")){
+								days.add(DayOfWeek.THURSDAY);
+							}
+							else if(cbox.getText().equals("Friday")){
+								days.add(DayOfWeek.FRIDAY);
+							}
+							else if(cbox.getText().equals("Saturday")){
+								days.add(DayOfWeek.SATURDAY);
+							}
+							else{
+								days.add(DayOfWeek.SUNDAY);
+							}
+						}
+					}
+					
+					String from = origin.getText();
+					String to = destination.getText();
+					double weightPr = Double.parseDouble(weightPrice.getText());
+					double volPr = Double.parseDouble(volumePrice.getText());
+					double freq = Double.parseDouble(frequency.getText());
+					double dur = Double.parseDouble(duration.getText());
+					int maxWei = Integer.parseInt(maxWeight.getText());
+					int maxVol = Integer.parseInt(maxVolume.getText());
+					ZonedDateTime zdt = ZonedDateTime.now();
+					User user = controller.getLoggedInUser();
+					//make transport cost update event and send it to the controller
+					tcu = new event.TransportCostUpdate(zdt, user.getUsername(), from, to, weightPr, volPr, maxWei, maxVol, freq, dur, days, firm.getText(), priority);
+					System.out.println(tcu.toString());
+					
+					controller.handleEvent(tcu, this);
+					
+				}
 			}
 		}
 		if(event.getSource() == backButton){
