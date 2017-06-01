@@ -14,6 +14,8 @@ public class Controller {
 	public static final String LOGIN = "LOGIN";
 	public static final String EVENTGUI = "EVENTGUI";
 	public static final String TRANSPORTDISC = "TRANSPORTDISC";
+	public static final String TRANSCOSTUPDATE = "TRANSCOSTUPDATE";
+	public static final String CUSTPRICEUPDATE = "CUSTPRICEUPDATE";
 
 	Stage primaryStage;
 	DataEntryGUI currentView;
@@ -37,8 +39,9 @@ public class Controller {
 
 			// Then send it to model
 			model.processEvent(entry);
+			//notify the user all okay.
 		}
-		model.processEvent(entry);
+		// if event is not validated, we must notify the user.
 	}
 
 	public void handleEvent(String nextScreen) {
@@ -57,6 +60,14 @@ public class Controller {
 		if (nextScreen.equals(TRANSPORTDISC)) {
 			TransportDiscontinued transdisc = new TransportDiscontinued(this);
 			primaryStage.setScene(transdisc.scene());
+		}
+		if (nextScreen.equals(TRANSCOSTUPDATE)) {
+			TransportCostUpdate trans = new TransportCostUpdate(this);
+			primaryStage.setScene(trans.scene());
+		}
+		if (nextScreen.equals(CUSTPRICEUPDATE)) {
+			CustomerPriceUpdate cust = new CustomerPriceUpdate(this);
+			primaryStage.setScene(cust.scene());
 		}
 
 	}

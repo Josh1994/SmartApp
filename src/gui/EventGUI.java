@@ -62,7 +62,8 @@ private Scene scene = null;
 		button.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
-			            System.out.println("Transport Cost Update button clicked");
+
+						controller.handleEvent(Controller.TRANSCOSTUPDATE);
 			        }
 			});
 
@@ -85,7 +86,8 @@ private Scene scene = null;
 		button3.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
-			            System.out.println("Customer Price Update button clicked");
+						controller.handleEvent(Controller.CUSTPRICEUPDATE);
+
 			        }
 			});
 
