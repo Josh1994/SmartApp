@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<database>
+    <events eventType="transportCostUpdate">
+        <destination>a</destination>
+        <origin>a</origin>
+        <type>a</type>
+    </events>
+    <events eventType="transportDiscontinued">
+        <destination>a</destination>
+        <origin>a</origin>
+        <type>a</type>
+    </events>
+    <events eventType="mailDelivery">
+        <destination>a</destination>
+        <origin>a</origin>
+        <type>a</type>
+    </events>
+    <events eventType="customerPriceUpdate">
+        <destination>a</destination>
+        <origin>a</origin>
+        <type>a</type>
+    </events>
+</database>

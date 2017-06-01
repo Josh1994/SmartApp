@@ -1,5 +1,10 @@
 package event;
 
+import javax.xml.bind.annotation.XmlAttribute;  
+import javax.xml.bind.annotation.XmlElement;  
+import javax.xml.bind.annotation.XmlRootElement; 
+
+@XmlRootElement
 public class Event {
 
 	//Type or priority
@@ -7,10 +12,13 @@ public class Event {
 	public static final String AIR = "AIR";
 	public static final String LAND = "LAND";
 	
-	String origin;
-	String destination;
-	String type;
+	private String origin;
+	private String destination;
+	private String type;
+	private static final String eventType = "super";
 	
+	//For XML purposes don't remove
+	public Event(){}
 	
 	public Event(String origin, String destination, String type){
 		this.origin = origin;
@@ -18,5 +26,23 @@ public class Event {
 		this.type = type;
 	}
 	
+	@XmlAttribute
+	public String getEventType(){
+		return eventType;
+	}
 	
+	@XmlElement
+	public String getOrigin(){
+		return origin;
+	}
+	
+	@XmlElement
+	public String getDestination(){
+		return destination;
+	}
+	
+	@XmlElement
+	public String getType(){
+		return type;
+	}
 }

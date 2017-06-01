@@ -45,7 +45,7 @@ public class XMLParser {
 
 	private Event parseEvent(Node node){
 		Event e = null;
-		switch(node.getAttributes().getNamedItem("class").getNodeValue()){
+		switch(node.getAttributes().getNamedItem("eventType").getNodeValue()){
 		case "CustomerPriceUpdate":e=customerPriceUpdateParser(node);break;
 		case "mailDelivery":e=mailDeliveryPraser(node);break;
 		case "transportCostUpdate":e=transportCostUpdateParser(node);break;
@@ -103,8 +103,8 @@ public class XMLParser {
 			case "days":days=null;break;
 			case "frequency":frequency=Double.parseDouble(s);break;
 			case "duration":duration=Double.parseDouble(s);break;
-			case "weight":weight=Double.parseDouble(s);
-			case "volume":volume=Double.parseDouble(s);
+			case "weight":weight=Double.parseDouble(s);break;
+			case "volume":volume=Double.parseDouble(s);break;
 			}
 		}	
 	}
