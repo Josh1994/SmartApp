@@ -52,12 +52,6 @@ public class AlertBox {
 
 		window.setScene(scene);
 		window.showAndWait();
-		/*window.setOnShown(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent event) {
-				window.sizeToScene();
-			}
-		});*/
 	}
 
 	
