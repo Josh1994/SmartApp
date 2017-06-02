@@ -8,20 +8,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Database {
 	
-	private List<Event> events = new ArrayList<Event>();
+	private List<Event> event = new ArrayList<Event>();
 	
 	public Database(){}
 	
 	public boolean addEvent(Event e){
-		return events.add(e);
+		return event.add(e);
 	}
 	
 	public void setEvent(ArrayList<Event> e){
-		events = e;
+		event = e;
 	}
 	
 	@XmlElement
-	public List<Event> getEvents(){
-		return events;
+	public List<Event> getEvent(){
+		return event;
 	}
 }

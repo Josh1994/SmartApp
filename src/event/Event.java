@@ -2,9 +2,11 @@ package event;
 
 import javax.xml.bind.annotation.XmlAttribute;  
 import javax.xml.bind.annotation.XmlElement;  
-import javax.xml.bind.annotation.XmlRootElement; 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso; 
 
 @XmlRootElement
+@XmlSeeAlso({CustomerPriceUpdate.class,MailDelivery.class,TransportCostUpdate.class,TransportDiscontinued.class})
 public class Event {
 
 	//Type or priority
@@ -26,7 +28,6 @@ public class Event {
 		this.type = type;
 	}
 	
-	@XmlAttribute
 	public String getEventType(){
 		return eventType;
 	}
@@ -44,5 +45,10 @@ public class Event {
 	@XmlElement
 	public String getType(){
 		return type;
+	}
+	
+	public String toString(){
+		String s = eventType+" "+origin+" "+destination+" "+type;
+		return s;
 	}
 }

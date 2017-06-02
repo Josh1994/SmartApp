@@ -37,5 +37,8 @@ public class MailDelivery extends Event {
 		return volume;
 	}
 
-
+	public String toString(){
+		String s=eventType+" "+getDestination()+" "+getType()+" "+weight+" "+volume;
+		return s;
+	}
 }

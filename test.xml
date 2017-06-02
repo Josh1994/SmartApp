@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <database>
-    <events eventType="transportCostUpdate">
+    <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transportDiscontinued" eventType="transportDiscontinued">
         <destination>a</destination>
         <origin>a</origin>
         <type>a</type>
-    </events>
-    <events eventType="transportDiscontinued">
+        <firm>a</firm>
+    </event>
+    <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transportCostUpdate" eventType="transportCostUpdate">
         <destination>a</destination>
         <origin>a</origin>
         <type>a</type>
-    </events>
-    <events eventType="mailDelivery">
+        <days>S</days>
+        <days>s</days>
+        <duration>0.0</duration>
+        <firm>a</firm>
+        <frequency>0.0</frequency>
+        <volumePrice>0.0</volumePrice>
+        <weightPrice>0.0</weightPrice>
+    </event>
+    <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="mailDelivery" eventType="mailDelivery">
         <destination>a</destination>
         <origin>a</origin>
         <type>a</type>
-    </events>
-    <events eventType="customerPriceUpdate">
+        <volume>0.0</volume>
+        <weight>0.0</weight>
+    </event>
+    <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="customerPriceUpdate" eventType="customerPriceUpdate">
         <destination>a</destination>
         <origin>a</origin>
         <type>a</type>
-    </events>
+        <volumePrice>0.0</volumePrice>
+        <weightPrice>0.0</weightPrice>
+    </event>
 </database>

@@ -28,4 +28,9 @@ public class TransportDiscontinued extends Event {
 	public String getFirm(){
 		return firm;
 	}
+	
+	public String toString(){
+		String s=eventType+getDestination()+" "+getType()+" "+firm;
+		return s;
+	}
 }

@@ -1,6 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
-
+package model;
+import java.io.*;
+import java.util.*;
 import javax.xml.parsers.*;
 
 import org.w3c.dom.Element;
@@ -12,6 +12,7 @@ import event.Event;
 import event.MailDelivery;
 import event.TransportCostUpdate;
 import event.TransportDiscontinued;
+
 public class XMLParser {
 
 	private ArrayList<Event> events = new ArrayList<Event>();
@@ -21,16 +22,16 @@ public class XMLParser {
 	private String firm = "";
 	private double weightPrice = 0;
 	private double volumePrice = 0;
-	private List<String> days = null;
+	private List<String> days = new ArrayList<String>();
 	private double frequency = 0;
 	private double duration = 0;
 	private double weight = 0;
 	private double volume = 0;
 
 	public XMLParser(String xmlfile) throws Exception{
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance("", null);
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
-		org.w3c.dom.Document document = builder.parse(ClassLoader.getSystemResourceAsStream(xmlfile));
+		org.w3c.dom.Document document = builder.parse(new FileInputStream(xmlfile));
 
 		NodeList nodeList = document.getDocumentElement().getChildNodes();
 
@@ -39,6 +40,7 @@ public class XMLParser {
 			if(node instanceof Element){
 				Event temp = parseEvent(node);
 				if(temp!=null)events.add(temp);
+				resetField();
 			}
 		}
 	}
@@ -46,7 +48,7 @@ public class XMLParser {
 	private Event parseEvent(Node node){
 		Event e = null;
 		switch(node.getAttributes().getNamedItem("eventType").getNodeValue()){
-		case "CustomerPriceUpdate":e=customerPriceUpdateParser(node);break;
+		case "customerPriceUpdate":e=customerPriceUpdateParser(node);break;
 		case "mailDelivery":e=mailDeliveryPraser(node);break;
 		case "transportCostUpdate":e=transportCostUpdateParser(node);break;
 		case "transportDiscontinued":e=transportDiscontinuedParser(node);break;
@@ -100,7 +102,7 @@ public class XMLParser {
 			case "firm":firm=s;break;
 			case "weightPrice":weightPrice=Double.parseDouble(s);break;
 			case "volumePrice":volumePrice=Double.parseDouble(s);break;
-			case "days":days=null;break;
+			case "days":days.add(s);break;
 			case "frequency":frequency=Double.parseDouble(s);break;
 			case "duration":duration=Double.parseDouble(s);break;
 			case "weight":weight=Double.parseDouble(s);break;
@@ -109,6 +111,20 @@ public class XMLParser {
 		}	
 	}
 
+	private void resetField(){
+		origin="";
+		destination="";
+		type="";
+		firm="";
+		weightPrice=0;
+		volumePrice=0;
+		days=new ArrayList<String>();
+		frequency=0;
+		duration=0;
+		weight=0;
+		volume=0;
+	}
+	
 	public ArrayList<Event> getEvents(){
 		return this.events;
 	}

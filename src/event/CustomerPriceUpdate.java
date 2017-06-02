@@ -19,6 +19,9 @@ public class CustomerPriceUpdate extends Event {
 		this.volumePrice = volumePrice;
 	}
 	
+	//For XML purposes don't remove
+	public CustomerPriceUpdate() {}
+	
 	@XmlAttribute
 	public String getEventType() {
 		return eventType;
@@ -32,5 +35,10 @@ public class CustomerPriceUpdate extends Event {
 	@XmlElement
 	public double getVolumePrice() {
 		return volumePrice;
+	}
+	
+	public String toString(){
+		String s = eventType+" "+getDestination()+" "+getType()+" "+weightPrice+" "+volumePrice;
+		return s;
 	}
 }
