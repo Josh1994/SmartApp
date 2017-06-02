@@ -40,7 +40,7 @@ public class Controller {
 			// Then send it to model
 			model.processEvent(entry);
 		}
-		model.processEvent(entry);
+
 	}
 
 	public void handleEvent(String nextScreen) {

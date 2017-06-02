@@ -33,6 +33,11 @@ public class Route implements Comparable<Route> {
 				tcu.getMaxVolume() , tcu.getType());
 	}
 
+	public Route(TransportCostUpdate tcu, String priority) {
+		this(tcu.getOrigin(), tcu.getDestination(), tcu.getWeightCost(), tcu.getVolumeCost(), tcu.getMaxWeight(),
+				tcu.getMaxVolume() , priority);
+	}
+
 	public Route(Route route, TransportCostUpdate tcu) {
 		this.origin = route.origin;
 		this.destination = tcu.getDestination();
@@ -41,6 +46,18 @@ public class Route implements Comparable<Route> {
 		this.maxWeight = (route.maxWeight < tcu.getMaxWeight()) ? route.maxWeight : tcu.getMaxWeight();
 		this.maxVolume = (route.maxVolume < tcu.getMaxVolume()) ? route.maxVolume : tcu.getMaxVolume();
 		this.priority = route.priority;
+
+		this.effectiveCost = (weightCost * weightCost) + (volumeCost * volumeCost);
+	}
+	// Combines 2 routes
+	public Route(Route first, Route next) {
+		this.origin = first.origin;
+		this.destination = next.getDestination();
+		this.weightCost = first.weightCost + next.getWeightCost();
+		this.volumeCost = first.volumeCost + next.getVolumeCost();
+		this.maxWeight = (first.maxWeight < next.getMaxWeight()) ? first.maxWeight : next.getMaxWeight();
+		this.maxVolume = (first.maxVolume < next.getMaxVolume()) ? first.maxVolume : next.getMaxVolume();
+		this.priority = first.priority;
 
 		this.effectiveCost = (weightCost * weightCost) + (volumeCost * volumeCost);
 	}
