@@ -29,6 +29,7 @@ public class Controller {
 	public Controller(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.userDatabase = new UserDatabase();
+		model = new BusinessModel(this);
 	}
 
 	public void handleEvent(Event entry, DataEntryGUI sourceView) {
