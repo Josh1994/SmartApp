@@ -227,6 +227,14 @@ public class RouteFinder {
         return false;
     }
 
+    /**
+     * If there is no direct route from a N.Z. city to an overseas destination a temporary combination
+     * Domestic + International Route will be created.
+     * @param origin
+     * @param destination
+     * @param priority
+     * @return
+     */
     private Route getCombinedRoute(String origin, String destination, String priority) {
         Map<String, Set<Route>> routes;
         Route intlRoute;
@@ -250,7 +258,7 @@ public class RouteFinder {
                             intlStart = s1;
                             // Now find domestic connection
                             Route domestic1 = getRoute(origin, intlStart, Event.DOMESTIC);
-                            if (domestic1 != null) return new Route(domestic1, intlRoute);
+                            if (domestic1 != null) return new Route(domestic1, intlRoute, priority);
                         }
                     }
                 }
