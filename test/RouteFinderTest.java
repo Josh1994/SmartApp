@@ -53,7 +53,8 @@ public class RouteFinderTest {
 
     @Test
     public void testDomesticRoutes() {
-        RouteFinder finder = new RouteFinder(null, (new HashSet<TransportCostUpdate>(createTCUs())));
+        RouteFinder finder = new RouteFinder(null);
+        finder.initiateRouteFinder(new HashSet<TransportCostUpdate>(createTCUs()));
         Map<String, Set<Route>> domestics = finder.getDomesticRoutes();
         Map<String, Set<Route>> airs = finder.getAirRoutes();
         Map<String, Set<Route>> surfaces = finder.getSurfaceRoutes();
@@ -98,17 +99,17 @@ public class RouteFinderTest {
         assertEquals(route.getVolumeCost(), 25.0, 0.01 );
         assertEquals(route.getWeightCost(), 25.0, 0.01 );
 
-        // Test findRoute Air
-        Route route1 = finder.getRoute("WGTN", "DUBLIN", Event.AIR );
-        assertEquals(route1.getOrigin(), "WGTN");
-        assertEquals(route1.getOrigin(), "WGTN");
-        assertEquals(route1.getDestination(), "DUBLIN");
-        assertEquals(route1.getVolumeCost(), 30.0, 0.01 );
-        assertEquals(route1.getWeightCost(), 30.0, 0.01 );
+        // Test findRoute Domestic
+        Route route1 = finder.getRoute("AKLD", "DNDN", Event.DOMESTIC );
+        assertEquals(route1.getOrigin(), "AKLD");
+        assertEquals(route1.getDestination(), "DNDN");
+        assertEquals(route1.getVolumeCost(), 20.0, 0.01 );
+        assertEquals(route1.getWeightCost(), 20.0, 0.01 );
     }
     @Test
-    public void testIntlAirRoutes() {
-        RouteFinder finder = new RouteFinder(null, (new HashSet<TransportCostUpdate>(createTCUs())));
+    public void testInternationalAirRoutes() {
+        RouteFinder finder = new RouteFinder(null);
+        finder.initiateRouteFinder(new HashSet<TransportCostUpdate>(createTCUs()));
         Map<String, Set<Route>> domestics = finder.getDomesticRoutes();
         Map<String, Set<Route>> airs = finder.getAirRoutes();
         Map<String, Set<Route>> surfaces = finder.getSurfaceRoutes();
@@ -136,12 +137,21 @@ public class RouteFinderTest {
                 assertEquals(route.getVolumeCost(), 20, 0.01);
             }
         }
+        // Test findRoute Air
+        Route route1 = finder.getRoute("WGTN", "DUBLIN", Event.AIR );
+        assertEquals(route1.getOrigin(), "WGTN");
+        assertEquals(route1.getOrigin(), "WGTN");
+        assertEquals(route1.getDestination(), "DUBLIN");
+        assertEquals(route1.getVolumeCost(), 30.0, 0.01 );
+        assertEquals(route1.getWeightCost(), 30.0, 0.01 );
+
     }
 
     @Test
-    public void testIntlSurfaceRoutes() {
+    public void testInternationalSurfaceRoutes() {
 
-        RouteFinder finder = new RouteFinder(null, (new HashSet<TransportCostUpdate>(createTCUs())));
+        RouteFinder finder = new RouteFinder(null);
+        finder.initiateRouteFinder(new HashSet<TransportCostUpdate>(createTCUs()));
 
         Map<String, Set<Route>> surfaces = finder.getSurfaceRoutes();
         // Auckl only origin
@@ -171,6 +181,12 @@ public class RouteFinderTest {
                 assertEquals(route.getVolumeCost(), 20, 0.01);
             }
         }
+        // Test findRoute Surface
+        Route route = finder.getRoute("WGTN", "DUBLIN", Event.SEA );
+        assertEquals(route.getOrigin(), "WGTN");
+        assertEquals(route.getDestination(), "DUBLIN");
+        assertEquals(route.getVolumeCost(), 25.0, 0.01 );
+        assertEquals(route.getWeightCost(), 25.0, 0.01 );
     }
 
 }

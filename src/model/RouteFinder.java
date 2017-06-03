@@ -30,8 +30,15 @@ public class RouteFinder {
 
     private Map<String , Set<Route>> airRoutes;
 
-    public RouteFinder(BusinessModel model, Set<TransportCostUpdate> stages) {
+    public RouteFinder(BusinessModel model) {
         this.model = model;
+    }
+
+    /**
+     * initiate the route finder by sending it a set of the LATEST Transport Cost Updates
+     * @param stages
+     */
+    public void initiateRouteFinder(Set<TransportCostUpdate> stages) {
         this.stages = stages;
         getAllRoutes();
     }
