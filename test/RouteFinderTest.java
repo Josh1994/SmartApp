@@ -92,13 +92,6 @@ public class RouteFinderTest {
                 assertEquals(route.getVolumeCost(), 20, 0.01);
             }
         }
-        // Test findRoute Surface
-        Route route = finder.getRoute("WGTN", "DUBLIN", Event.SEA );
-        assertEquals(route.getOrigin(), "WGTN");
-        assertEquals(route.getDestination(), "DUBLIN");
-        assertEquals(route.getVolumeCost(), 25.0, 0.01 );
-        assertEquals(route.getWeightCost(), 25.0, 0.01 );
-
         // Test findRoute Domestic
         Route route1 = finder.getRoute("AKLD", "DNDN", Event.DOMESTIC );
         assertEquals(route1.getOrigin(), "AKLD");
