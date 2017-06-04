@@ -11,9 +11,14 @@ import event.Event;
 public class BusinessModel {
     //create reference to controller
     private Controller controller;
+    // create reference to Routefinder
+    private RouteFinder routeFinder;
 
     public BusinessModel(Controller controller) {
+
         this.controller = controller;
+
+        this.routeFinder = new RouteFinder(this);
     }
 
     public void processEvent(Event event) {
