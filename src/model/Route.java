@@ -170,7 +170,7 @@ public class Route implements Comparable<Route> {
 		return priority;
 	}
 
-<<<<<<< HEAD
+
 	public List<TransportCostUpdate> getStages() {
 		return stages;
 	}
@@ -179,7 +179,7 @@ public class Route implements Comparable<Route> {
 		this.stages = stages;
 	}
 
-=======
+
 	@Override
 	public String toString() {
 		return "Route{" +
@@ -194,6 +194,6 @@ public class Route implements Comparable<Route> {
 				", stages=" + stages +
 				'}';
 	}
->>>>>>> origin/master
+
 }
 
