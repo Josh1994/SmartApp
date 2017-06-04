@@ -134,5 +134,19 @@ public class Route implements Comparable<Route> {
 		return priority;
 	}
 
+	@Override
+	public String toString() {
+		return "Route{" +
+				"effectiveCost=" + effectiveCost +
+				", origin='" + origin + '\'' +
+				", destination='" + destination + '\'' +
+				", weightCost=" + weightCost +
+				", volumeCost=" + volumeCost +
+				", maxWeight=" + maxWeight +
+				", maxVolume=" + maxVolume +
+				", priority='" + priority + '\'' +
+				", stages=" + stages +
+				'}';
+	}
 }
 
