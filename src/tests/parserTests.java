@@ -18,6 +18,10 @@ import event.TransportDiscontinued;
 import model.XMLParser;
 import event.Event;
 
+/*
+ * Created by Jonathan Young StudentID: 300358326 
+ * Tests for the XMLParser class
+ */
 public class parserTests {
 	
 	List<String> s = new ArrayList<String>();

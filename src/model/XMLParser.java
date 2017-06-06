@@ -1,6 +1,9 @@
 package model;
 import java.io.*;
 import java.util.*;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.parsers.*;
 
 import org.w3c.dom.Element;
@@ -8,11 +11,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import event.CustomerPriceUpdate;
+import event.Database;
 import event.Event;
 import event.MailDelivery;
 import event.TransportCostUpdate;
 import event.TransportDiscontinued;
 
+/*
+ * Created by Jonathan Young StudentID: 300358326
+ * For converting event database objects into XML files and vice-versa
+ */
 public class XMLParser {
 
 	private ArrayList<Event> events = new ArrayList<Event>();
@@ -44,6 +52,8 @@ public class XMLParser {
 			}
 		}
 	}
+	
+	public XMLParser(){}
 
 	private Event parseEvent(Node node){
 		Event e = null;
@@ -127,5 +137,17 @@ public class XMLParser {
 	
 	public ArrayList<Event> getEvents(){
 		return this.events;
+	}
+	
+	public void convertToXML(Database db){
+		try{
+		JAXBContext contextObj = JAXBContext.newInstance(Database.class); 
+		Marshaller marshallerObj = contextObj.createMarshaller();
+		marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);  
+		marshallerObj.marshal(db, new FileOutputStream("database.xml"));  
+		XMLParser parser = new XMLParser("database.xml");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }
