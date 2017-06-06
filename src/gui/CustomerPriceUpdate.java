@@ -62,13 +62,13 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 
         Label volumeLabel = new Label("Price/volume");
         volumeLabel.setMinHeight(25);
-        volume = new PasswordField();
+        volume = new TextField();
         volume.setMaxHeight(10);
         volume.setMaxWidth(200);
 
         Label priorityLabel = new Label("Priority");
         priorityLabel.setMinHeight(25);
-        priority = new PasswordField();
+        priority = new TextField();
         priority.setMaxHeight(10);
         priority.setMaxWidth(200);
 

@@ -1,5 +1,7 @@
 package gui;
 
+import java.time.ZonedDateTime;
+
 import controller.Controller;
 import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
@@ -7,11 +9,14 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.User;
 
 public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionEvent>{
 
@@ -19,9 +24,9 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 	Button backButton;
 	TextField fromText;
 	TextField toText;
-	TextField weight;
+	TextField firm;
 	TextField volume;
-	TextField priority;
+	String prio;
 
 	static Scene scene;
 	Controller controller;
@@ -52,25 +57,24 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		toText.setMaxHeight(10);
 		toText.setMaxWidth(200);
 
+		Label firmLabel = new Label("Transport Firm");
+		firmLabel.setMinHeight(25);
+		firm = new TextField();
+		firm.setMaxHeight(10);
+		firm.setMaxWidth(200);
+		
 		Label priorityLabel = new Label("Transport Type");
 		priorityLabel.setMinHeight(25);
-		priority = new PasswordField();
-		priority.setMaxHeight(10);
-		priority.setMaxWidth(200);
-
-		Label weightLabel = new Label("Transport Firm");
-		weightLabel.setMinHeight(25);
-		weight = new TextField();
-		weight.setMaxHeight(10);
-		weight.setMaxWidth(200);
-
-
-
+		ChoiceBox<String> priorityBox = new ChoiceBox<String>();
+		priorityBox.getItems().addAll("Land", "Air", "Sea", "Domestic");
+		priorityBox.setValue("Land");
+		prio = priorityBox.getValue();
+				
 		VBox vbox1 = new VBox(10);
 		vbox1.setPadding(new Insets(10, 10, 10, 10));
 		vbox1.getChildren().add(fromLabel);
 		vbox1.getChildren().add(toLabel);
-		vbox1.getChildren().add(weightLabel);
+		vbox1.getChildren().add(firmLabel);
 		vbox1.getChildren().add(priorityLabel);
 		vbox1.getChildren().add(backButton);
 
@@ -78,8 +82,8 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		vbox2.setPadding(new Insets(10, 10, 10, 10));
 		vbox2.getChildren().add(fromText);
 		vbox2.getChildren().add(toText);
-		vbox2.getChildren().add(weight);
-		vbox2.getChildren().add(priority);
+		vbox2.getChildren().add(firm);
+		vbox2.getChildren().add(priorityBox);
 		vbox2.getChildren().add(eventButton);
 
 		HBox hbox = new HBox(20);
@@ -98,7 +102,18 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		// TODO Auto-generated method stub
 		if(event.getSource() == eventButton){
 			System.out.println("Submit Button pressed");
-			//controller.handleEvent(Controller.MAIL);
+			System.out.println(fromText.getText() +" "+ toText.getText() +" "+ firm.getText() +" "+ prio);
+			if(fromText.getText().isEmpty() || toText.getText().isEmpty() || firm.getText().isEmpty() || prio==null ){
+				AlertBox.display("Invalid Input", "Invalid Input Fields");
+			}
+			else{
+				ZonedDateTime zdt = ZonedDateTime.now();
+				User user = controller.getLoggedInUser();
+				event.TransportDiscontinued td = new event.TransportDiscontinued(zdt, user.getUsername(), fromText.getText(), toText.getText(), firm.getText(), prio);
+				System.out.println(td.toString());
+				
+				controller.handleEvent(td, this);
+			}
 		}
 		if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
