@@ -399,6 +399,18 @@ public class RouteFinderTest {
         assertEquals(route.getDestination(), "DUBLIN");
         assertEquals(route.getVolumeCost(), 25.0, 0.01 );
         assertEquals(route.getWeightCost(), 25.0, 0.01 );
+
+        // Check that the stages are right
+        List<TransportCostUpdate> tcus = route.getStages();
+
+        assertEquals(tcus.get(0).getDestination(), "AKLD");
+        assertEquals(tcus.get(0).getWeightCost(),10, 0.1);
+
+        assertEquals(tcus.get(1).getDestination(), "LA");
+        assertEquals(tcus.get(1).getWeightCost(),10, 0.1);
+
+        assertEquals(tcus.get(2).getDestination(), "DUBLIN");
+        assertEquals(tcus.get(2).getWeightCost(),5, 0.1);
     }
 
 }
