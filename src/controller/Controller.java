@@ -100,19 +100,16 @@ public class Controller {
 		this.loggedIn = loggedIn;
 	}
 
-	public void login(String inputUsername, String inputPassword) {
+	public boolean login(String inputUsername, String inputPassword) {
 		List<User> users = userDatabase.getUsers();
 		for(User user : users) {
 			if(user.getUsername().equals(inputUsername)
 					&& user.getPassword().equals(inputPassword)) {
 				setLoggedInUser(user);
 				handleEvent(Controller.EVENTGUI);
-				return;
+				return true;
 			}
 		}
-
-		// Display Error message here if user
-		AlertBox.display("Incorrect Credentials",
-				"Please input the correct credentials to login to KPSmart.");
+		return false;
 	}
 }

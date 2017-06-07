@@ -85,7 +85,13 @@ public class Login implements EventHandler<ActionEvent> {
 			String inputUsername = usernameText.getText();
 			String inputPassword = passwordText.getText();
 
-			controller.login(inputUsername, inputPassword);
+			boolean isSuccessfulLogin = controller.login(inputUsername, inputPassword);
+
+			if(!isSuccessfulLogin) {
+				// Display Error message here if user
+				AlertBox.display("Incorrect Credentials",
+						"Please input the correct credentials to login to KPSmart.");
+			}
 		}
 
 	}
