@@ -9,17 +9,18 @@ import event.TransportCostUpdate;
 import event.TransportDiscontinued;
 
 public class EventProcessor {
-	
-	private List<TransportCostUpdate> currentTcu;
+
 	//from the list of all current tcu we can get a list of all routes.
-	
+	private List<TransportCostUpdate> currentTcu;
+	private List<TransportDiscontinued> currentTd;
 	
 	public EventProcessor(){
 		this.currentTcu = new ArrayList<TransportCostUpdate>();
+		this.currentTd = new ArrayList<TransportDiscontinued>();
 	}
 	
 	
-	//
+	//Event proccessing
 	public void processTCU(TransportCostUpdate tcu){
 		//if tcu route is not in the list add it
 		//otherwise just change it
@@ -51,11 +52,20 @@ public class EventProcessor {
 		}
 	
 	}
+	public void processTD(TransportDiscontinued td){
+		//It will put all the transport disc request in a list and delete all of them once this method is called.
+		this.currentTd.add(td);
 	
+	}
+	
+	//Getters
 	public List<TransportCostUpdate> getCurrentTCU(){
 		return this.currentTcu;
 	}
-	
+	public List<TransportDiscontinued> getCurrentTd(){
+		return this.currentTd;
+	}
+	//Booleans
 	public boolean containsRoute(TransportCostUpdate tcu){
 		
 		for(TransportCostUpdate transportCostUpdate : this.currentTcu){

@@ -3,6 +3,7 @@ package gui;
 import java.time.ZonedDateTime;
 
 import controller.Controller;
+import event.Event;
 import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,7 +28,9 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 	TextField firm;
 	TextField volume;
 	String prio;
-
+	ChoiceBox<String> priorityBox;
+	TextField city;
+	
 	static Scene scene;
 	Controller controller;
 
@@ -65,10 +68,15 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		
 		Label priorityLabel = new Label("Transport Type");
 		priorityLabel.setMinHeight(25);
-		ChoiceBox<String> priorityBox = new ChoiceBox<String>();
+		priorityBox = new ChoiceBox<String>();
 		priorityBox.getItems().addAll("Land", "Air", "Sea", "Domestic");
 		priorityBox.setValue("Land");
-		prio = priorityBox.getValue();
+		
+		Label cityLabel = new Label("City");
+		cityLabel.setMinHeight(25);
+		city = new TextField();
+		city.setMaxHeight(10);
+		city.setMaxWidth(200);
 				
 		VBox vbox1 = new VBox(10);
 		vbox1.setPadding(new Insets(10, 10, 10, 10));
@@ -76,6 +84,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		vbox1.getChildren().add(toLabel);
 		vbox1.getChildren().add(firmLabel);
 		vbox1.getChildren().add(priorityLabel);
+		vbox1.getChildren().add(cityLabel);
 		vbox1.getChildren().add(backButton);
 
 		VBox vbox2 = new VBox(10);
@@ -84,6 +93,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		vbox2.getChildren().add(toText);
 		vbox2.getChildren().add(firm);
 		vbox2.getChildren().add(priorityBox);
+		vbox2.getChildren().add(city);
 		vbox2.getChildren().add(eventButton);
 
 		HBox hbox = new HBox(20);
@@ -102,14 +112,29 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		// TODO Auto-generated method stub
 		if(event.getSource() == eventButton){
 			System.out.println("Submit Button pressed");
+			prio = priorityBox.getValue();
 			System.out.println(fromText.getText() +" "+ toText.getText() +" "+ firm.getText() +" "+ prio);
-			if(fromText.getText().isEmpty() || toText.getText().isEmpty() || firm.getText().isEmpty() || prio==null ){
+			if(fromText.getText().isEmpty() || toText.getText().isEmpty() || firm.getText().isEmpty() || prio==null || city.getText().isEmpty() ){
 				AlertBox.display("Invalid Input", "Invalid Input Fields");
 			}
 			else{
+				
+				if(prio=="Land"){
+					prio = Event.LAND;
+				}
+				else if(prio=="Air"){
+					prio = Event.AIR;
+				}
+				else if(prio=="Sea"){
+					prio = Event.SEA;
+				}
+				else{
+					prio = Event.DOMESTIC;
+				}
+				System.out.println(prio);
 				ZonedDateTime zdt = ZonedDateTime.now();
 				User user = controller.getLoggedInUser();
-				event.TransportDiscontinued td = new event.TransportDiscontinued(zdt, user.getUsername(), fromText.getText(), toText.getText(), firm.getText(), prio);
+				event.TransportDiscontinued td = new event.TransportDiscontinued(zdt, user.getUsername(), fromText.getText(), toText.getText(), firm.getText(), prio, city.getText());
 				System.out.println(td.toString());
 				
 				controller.handleEvent(td, this);
