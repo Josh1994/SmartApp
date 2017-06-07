@@ -1,6 +1,9 @@
 package gui;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import event.Event;
+
 
 import controller.Controller;
 import gui.base.DataEntryGUI;
@@ -9,9 +12,12 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -19,11 +25,17 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	Button eventButton;
 	Button backButton;
+	ChoiceBox origin;
+	ChoiceBox destination;
 	TextField fromText;
 	TextField toText;
 	TextField weight;
 	TextField volume;
 	TextField priority;
+	RadioButton land;
+	RadioButton sea;
+	RadioButton air;
+	RadioButton domestic;
 	ArrayList <String> critLabels = new ArrayList();
 	static Scene scene;
 	Controller controller;
@@ -31,7 +43,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 
 	public MailDelivery(Controller controller){
-
+		
 		this.controller = controller;
 
 		eventButton = new Button();
@@ -56,21 +68,35 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 		Label weightLabel = new Label("Weight");
 		weightLabel.setMinHeight(25);
-		weight = new PasswordField();
+		weight = new TextField();
 		weight.setMaxHeight(10);
 		weight.setMaxWidth(200);
 
 		Label volumeLabel = new Label("Volume");
 		volumeLabel.setMinHeight(25);
-		volume = new PasswordField();
+		volume = new TextField();
 		volume.setMaxHeight(10);
 		volume.setMaxWidth(200);
 
 		Label priorityLabel = new Label("Priority");
 		priorityLabel.setMinHeight(25);
-		priority = new PasswordField();
+		priority = new TextField();
 		priority.setMaxHeight(10);
 		priority.setMaxWidth(200);
+		
+		ToggleGroup type = new ToggleGroup();
+		land = new RadioButton("Land");
+		air = new RadioButton("Air");
+		sea = new RadioButton("Sea");
+		domestic = new RadioButton("Domestic");
+		
+		land.setToggleGroup(type);
+		air.setToggleGroup(type);
+		sea.setToggleGroup(type);
+		domestic.setToggleGroup(type);
+		
+		
+		HBox hboxType = new HBox(land,air,sea,domestic);
 
 
 
@@ -89,7 +115,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		vbox2.getChildren().add(toText);
 		vbox2.getChildren().add(weight);
 		vbox2.getChildren().add(volume);
-		vbox2.getChildren().add(priority);
+		vbox2.getChildren().add(hboxType);
 		vbox2.getChildren().add(eventButton);
 
 
@@ -100,7 +126,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		hbox.setPadding(new Insets(20, 20, 20, 20));
 		hbox.getChildren().addAll( vbox,vbox1, vbox2);
 
-		scene = new Scene(hbox, 600, 400);
+		scene = new Scene(hbox, 650, 400);
 	}
 
 	public Scene scene() {
@@ -115,6 +141,33 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 			 * Create MailDelivery( from fields ) Event
 			 * call controller.handleEvent(maildeliveryEvent, this)
 			 */
+			event.MailDelivery mdEvent;
+			String type = null;
+			if(land.isSelected()){
+				type = Event.LAND;
+			}
+			else if(air.isSelected()){
+				type = Event.AIR;
+			}
+			else if(sea.isSelected()){
+				type = Event.SEA;
+			}
+			else if(domestic.isSelected()){
+				type = Event.DOMESTIC;
+			}
+			ZonedDateTime timeNow = ZonedDateTime.now();
+			String user = controller.getLoggedInUser().getUsername();
+			if(type!=null && !toText.getText().isEmpty() && !fromText.getText().isEmpty() && !weight.getText().isEmpty() && !volume.getText().isEmpty()){
+
+				mdEvent = new event.MailDelivery(timeNow, user, fromText.getText(), toText.getText(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
+				System.out.println(mdEvent.toString());
+				controller.handleEvent(mdEvent, this);
+				
+			}
+			else{
+				AlertBox.display("Invalid Input", "Please enter valid input");
+			}
+			
 
 		}
 		if(event.getSource() == backButton){
