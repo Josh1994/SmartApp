@@ -16,6 +16,9 @@ public class Controller {
 	public static final String TRANSPORTDISC = "TRANSPORTDISC";
 	public static final String TRANSCOSTUPDATE = "TRANSCOSTUPDATE";
 	public static final String CUSTPRICEUPDATE = "CUSTPRICEUPDATE";
+	public static final String ACCOUNTMANAGE = "ACCOUNTMANAGE";
+	public static final String MAINSCREEN = "MAINSCREEN";
+	public static final String BUSINESS = "BUSINESS";
 
 	Stage primaryStage;
 	DataEntryGUI currentView;
@@ -69,6 +72,12 @@ public class Controller {
 		if (nextScreen.equals(CUSTPRICEUPDATE)) {
 			CustomerPriceUpdate cust = new CustomerPriceUpdate(this);
 			primaryStage.setScene(cust.scene());
+		}if(nextScreen.equals(MAINSCREEN)){
+			MainScreen mainScreen = new MainScreen(this);
+			primaryStage.setScene(mainScreen.scene());
+		}if(nextScreen.equals(ACCOUNTMANAGE)){
+			UserAccountManagement  userManage = new UserAccountManagement(this);
+			primaryStage.setScene(userManage.scene());
 		}
 
 	}
@@ -106,10 +115,16 @@ public class Controller {
 			if(user.getUsername().equals(inputUsername)
 					&& user.getPassword().equals(inputPassword)) {
 				setLoggedInUser(user);
-				handleEvent(Controller.EVENTGUI);
+				handleEvent(Controller.MAINSCREEN);
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public boolean logout(){
+		setLoggedInUser(null);
+		handleEvent(Controller.LOGIN);
+		return true;
 	}
 }

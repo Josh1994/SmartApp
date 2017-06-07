@@ -31,6 +31,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 
 	Button eventButton;
 	Button backButton;
+	Button logoutButton;
 	TextField firm;
 	//land sea air
 	ToggleGroup type;
@@ -74,6 +75,10 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		backButton = new Button();
 		backButton.setText("Back");
 		backButton.setOnAction(this);
+
+        logoutButton = new Button();
+		logoutButton.setText("Logout");
+		logoutButton.setOnAction(this);
 		
 		Label fromLabel = new Label("Origin: ");
 		fromLabel.setMinHeight(25);
@@ -185,6 +190,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		vbox1.getChildren().add(frequencyLabel);
 		vbox1.getChildren().add(durationLabel);
 		vbox1.getChildren().add(backButton);
+		vbox1.getChildren().add(logoutButton);
 		
 		VBox vbox2 = new VBox(10);
 		vbox2.setPadding(new Insets(10, 10, 10, 10));
@@ -303,6 +309,9 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		}
 		if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
+		}if(event.getSource() == logoutButton){
+			Logout logout = new Logout(controller);
+			logout.display();
 		}
 		
 	}

@@ -10,6 +10,7 @@ import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -25,6 +26,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	Button eventButton;
 	Button backButton;
+	Button logoutButton;
 	ChoiceBox origin;
 	ChoiceBox destination;
 	TextField fromText;
@@ -43,7 +45,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 
 	public MailDelivery(Controller controller){
-		
+
 		this.controller = controller;
 
 		eventButton = new Button();
@@ -53,6 +55,10 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		backButton = new Button();
 		backButton.setText("Back");
 		backButton.setOnAction(this);
+
+		logoutButton = new Button();
+		logoutButton.setText("Logout");
+		logoutButton.setOnAction(this);
 
 		Label fromLabel = new Label("Origin");
 		fromLabel.setMinHeight(25);
@@ -83,19 +89,19 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		priority = new TextField();
 		priority.setMaxHeight(10);
 		priority.setMaxWidth(200);
-		
+
 		ToggleGroup type = new ToggleGroup();
 		land = new RadioButton("Land");
 		air = new RadioButton("Air");
 		sea = new RadioButton("Sea");
 		domestic = new RadioButton("Domestic");
-		
+
 		land.setToggleGroup(type);
 		air.setToggleGroup(type);
 		sea.setToggleGroup(type);
 		domestic.setToggleGroup(type);
-		
-		
+
+
 		HBox hboxType = new HBox(land,air,sea,domestic);
 
 
@@ -108,6 +114,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		vbox1.getChildren().add(volumeLabel);
 		vbox1.getChildren().add(priorityLabel);
 		vbox1.getChildren().add(backButton);
+		vbox1.getChildren().add(logoutButton);
 
 		VBox vbox2 = new VBox(10);
 		vbox2.setPadding(new Insets(10, 10, 10, 10));
@@ -117,7 +124,6 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		vbox2.getChildren().add(volume);
 		vbox2.getChildren().add(hboxType);
 		vbox2.getChildren().add(eventButton);
-
 
 		critLabels.add("Revenue");
 		critLabels.add("Expenditure");
@@ -162,16 +168,18 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 				mdEvent = new event.MailDelivery(timeNow, user, fromText.getText(), toText.getText(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
 				System.out.println(mdEvent.toString());
 				controller.handleEvent(mdEvent, this);
-				
+
 			}
 			else{
 				AlertBox.display("Invalid Input", "Please enter valid input");
 			}
-			
 
-		}
-		if(event.getSource() == backButton){
+
+		}if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
+		}if(event.getSource() == logoutButton){
+			Logout logout = new Logout(controller);
+			logout.display();
 		}
 
 	}

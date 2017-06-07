@@ -13,15 +13,31 @@ public class BusinessModel {
     private Controller controller;
     // create reference to Routefinder
     private RouteFinder routeFinder;
+    private Database db;
+    XMLParser parser;
 
     public BusinessModel(Controller controller) {
 
         this.controller = controller;
 
         this.routeFinder = new RouteFinder(this);
+        
+        try{
+        	parser = new XMLParser("database.xml");
+        	db = parser.getDatabase();
+        }catch(Exception e){
+        	e.printStackTrace();
+        	try {
+        		db = new Database();
+				parser = new XMLParser();
+				parser.convertToXML(db, "database.xml");
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}  
+        }
     }
 
     public void processEvent(Event event) {
-
+    	db.addEvent(event);
     }
 }

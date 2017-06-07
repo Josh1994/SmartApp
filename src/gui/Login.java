@@ -92,6 +92,9 @@ public class Login implements EventHandler<ActionEvent> {
 				AlertBox.display("Incorrect Credentials",
 						"Please input the correct credentials to login to KPSmart.");
 			}
+			
+			usernameText.clear();
+			passwordText.clear();
 		}
 
 	}

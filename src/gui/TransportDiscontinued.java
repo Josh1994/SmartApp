@@ -21,6 +21,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 
 	Button eventButton;
 	Button backButton;
+	Button logoutButton;
 	TextField fromText;
 	TextField toText;
 	TextField firm;
@@ -47,6 +48,10 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		backButton = new Button();
 		backButton.setText("Back");
 		backButton.setOnAction(this);
+		
+		logoutButton = new Button();
+		logoutButton.setText("Logout");
+		logoutButton.setOnAction(this);
 
 		Label fromLabel = new Label("Origin");
 		fromLabel.setMinHeight(25);
@@ -93,6 +98,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		vbox1.getChildren().add(firmLabel);
 		vbox1.getChildren().add(priorityLabel);
 		vbox1.getChildren().add(backButton);
+		vbox1.getChildren().add(logoutButton);
 
 		VBox vbox2 = new VBox(10);
 		vbox2.setPadding(new Insets(10, 10, 10, 10));
@@ -154,6 +160,9 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		}
 		if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
+		}if(event.getSource() == logoutButton){
+			Logout logout = new Logout(controller);
+			logout.display();
 		}
 
 	}
