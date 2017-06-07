@@ -1,7 +1,10 @@
 package model;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import model.RouteFinder;
 import event.CustomerPriceUpdate;
 import event.Event;
 import event.MailDelivery;
@@ -55,7 +58,30 @@ public class EventProcessor {
 	public void processTD(TransportDiscontinued td){
 		//It will put all the transport disc request in a list and delete all of them once this method is called.
 		this.currentTd.add(td);
-	
+		for(TransportDiscontinued transportDiscontinued : this.currentTd){
+			String origin = td.getOrigin();
+			String destination = td.getDestination();
+			String priority = td.getPriority();
+			String city = td.getCity();
+			//Navigate through each route and delete the route. Use priority to know which HashMap to use and city to narrow down
+			//the route being looked for.
+			//TODO
+			if (priority == "LAND"){
+				System.out.println("Going through LAND route map");
+			}
+			else if (priority == "AIR"){
+				System.out.println("Going through AIR route map");
+				
+			}
+			else if (priority == "SEA"){
+				System.out.println("Going through SEA route map");
+
+			}
+			else{
+				System.out.println("Going through DOMESTIC route map");
+
+			}
+		}
 	}
 	
 	//Getters
