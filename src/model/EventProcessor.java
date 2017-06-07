@@ -1,6 +1,8 @@
 package model;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import event.CustomerPriceUpdate;
 import event.Event;
@@ -72,4 +74,14 @@ public class EventProcessor {
 	
 	
 
+	public Set<String> getLocationNames() {
+		Set<String> locationNames = new HashSet<>();
+
+		for(TransportCostUpdate tcu : currentTcu) {
+			locationNames.add(tcu.getOrigin());
+			locationNames.add(tcu.getDestination());
+		}
+
+		return locationNames;
+	}
 }
