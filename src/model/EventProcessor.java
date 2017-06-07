@@ -18,8 +18,45 @@ public class EventProcessor {
 	
 	public EventProcessor(){
 		this.currentTcu = new ArrayList<TransportCostUpdate>();
+		//currentTcu.addAll(createTCUs());
 	}
-	
+
+	public static List<TransportCostUpdate> createTCUs() {
+		ArrayList<TransportCostUpdate> tcus = new ArrayList<>();
+
+		tcus.add(new TransportCostUpdate(null, null, "AKLD",
+				"WGTN", 10, 10, 0 , 0, 0, 0,
+				null, null, Event.DOMESTIC));
+		tcus.add( new TransportCostUpdate(null, null, "AKLD",
+				"CHCH", 10, 10, 0 , 0, 0, 0,
+				null, null, Event.DOMESTIC));
+		tcus.add( new TransportCostUpdate(null, null, "WGTN",
+				"AKLD", 10, 10, 0 , 0, 0, 0,
+				null, null, Event.DOMESTIC));
+		tcus.add( new TransportCostUpdate(null, null, "CHCH",
+				"DNDN", 10, 10, 0 , 0, 0, 0,
+				null, null, Event.DOMESTIC));
+
+		tcus.add( new TransportCostUpdate(null, null, "AKLD",
+				"SIDNEY", 10, 10, 0 , 0, 0, 0,
+				null, null, Event.AIR));
+		tcus.add( new TransportCostUpdate(null, null, "AKLD",
+				"LA", 10, 10, 0 , 0, 0, 0,
+				null, null, Event.AIR));
+		tcus.add( new TransportCostUpdate(null, null, "LA",
+				"LONDON", 10, 10, 0 , 0, 0, 0,
+				null, null, Event.AIR));
+		tcus.add( new TransportCostUpdate(null, null, "LA",
+				"DUBLIN", 10, 10, 0 , 0, 0, 0,
+				null, null, Event.AIR));
+		// Intl Surface
+		tcus.add( new TransportCostUpdate(null, null, "LA",
+				"DUBLIN", 5, 5, 0 , 0, 0, 0,
+				null, null, Event.SEA));
+
+
+		return tcus;
+	}
 	
 	//
 	public void processTCU(TransportCostUpdate tcu){

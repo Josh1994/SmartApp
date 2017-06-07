@@ -8,12 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -21,8 +16,8 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 
 	Button eventButton;
 	Button backButton;
-	TextField fromText;
-	TextField toText;
+	ComboBox<String> fromText;
+	ComboBox<String> toText;
 	TextField firm;
 	
 	TextField priority;
@@ -50,15 +45,17 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 
 		Label fromLabel = new Label("Origin");
 		fromLabel.setMinHeight(25);
-		fromText = new TextField();
-		fromText.setMaxHeight(10);
-		fromText.setMaxWidth(200);
+		fromText = new ComboBox<String>();
+		fromText.setMinWidth(200.0);
+		fromText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		fromText.setEditable(false);
 
 		Label toLabel = new Label("Destination");
 		toLabel.setMinHeight(25);
-		toText = new TextField();
-		toText.setMaxHeight(10);
-		toText.setMaxWidth(200);
+		toText = new ComboBox<String>();
+		toText.setMinWidth(200.0);
+		toText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		toText.setEditable(false);
 
 		Label priorityLabel = new Label("Transport Type");
 		priorityLabel.setMinHeight(25);
@@ -118,7 +115,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		// TODO Auto-generated method stub
 		if(event.getSource() == eventButton){
 			System.out.println("Submit Button pressed");
-			if(!fromText.getText().isEmpty() && !toText.getText().isEmpty() && !firm.getText().isEmpty()){
+			if(fromText.getValue()!=null && toText.getValue()!=null && !firm.getText().isEmpty()){
 				event.TransportDiscontinued tdEvent;
 				String type;
 				if(air.isSelected()){
@@ -139,8 +136,8 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 				}
 				ZonedDateTime timeNow = ZonedDateTime.now();
 				String user = controller.getLoggedInUser().getUsername();
-				String origin = fromText.getText();
-				String destination = toText.getText();
+				String origin = fromText.getValue();
+				String destination = toText.getValue();
 				String company = firm.getText();
 				
 				
