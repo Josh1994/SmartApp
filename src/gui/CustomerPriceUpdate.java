@@ -1,17 +1,22 @@
 package gui;
 
+import java.time.ZonedDateTime;
+
 import controller.Controller;
+import event.Event;
 import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.User;
 
 /**
  * Created by phoal on 5/27/2017.
@@ -23,7 +28,8 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
     TextField toText;
     TextField weight;
     TextField volume;
-    TextField priority;
+	String prio;
+    ChoiceBox<String> priorityBox;
 
     static Scene scene;
     Controller controller;
@@ -66,11 +72,11 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         volume.setMaxHeight(10);
         volume.setMaxWidth(200);
 
-        Label priorityLabel = new Label("Priority");
-        priorityLabel.setMinHeight(25);
-        priority = new TextField();
-        priority.setMaxHeight(10);
-        priority.setMaxWidth(200);
+		Label priorityLabel = new Label("Transport Type");
+		priorityLabel.setMinHeight(25);
+		priorityBox = new ChoiceBox<String>();
+		priorityBox.getItems().addAll("Land", "Air", "Sea", "Domestic");
+		priorityBox.setValue("Land");
 
 
 
@@ -89,7 +95,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         vbox2.getChildren().add(toText);
         vbox2.getChildren().add(weight);
         vbox2.getChildren().add(volume);
-        vbox2.getChildren().add(priority);
+        vbox2.getChildren().add(priorityBox);
         vbox2.getChildren().add(eventButton);
 
         HBox hbox = new HBox(20);
@@ -107,7 +113,36 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
     public void handle(ActionEvent event) {
         // TODO Auto-generated method stub
         if(event.getSource() == eventButton){
-            controller.handleEvent(Controller.MAIL);
+			System.out.println("Submit Button pressed");
+			prio = priorityBox.getValue();
+			System.out.println(fromText.getText() +" "+ toText.getText() +" "+ weight.getText() +" "+ volume.getText() +" " + prio);
+			if(fromText.getText().isEmpty() || toText.getText().isEmpty() || weight.getText().isEmpty() || prio==null || volume.getText().isEmpty() ){
+				AlertBox.display("Invalid Input", "Invalid Input Fields");
+			}
+			else{
+
+				if(prio.equals("Land")){
+					prio = Event.LAND;
+				}
+				else if(prio.equals("Air")){
+					prio = Event.AIR;
+				}
+				else if(prio.equals("Sea")){
+					prio = Event.SEA;
+				}
+				else{
+					prio = Event.DOMESTIC;
+				}
+				System.out.println(prio);
+				ZonedDateTime zdt = ZonedDateTime.now();
+				User user = controller.getLoggedInUser();
+				double w = Double.parseDouble(weight.getText());
+				double vol = Double.parseDouble(volume.getText());
+				event.CustomerPriceUpdate cpu = new event.CustomerPriceUpdate(zdt, user.getUsername(), fromText.getText(), toText.getText(), w, vol ,prio);
+				System.out.println(cpu.toString());
+
+				controller.handleEvent(cpu, this);
+			}
         }
         if(event.getSource() == backButton){
             controller.handleEvent(Controller.EVENTGUI);

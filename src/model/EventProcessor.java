@@ -24,36 +24,31 @@ public class EventProcessor {
 
 
 	//Event proccessing
+	//Add new tcu that didn't exist in the array list.
+	public void addTCU(TransportCostUpdate tcu){
+		this.currentTcu.add(tcu);
+	}
+	//Update existing tcu
 	public void processTCU(TransportCostUpdate tcu){
 		//if tcu route is not in the list add it
 		//otherwise just change it
 		boolean updated = false;
-
-		if(this.currentTcu.isEmpty()){
+		for(TransportCostUpdate transportCostUpdate : this.currentTcu){
+			String origin = tcu.getOrigin();
+			String destination = tcu.getDestination();
+			String priority = tcu.getPriority();
+			//contains the route then update
+			if(origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
+				transportCostUpdate = tcu;
+				System.out.println("Replaced old tcu");
+				updated = true;
+				break;
+			}
+		}
+		//if the tcu was not found in the current tcu list. add it to the end
+		if(!updated){
 			this.currentTcu.add(tcu);
 		}
-		else{
-			for(TransportCostUpdate transportCostUpdate : this.currentTcu){
-				String origin = tcu.getOrigin();
-				String destination = tcu.getDestination();
-				String priority = tcu.getPriority();
-				//contains the route then update
-				if(origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
-					transportCostUpdate = tcu;
-					System.out.println("Replaced old tcu");
-					updated = true;
-					break;
-				}
-			}
-			//if the tcu was not found in the current tcu list. add it to the end
-			if(!updated){
-				this.currentTcu.add(tcu);
-			}
-
-
-
-		}
-
 	}
 	public void processTD(TransportDiscontinued td){
 		//It will put all the transport disc request in a list and delete all of them once this method is called.
