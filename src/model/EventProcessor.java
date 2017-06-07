@@ -16,19 +16,19 @@ public class EventProcessor {
 	//from the list of all current tcu we can get a list of all routes.
 	private List<TransportCostUpdate> currentTcu;
 	private List<TransportDiscontinued> currentTd;
-	
+
 	public EventProcessor(){
 		this.currentTcu = new ArrayList<TransportCostUpdate>();
 		this.currentTd = new ArrayList<TransportDiscontinued>();
 	}
-	
-	
+
+
 	//Event proccessing
 	public void processTCU(TransportCostUpdate tcu){
 		//if tcu route is not in the list add it
 		//otherwise just change it
 		boolean updated = false;
-		
+
 		if(this.currentTcu.isEmpty()){
 			this.currentTcu.add(tcu);
 		}
@@ -49,11 +49,11 @@ public class EventProcessor {
 			if(!updated){
 				this.currentTcu.add(tcu);
 			}
-			
-			
-			
+
+
+
 		}
-	
+
 	}
 	public void processTD(TransportDiscontinued td){
 		//It will put all the transport disc request in a list and delete all of them once this method is called.
@@ -63,27 +63,34 @@ public class EventProcessor {
 			String destination = td.getDestination();
 			String priority = td.getPriority();
 			String city = td.getCity();
-			//Navigate through each route and delete the route. Use priority to know which HashMap to use and city to narrow down
-			//the route being looked for.
-			//TODO
-			if (priority == "LAND"){
-				System.out.println("Going through LAND route map");
+//			if (priority.equals("LAND")){
+//				System.out.println("Going through LAND route map");
+//			}
+//			else if (priority.equals("AIR")){
+//				System.out.println("Going through AIR route map");
+//
+//			}
+//			else if (priority.equals("SEA")){
+//				System.out.println("Going through SEA route map");
+//
+//			}
+//			else{
+//				System.out.println("Going through DOMESTIC route map");
+//
+//			}
+			//After locating the route. Remove it in the tcu and td arraylists.
+			for(TransportCostUpdate tc : this.currentTcu){
+				if(transportDiscontinued.getOrigin().equals(tc.getOrigin()) && transportDiscontinued.getDestination().equals(tc.getDestination())
+						&& transportDiscontinued.getPriority().equals(tc.getPriority())){
+					System.out.println("Removing transport: "+ td);
+					this.currentTcu.remove(tc);
+					this.currentTd.remove(transportDiscontinued);
+				}
 			}
-			else if (priority == "AIR"){
-				System.out.println("Going through AIR route map");
-				
-			}
-			else if (priority == "SEA"){
-				System.out.println("Going through SEA route map");
 
-			}
-			else{
-				System.out.println("Going through DOMESTIC route map");
-
-			}
 		}
 	}
-	
+
 	//Getters
 	public List<TransportCostUpdate> getCurrentTCU(){
 		return this.currentTcu;
@@ -93,7 +100,7 @@ public class EventProcessor {
 	}
 	//Booleans
 	public boolean containsRoute(TransportCostUpdate tcu){
-		
+
 		for(TransportCostUpdate transportCostUpdate : this.currentTcu){
 			String origin = tcu.getOrigin();
 			String destination = tcu.getDestination();
@@ -105,7 +112,7 @@ public class EventProcessor {
 		}
 		return false;
 	}
-	
-	
+
+
 
 }

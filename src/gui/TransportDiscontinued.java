@@ -119,13 +119,13 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 			}
 			else{
 				
-				if(prio=="Land"){
+				if(prio.equals("Land")){
 					prio = Event.LAND;
 				}
-				else if(prio=="Air"){
+				else if(prio.equals("Air")){
 					prio = Event.AIR;
 				}
-				else if(prio=="Sea"){
+				else if(prio.equals("Sea")){
 					prio = Event.SEA;
 				}
 				else{
