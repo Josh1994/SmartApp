@@ -5,6 +5,7 @@ import gui.*;
 import gui.base.DataEntryGUI;
 import javafx.stage.Stage;
 import model.BusinessModel;
+import model.EventProcessor;
 import model.User;
 
 import java.util.List;
@@ -24,11 +25,13 @@ public class Controller {
 	// Global System Components
 	private BusinessModel model;
 	private UserDatabase userDatabase;
+	private EventProcessor eventProcessor;
 	private User loggedIn;
 
 	public Controller(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.userDatabase = new UserDatabase();
+		this.eventProcessor = new EventProcessor();
 		model = new BusinessModel(this);
 	}
 
@@ -81,6 +84,10 @@ public class Controller {
 
 	public UserDatabase getUserDatabase() {
 		return userDatabase;
+	}
+
+	public EventProcessor getEventProcessor() {
+		return eventProcessor;
 	}
 
 	/**
