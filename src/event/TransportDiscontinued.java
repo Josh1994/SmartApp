@@ -4,12 +4,12 @@ import java.time.ZonedDateTime;
 
 public class TransportDiscontinued extends Event {
 	String firm;
-	String type;
+//	String type;
 
-	public TransportDiscontinued(ZonedDateTime dateTime, String user, String origin, String destination, String firm, String type, String priority) {
+	public TransportDiscontinued(ZonedDateTime dateTime, String user, String origin, String destination, String firm, String priority) {
 		super(dateTime, user, origin, destination, priority);
 		this.firm = firm;
-		this.type = type;
+//		this.type 
 	}
 
 	public String getFirm() {
@@ -17,6 +17,6 @@ public class TransportDiscontinued extends Event {
 	}
 
 	public String getType() {
-		return type;
+		return priority;
 	}
 }
