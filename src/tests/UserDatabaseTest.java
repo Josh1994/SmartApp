@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Created by Prashant on 31/05/2017.
  */
-public class UserDatabaseTests {
+public class UserDatabaseTest {
     private UserDatabase userDatabase;
 
     @Before
