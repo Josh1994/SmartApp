@@ -123,12 +123,18 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 		critLabels.add("Revenue");
 		critLabels.add("Expenditure");
-		HBox hbox = new HBox(20);
+		HBox hbox = new HBox(10);
 		VBox vbox = new BusinessMonitor(critLabels).vbox();
+		vbox.setPadding(new Insets(20));
+		vbox.setAlignment(Pos.TOP_CENTER);
 		hbox.setPadding(new Insets(20, 20, 20, 20));
-		hbox.getChildren().addAll( vbox,vbox1, vbox2);
+		hbox.getChildren().addAll(vbox1, vbox2);
+		VBox mainContainer = new VBox();
+		mainContainer.setAlignment(Pos.TOP_CENTER);
+		mainContainer.getChildren().addAll(vbox, hbox);
+		
 
-		scene = new Scene(hbox, 650, 400);
+		scene = new Scene(mainContainer, 650, 500);
 	}
 
 	public Scene scene() {
@@ -160,7 +166,8 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 			ZonedDateTime timeNow = ZonedDateTime.now();
 			String user = controller.getLoggedInUser().getUsername();
 			if(type!=null && toText.getValue()!=null && fromText.getValue()!=null && !weight.getText().isEmpty() && !volume.getText().isEmpty()){
-
+				//TODO
+				//need a confirm box showing the total cost and duration first before sending an event to the controller.
 				mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
 				System.out.println(mdEvent.toString());
 				controller.handleEvent(mdEvent, this);
