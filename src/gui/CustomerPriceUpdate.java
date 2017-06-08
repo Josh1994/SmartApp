@@ -5,6 +5,7 @@ import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -16,8 +17,13 @@ import javafx.scene.layout.VBox;
 public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEvent> {
     Button eventButton;
     Button backButton;
+
     ComboBox<String> fromText;
     ComboBox<String> toText;
+
+    Button logoutButton;
+    
+
     TextField weight;
     TextField volume;
     TextField priority;
@@ -38,6 +44,10 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         backButton = new Button();
         backButton.setText("Back");
         backButton.setOnAction(this);
+		
+        logoutButton = new Button();
+		logoutButton.setText("Logout");
+		logoutButton.setOnAction(this);
 
         Label fromLabel = new Label("Origin");
         fromLabel.setMinHeight(25);
@@ -84,6 +94,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         vbox1.getChildren().add(volumeLabel);
         vbox1.getChildren().add(priorityLabel);
         vbox1.getChildren().add(backButton);
+        vbox1.getChildren().add(logoutButton);
 
         VBox vbox2 = new VBox(10);
         vbox2.setPadding(new Insets(10, 10, 10, 10));
@@ -113,7 +124,10 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         }
         if(event.getSource() == backButton){
             controller.handleEvent(Controller.EVENTGUI);
-        }
+        }if(event.getSource() == logoutButton){
+			Logout logout = new Logout(controller);
+			logout.display();
+		}
 
     }
 
