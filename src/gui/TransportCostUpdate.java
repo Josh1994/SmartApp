@@ -16,13 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.User;
@@ -48,8 +42,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	CheckBox friday;
 	CheckBox saturday;
 	List<CheckBox> daysOfWeek;
-	TextField origin;
-	TextField destination;
+	ComboBox<String> origin;
+	ComboBox<String> destination;
 	TextField weightPrice;
 	TextField volumePrice;
 	TextField frequency;
@@ -82,15 +76,17 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		
 		Label fromLabel = new Label("Origin: ");
 		fromLabel.setMinHeight(25);
-		origin = new TextField();
-		origin.setMaxHeight(10);
-		origin.setMaxWidth(200);
+		origin = new ComboBox<String>();
+		origin.setMinWidth(200.0);
+		origin.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		origin.setEditable(true);
 		
 		Label toLabel = new Label("Destination: ");
 		toLabel.setMinHeight(25);
-		destination = new TextField();
-		destination.setMaxHeight(10);
-		destination.setMaxWidth(200);
+		destination = new ComboBox<String>();
+		destination.setMinWidth(200.0);
+		destination.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		destination.setEditable(true);
 		
 		Label weightLabel = new Label("Price per kg: ");
 		weightLabel.setMinHeight(25);
@@ -230,7 +226,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 				}
 			}
 			
-			if(firm.getText().isEmpty() || type.getSelectedToggle() == null || origin.getText().isEmpty() || destination.getText().isEmpty() || weightPrice.getText().isEmpty() || volumePrice.getText().isEmpty() || frequency.getText().isEmpty() || duration.getText().isEmpty()){
+			if(firm.getText().isEmpty() || type.getSelectedToggle() == null || origin.getValue()==null || destination.getValue()==null || weightPrice.getText().isEmpty() || volumePrice.getText().isEmpty() || frequency.getText().isEmpty() || duration.getText().isEmpty()){
 				AlertBox.display("Invalid Input", "Invalid Input Fields");
 			}
 			
@@ -288,8 +284,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 						}
 					}
 					
-					String from = origin.getText();
-					String to = destination.getText();
+					String from = origin.getValue();
+					String to = destination.getValue();
 					double weightPr = Double.parseDouble(weightPrice.getText());
 					double volPr = Double.parseDouble(volumePrice.getText());
 					double freq = Double.parseDouble(frequency.getText());

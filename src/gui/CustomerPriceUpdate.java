@@ -7,10 +7,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -20,9 +17,13 @@ import javafx.scene.layout.VBox;
 public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEvent> {
     Button eventButton;
     Button backButton;
+
+    ComboBox<String> fromText;
+    ComboBox<String> toText;
+
     Button logoutButton;
-    TextField fromText;
-    TextField toText;
+    
+
     TextField weight;
     TextField volume;
     TextField priority;
@@ -50,15 +51,20 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 
         Label fromLabel = new Label("Origin");
         fromLabel.setMinHeight(25);
-        fromText = new TextField();
-        fromText.setMaxHeight(10);
-        fromText.setMaxWidth(200);
+        //fromText = new TextField();
+        //fromText.setMaxHeight(10);
+        //fromText.setMaxWidth(200);
+        fromText = new ComboBox<String>();
+        fromText.setMinWidth(200.0);
+        fromText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+        fromText.setEditable(false);
 
         Label toLabel = new Label("Destination");
         toLabel.setMinHeight(25);
-        toText = new TextField();
-        toText.setMaxHeight(10);
-        toText.setMaxWidth(200);
+        toText = new ComboBox<String>();
+        toText.setMinWidth(200.0);
+        toText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+        toText.setEditable(false);
 
         Label weightLabel = new Label("Price/gram");
         weightLabel.setMinHeight(25);
