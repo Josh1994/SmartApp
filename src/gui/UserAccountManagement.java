@@ -1,27 +1,17 @@
 package gui;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
 import controller.Controller;
-import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
-public class UserAccountManagement{
-private Scene scene = null;
+public class UserAccountManagement implements EventHandler<MouseEvent> {
+	private Scene scene = null;
 	/*Loads the image from the Resource folder and turns it to imageView to be used as an icon
 	with the button*/
 
@@ -32,33 +22,21 @@ private Scene scene = null;
 		//Load the images for the 4 buttons
 
 		//Button Creation
-		Button button = new Button ("Change Username", null);
-		button.setMaxSize(150, 100);
-		button.setWrapText(true);
-		//Mouse event changing the Account Username
-		button.addEventHandler(MouseEvent.MOUSE_CLICKED,
-			    new EventHandler<MouseEvent>() {
-			        @Override public void handle(MouseEvent e) {
-			            System.out.println("Change Username button clicked");
-			        }
-			});
+		Button changeUsernameButton = new Button ("Change Username", null);
+		 changeUsernameButton.setMaxSize(150, 100);
+		 changeUsernameButton.setWrapText(true);
+		 changeUsernameButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 
-		Button button2 = new Button ("Change Password", null);
-		button2.setMaxSize(150, 100);
-		button2.setWrapText(true);
-		//Mouse event handling for Changing Password
-		button2.addEventHandler(MouseEvent.MOUSE_CLICKED,
-			    new EventHandler<MouseEvent>() {
-			        @Override public void handle(MouseEvent e) {
-			            System.out.println("Change Password button clicked");
-			        }
-			});
+		Button changePasswordButton = new Button ("Change Password", null);
+		changePasswordButton.setMaxSize(150, 100);
+		changePasswordButton.setWrapText(true);
+		 changePasswordButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 
-		Button button3 = new Button ("New Account", null);
-		button3.setMaxSize(150, 100);
-		button3.setWrapText(true);
+		Button newAccountButton = new Button ("New Account", null);
+		newAccountButton.setMaxSize(150, 100);
+		newAccountButton.setWrapText(true);
 		//Mouse event handling for creating a New Account
-		button3.addEventHandler(MouseEvent.MOUSE_CLICKED,
+		newAccountButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
 			            System.out.println("New Account button clicked");
@@ -70,12 +48,12 @@ private Scene scene = null;
 			});
 
 
-		Button button4 = new Button ("Promote Account", null);
-		button4.setMaxSize(150, 100);
-		button4.setWrapText(true);
+		Button promoteAccountButton = new Button ("Promote Account", null);
+		promoteAccountButton.setMaxSize(150, 100);
+		promoteAccountButton.setWrapText(true);
 		//Mouse event handling for Promoting an Account, only appears if the
 		//user has proper permissions
-		button4.addEventHandler(MouseEvent.MOUSE_CLICKED,
+		promoteAccountButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
 			            System.out.println("Promote Account button clicked");
@@ -83,11 +61,11 @@ private Scene scene = null;
 			});
 		
 		
-		Button button5 = new Button("Delete Account");
-		button5.setMaxSize(150, 100);
-		button5.setWrapText(true);
+		Button deleteAccountButton = new Button("Delete Account");
+		deleteAccountButton.setMaxSize(150, 100);
+		deleteAccountButton.setWrapText(true);
 		//Mouse event handling for Deleting Account
-		button5.addEventHandler(MouseEvent.MOUSE_CLICKED,
+		deleteAccountButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
 			        	System.out.println("Delete Account button clicked");
@@ -95,10 +73,10 @@ private Scene scene = null;
 			});
 		
 		
-		Button button6 = new Button ("Back" , null);
-		button6.setMaxSize(150, 100);
-		button6.setWrapText(true);
-		button6.addEventHandler(MouseEvent.MOUSE_CLICKED,
+		Button backButton = new Button ("Back" , null);
+		backButton.setMaxSize(150, 100);
+		backButton.setWrapText(true);
+		backButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
 			        	System.out.println("Back button clicked");
@@ -107,11 +85,11 @@ private Scene scene = null;
 			});
 		
 		
-		Button button7 = new Button ("Logout", null);
-		button7.setMaxSize(150, 100);
-		button7.setWrapText(true);
+		Button logoutButton = new Button ("Logout", null);
+		logoutButton.setMaxSize(150, 100);
+		logoutButton.setWrapText(true);
 		//Mouse event handling for Logging Out
-		button7.addEventHandler(MouseEvent.MOUSE_CLICKED,
+		logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
 			        	System.out.println("Logout button clicked");
@@ -126,22 +104,22 @@ private Scene scene = null;
 		VBox box = new VBox();
 
 		//Add all buttons to a container. Place the container on the center of the BorderPane
-		box.getChildren().addAll(button, button2, button3, button5);
-		if(controller.getLoggedInUser().isManager())box.getChildren().add(button4);
+		box.getChildren().addAll(changeUsernameButton, changePasswordButton, newAccountButton, deleteAccountButton);
+		if(controller.getLoggedInUser().isManager())box.getChildren().add(promoteAccountButton);
 		box.setAlignment(Pos.CENTER);
 
 		//This adds spaces when items are being added (top,left, bottom, right)
-		box.setMargin(button, new Insets(15,20,15,20));
-		box.setMargin(button2, new Insets(15,20,15,20));
-		box.setMargin(button3, new Insets(15,20,15,20));
-		box.setMargin(button4, new Insets(15,20,15,20));
-		box.setMargin(button5, new Insets(15,20,15,20));
+		box.setMargin(changeUsernameButton, new Insets(15,20,15,20));
+		box.setMargin(changePasswordButton, new Insets(15,20,15,20));
+		box.setMargin(newAccountButton, new Insets(15,20,15,20));
+		box.setMargin(promoteAccountButton, new Insets(15,20,15,20));
+		box.setMargin(deleteAccountButton, new Insets(15,20,15,20));
 		
 		VBox box2 = new VBox();
-		box2.getChildren().addAll(button6, button7);
+		box2.getChildren().addAll(backButton, logoutButton);
 		box2.setAlignment(Pos.BOTTOM_RIGHT);
-		box2.setMargin(button6, new Insets(10,10,10,10));
-		box2.setMargin(button7, new Insets(10,10,10,10));
+		box2.setMargin(backButton, new Insets(10,10,10,10));
+		box2.setMargin(logoutButton, new Insets(10,10,10,10));
 
 		root.setCenter(box);
 		root.setBottom(box2);
@@ -153,4 +131,8 @@ private Scene scene = null;
 	}
 
 
+	@Override
+	public void handle(MouseEvent event) {
+		System.out.println(event.toString());
+	}
 }
