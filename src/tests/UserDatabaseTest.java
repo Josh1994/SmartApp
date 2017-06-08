@@ -1,7 +1,6 @@
 package tests;
 
 import controller.UserDatabase;
-import model.User;
 import org.junit.*;
 
 import java.io.File;
@@ -14,18 +13,18 @@ public class UserDatabaseTest {
 
     @Before
     public void setUp() {
-        userDatabase = new UserDatabase("test");
+        userDatabase = new UserDatabase("src" +File.separator+ "tests");
     }
 
     @After
     public void tearDown() {
-        File file = new File("test" + File.separator + "users.kpsdb");
+        File file = new File("src" + File.separator + "tests" + File.separator + "users.kpsdb");
         file.delete();
     }
 
     @Test
     public void checkFileExists() {
-        File file = new File("test" + File.separator + "users.kpsdb");
+        File file = new File("src" + File.separator + "tests" + File.separator + "users.kpsdb");
         Assert.assertTrue(file.exists());
     }
 

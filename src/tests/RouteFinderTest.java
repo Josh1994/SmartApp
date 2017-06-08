@@ -4,6 +4,7 @@ import event.Event;
 import event.TransportCostUpdate;
 import model.Route;
 import model.RouteFinder;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
