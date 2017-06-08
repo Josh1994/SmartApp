@@ -12,7 +12,7 @@ import java.util.Scanner;
  * This class is the manages the access of the user database.
  */
 public class UserDatabase {
-    public class UserDatabaseException extends RuntimeException {
+    public class UserDatabaseException extends IllegalArgumentException {
 
         public UserDatabaseException() { super(); }
         public UserDatabaseException(String message) { super(message); }
@@ -220,7 +220,7 @@ public class UserDatabase {
     public void addUser(String username, String password, boolean isManager) {
         // Produce error if username already exists
         if(getUser(username) != null) {
-            throw new UserDatabaseException("Cannot add a this new user as the choosen username already exists in the database.");
+            throw new UserDatabaseException("Cannot add new user as the choosen username already exists in the database.");
         }
 
         // Create User
