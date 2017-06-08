@@ -39,5 +39,6 @@ public class BusinessModel {
 
     public void processEvent(Event event) {
     	db.addEvent(event);
+    	parser.convertToXML(db, "database.xml");
     }
 }

@@ -26,7 +26,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	Button eventButton;
 	Button backButton;
 	Button logoutButton;
-	TextField firm;
+	ComboBox<String> firm;
 	//land sea air
 	ToggleGroup type;
 	RadioButton land;
@@ -114,7 +114,10 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		
 		Label firmLabel = new Label("Firm: ");
 		firmLabel.setMinHeight(25);
-		firm = new TextField();
+		firm = new ComboBox<String>();
+		firm.setMinWidth(200);
+		firm.getItems().addAll(controller.getEventProcessor().getFirmNames());
+		firm.setEditable(true);
 		firm.setMaxHeight(10);
 		firm.setMaxWidth(200);
 		
@@ -226,7 +229,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 				}
 			}
 			
-			if(firm.getText().isEmpty() || type.getSelectedToggle() == null || origin.getValue()==null || destination.getValue()==null || weightPrice.getText().isEmpty() || volumePrice.getText().isEmpty() || frequency.getText().isEmpty() || duration.getText().isEmpty()){
+			if(firm.getValue() == null || type.getSelectedToggle() == null || origin.getValue()==null || destination.getValue()==null || weightPrice.getText().isEmpty() || volumePrice.getText().isEmpty() || frequency.getText().isEmpty() || duration.getText().isEmpty()){
 				AlertBox.display("Invalid Input", "Invalid Input Fields");
 			}
 			
@@ -238,7 +241,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 				
 				//Tell the controller that there is a price update
 				ConfirmBox confirmBox = new ConfirmBox();
-				String message = "Are you sure you want to update transport cost for " + this.firm.getText();
+				String message = "Are you sure you want to update transport cost for " + this.firm.getValue();
 				String title = "Transport Cost Update Confirmation";
 				confirmBox.display(title, message);
 				if(confirmBox.confirm){
@@ -295,7 +298,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 					ZonedDateTime zdt = ZonedDateTime.now();
 					User user = controller.getLoggedInUser();
 					//make transport cost update event and send it to the controller
-					tcu = new event.TransportCostUpdate(zdt, user.getUsername(), from, to, weightPr, volPr, maxWei, maxVol, freq, dur, days, firm.getText(), priority);
+					tcu = new event.TransportCostUpdate(zdt, user.getUsername(), from, to, weightPr, volPr, maxWei, maxVol, freq, dur, days, firm.getValue(), priority);
 					System.out.println(tcu.toString());
 					
 					controller.handleEvent(tcu, this);

@@ -36,6 +36,7 @@ public class Controller {
 		this.userDatabase = new UserDatabase();
 		this.eventProcessor = new EventProcessor();
 		model = new BusinessModel(this);
+		
 	}
 
 	public void handleEvent(Event entry, DataEntryGUI sourceView) {
