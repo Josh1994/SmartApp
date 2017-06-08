@@ -1,3 +1,5 @@
+package tests;
+
 import controller.UserDatabase;
 import model.User;
 import org.junit.*;
