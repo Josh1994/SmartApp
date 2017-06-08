@@ -26,35 +26,35 @@ public class EventProcessor {
 
 		tcus.add(new TransportCostUpdate(null, null, "AKLD",
 				"WGTN", 10, 10, 0 , 0, 0, 0,
-				null, null, Event.DOMESTIC));
+				null, "CourierPost", Event.DOMESTIC));
 		tcus.add( new TransportCostUpdate(null, null, "AKLD",
 				"CHCH", 10, 10, 0 , 0, 0, 0,
-				null, null, Event.DOMESTIC));
+				null, "CourierPost", Event.DOMESTIC));
 		tcus.add( new TransportCostUpdate(null, null, "WGTN",
 				"AKLD", 10, 10, 0 , 0, 0, 0,
-				null, null, Event.DOMESTIC));
+				null, "CourierPost", Event.DOMESTIC));
 		tcus.add( new TransportCostUpdate(null, null, "CHCH",
 				"DNDN", 10, 10, 0 , 0, 0, 0,
-				null, null, Event.DOMESTIC));
+				null, "CourierPost", Event.DOMESTIC));
 
 		tcus.add( new TransportCostUpdate(null, null, "AKLD",
 				"SIDNEY", 10, 10, 0 , 0, 0, 0,
-				null, null, Event.AIR));
+				null, "NZPost", Event.AIR));
 		tcus.add( new TransportCostUpdate(null, null, "AKLD",
 				"LA", 10, 10, 0 , 0, 0, 0,
-				null, null, Event.AIR));
+				null, "PostHaste", Event.AIR));
 		tcus.add( new TransportCostUpdate(null, null, "LA",
 				"LONDON", 10, 10, 0 , 0, 0, 0,
-				null, null, Event.AIR));
+				null, "PostMan", Event.AIR));
 		tcus.add( new TransportCostUpdate(null, null, "LA",
 				"DUBLIN", 10, 10, 0 , 0, 0, 0,
-				null, null, Event.AIR));
+				null, "CouriersNZ", Event.AIR));
 		// Intl Surface
 		tcus.add( new TransportCostUpdate(null, null, "LA",
 				"DUBLIN", 5, 5, 0 , 0, 0, 0,
-				null, null, Event.SEA));
+				null, "KPFreights", Event.SEA));
 
-
+		
 		return tcus;
 	}
 	
@@ -120,5 +120,13 @@ public class EventProcessor {
 		}
 
 		return locationNames;
+	}
+	
+	public Set<String> getFirmNames(){
+		Set<String> firmNames = new HashSet<>();
+		for(TransportCostUpdate tcu : currentTcu){
+			firmNames.add(tcu.getFirm());
+		}
+		return firmNames;
 	}
 }
