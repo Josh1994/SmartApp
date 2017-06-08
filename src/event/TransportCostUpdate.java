@@ -31,6 +31,20 @@ public class TransportCostUpdate extends Event{
 		this.days = day;
 		this.firm = firm;
 	}
+	
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("TransportCostUpdate Event");
+		sb.append("\nFirm: " + this.firm);
+		sb.append("\nOrigin: " + this.origin);
+		sb.append("\nDestination: " + this.destination);
+		sb.append("\nPrice per kg: " + this.weightCost);
+		sb.append("\nPrice per cubic cm: " + this.volumeCost);
+		sb.append("\nPriority: " + this.priority);
+		sb.append("\nUser: "+ this.user);
+		
+		return sb.toString();
+	}
 
 	//For XML purposes don't remove
 	public TransportCostUpdate(){}

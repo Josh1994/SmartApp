@@ -168,9 +168,14 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 			if(type!=null && toText.getValue()!=null && fromText.getValue()!=null && !weight.getText().isEmpty() && !volume.getText().isEmpty()){
 				//TODO
 				//need a confirm box showing the total cost and duration first before sending an event to the controller.
-				mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
-				System.out.println(mdEvent.toString());
-				controller.handleEvent(mdEvent, this);
+				String message = "Total Cost for Delivery: ";
+				ConfirmBox confirmBox = new ConfirmBox();
+				confirmBox.display("Mail Delivery Confirmation", message);
+				if(confirmBox.confirm){
+					mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
+					System.out.println(mdEvent.toString());
+					controller.handleEvent(mdEvent, this);
+				}
 
 			}
 			else{

@@ -19,6 +19,17 @@ public class CustomerPriceUpdate extends Event {
 	
 	}
 	
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("TransportDiscontinued Event");
+		sb.append("\nOrigin: " + this.origin);
+		sb.append("\nDestination: " + this.destination);
+		sb.append("\nPriority: " + this.priority);
+		sb.append("\nUser: "+ this.user);
+		
+		return sb.toString();
+	}
+	
 	//For XML purposes don't remove
 	public CustomerPriceUpdate(){}
 	

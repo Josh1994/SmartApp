@@ -37,6 +37,7 @@ public class Controller {
 		this.eventProcessor = new EventProcessor();
 		model = new BusinessModel(this);
 		
+		
 	}
 
 	public void handleEvent(Event entry, DataEntryGUI sourceView) {
@@ -44,7 +45,9 @@ public class Controller {
 
 		// first check for accuracy
 		if (validateEvent(entry)) {
-
+			if(entry instanceof event.TransportCostUpdate){
+				this.eventProcessor.processTCU((event.TransportCostUpdate)entry);
+			}
 			// Then send it to model
 			model.processEvent(entry);
 			//notify the user all okay.

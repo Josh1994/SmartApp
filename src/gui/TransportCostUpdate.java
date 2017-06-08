@@ -210,7 +210,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		hbox.setPadding(new Insets(20, 20, 20, 20));
 		hbox.getChildren().addAll(vbox1, vbox2);
 		
-		scene = new Scene(hbox, 800, 480);
+		scene = new Scene(hbox, 800, 550);
 	}
 	
 	public static Scene scene() {
