@@ -1,4 +1,5 @@
 package model;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,42 +19,42 @@ public class EventProcessor {
 	
 	public EventProcessor(){
 		this.currentTcu = new ArrayList<TransportCostUpdate>();
-		//currentTcu.addAll(createTCUs());
+//		currentTcu.addAll(createTCUs());
+		
 	}
 
 	public static List<TransportCostUpdate> createTCUs() {
 		ArrayList<TransportCostUpdate> tcus = new ArrayList<>();
 
-		tcus.add(new TransportCostUpdate(null, null, "AKLD",
+		tcus.add(new TransportCostUpdate(ZonedDateTime.now(), "admin", "AKLD",
 				"WGTN", 10, 10, 0 , 0, 0, 0,
 				null, "CourierPost", Event.DOMESTIC));
-		tcus.add( new TransportCostUpdate(null, null, "AKLD",
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "AKLD",
 				"CHCH", 10, 10, 0 , 0, 0, 0,
 				null, "CourierPost", Event.DOMESTIC));
-		tcus.add( new TransportCostUpdate(null, null, "WGTN",
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "WGTN",
 				"AKLD", 10, 10, 0 , 0, 0, 0,
 				null, "CourierPost", Event.DOMESTIC));
-		tcus.add( new TransportCostUpdate(null, null, "CHCH",
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "CHCH",
 				"DNDN", 10, 10, 0 , 0, 0, 0,
 				null, "CourierPost", Event.DOMESTIC));
 
-		tcus.add( new TransportCostUpdate(null, null, "AKLD",
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "AKLD",
 				"SIDNEY", 10, 10, 0 , 0, 0, 0,
 				null, "NZPost", Event.AIR));
-		tcus.add( new TransportCostUpdate(null, null, "AKLD",
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "AKLD",
 				"LA", 10, 10, 0 , 0, 0, 0,
 				null, "PostHaste", Event.AIR));
-		tcus.add( new TransportCostUpdate(null, null, "LA",
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "LA",
 				"LONDON", 10, 10, 0 , 0, 0, 0,
 				null, "PostMan", Event.AIR));
-		tcus.add( new TransportCostUpdate(null, null, "LA",
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "LA",
 				"DUBLIN", 10, 10, 0 , 0, 0, 0,
 				null, "CouriersNZ", Event.AIR));
 		// Intl Surface
-		tcus.add( new TransportCostUpdate(null, null, "LA",
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "LA",
 				"DUBLIN", 5, 5, 0 , 0, 0, 0,
 				null, "KPFreights", Event.SEA));
-
 		
 		return tcus;
 	}
@@ -72,13 +73,16 @@ public class EventProcessor {
 				String origin = tcu.getOrigin();
 				String destination = tcu.getDestination();
 				String priority = tcu.getPriority();
+				String firm = tcu.getFirm();
+				
 				//contains the route then update
-				if(origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
+				if(firm.equals(transportCostUpdate.getFirm()) && origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
 					transportCostUpdate = tcu;
 					System.out.println("Replaced old tcu");
 					updated = true;
 					break;
 				}
+			
 			}
 			//if the tcu was not found in the current tcu list. add it to the end
 			if(!updated){
@@ -101,7 +105,8 @@ public class EventProcessor {
 			String origin = tcu.getOrigin();
 			String destination = tcu.getDestination();
 			String priority = tcu.getPriority();
-			if(origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
+			String firm = tcu.getFirm();
+			if(firm.equals(transportCostUpdate.getFirm()) && origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
 				System.out.println("current Tcu list contains tcu");
 				return true;
 			}

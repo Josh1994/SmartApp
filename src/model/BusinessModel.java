@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 import controller.Controller;
 import event.Event;
 
@@ -35,6 +37,19 @@ public class BusinessModel {
 				e1.printStackTrace();
 			}  
         }
+        
+        initialiseEventProcessor();
+    }
+    
+    private void initialiseEventProcessor(){
+    	EventProcessor ep = this.controller.getEventProcessor();
+    	List<Event> evList = this.db.getEvent();
+    	for(Event event : evList){
+    		if(event instanceof event.TransportCostUpdate){
+    			event.TransportCostUpdate tcu = (event.TransportCostUpdate)event;
+    			ep.processTCU(tcu);
+    		}
+    	}
     }
 
     public void processEvent(Event event) {

@@ -123,7 +123,7 @@ public class XMLParser {
 			case "duration":duration=Double.parseDouble(s);break;
 			case "priority":priority = s;break;
 			case "user":user = s;break;
-			case "dateTime": dateTime = ZonedDateTime.now();break;
+			case "dateTime": dateTime = ZonedDateTime.parse(s);break;
 			case "maxWeight": maxWeight = Integer.parseInt(s);break;
 			case "maxVolume": maxVolume = Integer.parseInt(s);break;
 			case "day":day.add(DayOfWeek.valueOf(s));

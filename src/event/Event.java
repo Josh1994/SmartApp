@@ -35,6 +35,10 @@ public class Event {
 		this.destination = destination;
 		this.priority = priority;
 	}
+	
+	public ZonedDateTime getZonedDateTime(){
+		return this.dateTime;
+	}
 
 	//For XML purposes don't remove
 	public Event(){}
@@ -44,8 +48,8 @@ public class Event {
 	}
 
 	@XmlElement
-	public ZonedDateTime getDateTime() {
-		return dateTime;
+	public String getDateTime() {
+		return dateTime.toString();
 	}
 
 	@XmlElement
