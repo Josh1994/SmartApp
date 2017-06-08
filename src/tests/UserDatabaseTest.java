@@ -1,5 +1,6 @@
+package tests;
+
 import controller.UserDatabase;
-import model.User;
 import org.junit.*;
 
 import java.io.File;
@@ -7,23 +8,23 @@ import java.io.File;
 /**
  * Created by Prashant on 31/05/2017.
  */
-public class UserDatabaseTests {
+public class UserDatabaseTest {
     private UserDatabase userDatabase;
 
     @Before
     public void setUp() {
-        userDatabase = new UserDatabase("test");
+        userDatabase = new UserDatabase("src" +File.separator+ "tests");
     }
 
     @After
     public void tearDown() {
-        File file = new File("test" + File.separator + "users.kpsdb");
+        File file = new File("src" + File.separator + "tests" + File.separator + "users.kpsdb");
         file.delete();
     }
 
     @Test
     public void checkFileExists() {
-        File file = new File("test" + File.separator + "users.kpsdb");
+        File file = new File("src" + File.separator + "tests" + File.separator + "users.kpsdb");
         Assert.assertTrue(file.exists());
     }
 
