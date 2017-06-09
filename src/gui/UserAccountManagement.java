@@ -10,8 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import model.User;
 
 import java.io.IOException;
+import java.util.List;
 
 public class UserAccountManagement implements EventHandler<MouseEvent> {
 	private Controller controller;
@@ -124,54 +126,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 				}
 				break;
 			case "Delete Account":
-				ListUserAccountBox listUserAccountBox = new ListUserAccountBox(controller);
-				listUserAccountBox.display("Delete Account", "delete");
-				if (listUserAccountBox.getSelectedIndices() != null) {
-					try {
-						boolean rejectedAttemptToDeleteSelfUser = false;
-
-						for (Object o : listUserAccountBox.getSelectedIndices()) {
-							String username = (String) listUserAccountBox.getListItems().get((Integer) o);
-
-							// Handling User trying to delete themselves
-							if(username.equals(controller.getLoggedInUser().getUsername())) {
-								// User is the only manager
-								if(controller.getLoggedInUser().isManager() &&
-										controller.getUserDatabase().getManagers().size() == 1) {
-									// reject, user cannot delete themselves if they are the only manager
-									AlertBox.display("User Deletion Error", "You cannot delete" +
-											" yourself as you are the only manager on the system.");
-									rejectedAttemptToDeleteSelfUser = true;
-									// user is only user in database
-									if(controller.getUserDatabase().getUsers().size() == 1) {
-										return;
-									}
-								} else if(controller.getLoggedInUser().isManager() &&
-										controller.getUserDatabase().getManagers().size() > 1) {
-									// allow with confirmation, user can delete themselves as other managers exist
-									ConfirmBox confirmBox = new ConfirmBox();
-									confirmBox.display("User Deletion Confirmation", "Are you sure you " +
-											"want to delete your own account?" + System.lineSeparator() + System.lineSeparator() +
-											"If you choose okay, at the end of the deletion process, you" +
-											"will be logged out and will no longer be able to use this system. If you cancel, all other deletions will continue but your own account will remain in the system.");
-
-									// check user input
-									if(confirmBox.confirm) {
-										controller.getUserDatabase().deleteUser(username);
-									} else {
-										rejectedAttemptToDeleteSelfUser = true;
-										continue;
-									}
-								}
-							} else {
-								controller.getUserDatabase().deleteUser(username);
-							}
-						}
-						AlertBox.display("User Deletion Success", "All selected users" +(rejectedAttemptToDeleteSelfUser ? " (except the current user)" : "")+" were successfully deleted.");
-					} catch (UserDatabase.UserDatabaseException e) {
-						AlertBox.display("User Deletion Error", e.getMessage());
-					}
-				}
+				onDeleteAccountButtonClicked();
 				break;
 			case "Promote Account":
 				break;
@@ -184,6 +139,113 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 				break;
 			default:
 				throw new IllegalArgumentException("Event passed into handler method has not been handled correctly.");
+		}
+	}
+
+	private void onDeleteAccountButtonClicked() {
+		ListUserAccountBox listUserAccountBox = new ListUserAccountBox(controller);
+		listUserAccountBox.display("Delete Account", "delete");
+
+		// Ends the delete operation if the user does not want to continue.
+		if (listUserAccountBox.isCancelled()) {
+			return;
+		}
+
+		// Attempt to delete users
+		try {
+			// The indicator that tells us whether the user is deleting themselves, and whether they went through with it.
+			// 0 = Logged-in User was not selected for deletion.
+			// 1 = Logged-in User was selected Selected for deletion, Accepted for deletion
+			// 2 = Logged-in User was selected Selected for deletion, Rejected for deletion
+			int deletionStatus_LoggedInUser = 0;
+
+			for (Object o : listUserAccountBox.getSelectedIndices()) {
+				String username = (String) listUserAccountBox.getListItems().get((Integer) o);
+
+				// Handling User trying to delete themselves
+				if (username.equals(controller.getLoggedInUser().getUsername())) {
+					List<User> users = controller.getUserDatabase().getUsers();
+					List<User> managers = controller.getUserDatabase().getManagers();
+					// isLoggedInUserManager is ignored because it is implied that if they have access to this function
+					// then they are indeed a an manager
+					// boolean isLoggedInUserManager = controller.getLoggedInUser().isManager();
+
+					// User is the only manager
+					if (/*isLoggedInUserManager && */managers.size() == 1) {
+						// Reject this particular deletion as user should not be able delete themselves if they are the only manager
+						AlertBox.display("User Deletion Error", "You cannot delete yourself as you are the only manager on the system. All other selected deletions will continue.");
+						deletionStatus_LoggedInUser = 2;
+
+						// When the currently logged in user is only user in UserDatabase, ignore all success messages
+						// as they are not suitable for this case.
+						if (users.size() == 1) {
+							return;
+						}
+
+					// User is a manager, but other managers exists
+					} else if (/*isLoggedInUserManager && */managers.size() > 1) {
+						// Generally we allow deletion operation with confirmation, but first we have to check that
+						// the the logged-in user is not deleting all accounts or all manangers, otherwise we will
+						// be locked out of the program.
+						if(listUserAccountBox.getSelectedIndices().size() == listUserAccountBox.getListItems().size()) {
+							// if the above is true, do not allow the user to deletion of own account
+							AlertBox.display("User Deletion Error", "You cannot delete yourself when deleting all other users on the system. All other selected deletions will continue.");
+							deletionStatus_LoggedInUser = 2;
+							continue;
+						}
+
+						boolean isAllSelectedManagers = true;
+						for (Object o2 : listUserAccountBox.getSelectedIndices()) {
+							String username2 = (String) listUserAccountBox.getListItems().get((Integer) o2);
+							User user2 = controller.getUserDatabase().getUser(username2);
+
+							if(!user2.isManager()) {
+								isAllSelectedManagers = false;
+								break;
+							}
+						}
+
+						if(isAllSelectedManagers) {
+							AlertBox.display("User Deletion Error", "You cannot delete yourself when deleting all other managers on the system. All other selected deletions will continue.");
+							deletionStatus_LoggedInUser = 2;
+							continue;
+						}
+
+
+						// Allow deletion operation with confirmation, user can delete themselves as other managers exist
+						ConfirmBox confirmBox = new ConfirmBox();
+						confirmBox.display("User Deletion Confirmation", "Are you sure you " +
+								"want to delete your own account?"
+								+ System.lineSeparator() + System.lineSeparator() +
+								"If you choose Okay, all selected deletions will continue, then at the end of the " +
+								"deletion process, you will be logged out and will no longer be able to " +
+								"use this system. If you cancel, all other selected deletions will continue but" +
+								" your own account will remain in the system.");
+
+						// Verify confirmation from user
+						if (confirmBox.confirm) {
+							controller.getUserDatabase().deleteUser(username);
+							deletionStatus_LoggedInUser = 1;
+						} else {
+							// User rejected the deletion of their own account
+							deletionStatus_LoggedInUser = 2;
+							continue;
+						}
+					}
+				} else {
+					controller.getUserDatabase().deleteUser(username);
+				}
+			}
+			// Display success message after all deletions occcured
+			AlertBox.display("User Deletion Success", "All selected users" + (deletionStatus_LoggedInUser == 2 ? " (except the current user)" : "") + " were successfully deleted.");
+
+			// If user deleted themselves, logged them out now
+			if(deletionStatus_LoggedInUser == 1) {
+				controller.logout();
+			}
+		} catch (UserDatabase.UserDatabaseException e) {
+			// Display error if something when wrong
+			AlertBox.display("User Deletion Error", e.getMessage());
 		}
 	}
 }

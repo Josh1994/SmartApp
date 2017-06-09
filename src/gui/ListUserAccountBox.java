@@ -16,12 +16,11 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * This is a custom dialog box that is displayed when the database has no users. This allows the new user to create
- * a new account so they can use the application. Should only appear on first run of the application.
+ * This is a custom dialog box that is displayed a list view of users. This allows to select multiple users for
+ * modification operations like deleting users, promoting/demoting etc.
+ *
+ * @Author Prashant Bhikhu
  */
 public class ListUserAccountBox implements EventHandler {
     // Global Components
@@ -30,7 +29,7 @@ public class ListUserAccountBox implements EventHandler {
 
     private ListView listView;
     private String action;
-    private boolean onForceClose = false;
+    private boolean isCancelled = false;
 
     public ListUserAccountBox(Controller controller) {
         this.controller = controller;
@@ -96,7 +95,7 @@ public class ListUserAccountBox implements EventHandler {
 
             switch (button.getText()) {
                 case "Cancel":
-                    onForceClose = true;
+                    isCancelled = true;
                     break;
                 case "Okay":
                     if (listView.getSelectionModel().getSelectedIndices().size() == 0) {
@@ -110,15 +109,25 @@ public class ListUserAccountBox implements EventHandler {
             // Close window
             window.close();
         } else if(event instanceof WindowEvent) {
-            onForceClose = true;
+            isCancelled = true;
         }
     }
 
+    /**
+     *  This method tells us how the window was closed to let us know if the user would like to continue with the
+     *  operation that this dialog box was used for.
+     *
+     * @return true if the window was closed through the Cancel or top-right cross button.
+     */
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
     public ObservableList getSelectedIndices() {
-        return onForceClose ? null : listView.getSelectionModel().getSelectedIndices();
+        return listView.getSelectionModel().getSelectedIndices();
     }
 
     public ObservableList getListItems() {
-        return onForceClose ? null : listView.getItems();
+        return listView.getItems();
     }
 }
