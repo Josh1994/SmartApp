@@ -128,12 +128,10 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 				listUserAccountBox.display("Delete Account", "delete");
 				if (listUserAccountBox.getSelectedIndices() != null) {
 					try {
+						boolean rejectedAttemptToDeleteSelfUser = false;
+
 						for (Object o : listUserAccountBox.getSelectedIndices()) {
 							String username = (String) listUserAccountBox.getListItems().get((Integer) o);
-
-							System.out.println();
-							System.out.println(username);
-							System.out.println(controller.getLoggedInUser());
 
 							// Handling User trying to delete themselves
 							if(username.equals(controller.getLoggedInUser().getUsername())) {
@@ -143,6 +141,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 									// reject, user cannot delete themselves if they are the only manager
 									AlertBox.display("User Deletion Error", "You cannot delete" +
 											" yourself as you are the only manager on the system.");
+									rejectedAttemptToDeleteSelfUser = true;
 									// user is only user in database
 									if(controller.getUserDatabase().getUsers().size() == 1) {
 										return;
@@ -160,6 +159,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 									if(confirmBox.confirm) {
 										controller.getUserDatabase().deleteUser(username);
 									} else {
+										rejectedAttemptToDeleteSelfUser = true;
 										continue;
 									}
 								}
@@ -167,7 +167,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 								controller.getUserDatabase().deleteUser(username);
 							}
 						}
-						AlertBox.display("User Deletion Success", "All users selected were successfully deleted.");
+						AlertBox.display("User Deletion Success", "All selected users" +(rejectedAttemptToDeleteSelfUser ? " (except the current user)" : "")+" were successfully deleted.");
 					} catch (UserDatabase.UserDatabaseException e) {
 						AlertBox.display("User Deletion Error", e.getMessage());
 					}
