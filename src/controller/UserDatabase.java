@@ -237,4 +237,14 @@ public class UserDatabase {
             e.printStackTrace();
         }
     }
+
+    public List<User> getManagers() {
+        List<User> managers = new ArrayList<>();
+        for (User user: getUsers()) {
+            if(user.isManager()) {
+                managers.add(user);
+            }
+        }
+        return managers;
+    }
 }
