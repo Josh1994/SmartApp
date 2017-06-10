@@ -123,6 +123,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 			    onChangeUsernameButtonClicked();
 				break;
 			case "Change Password":
+			    oChangePasswordButtonClicked();
 				break;
 			case "Create new User Account":
 				onCreateAccountButtonClicked();
@@ -160,6 +161,24 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
         } catch (UserDatabase.UserDatabaseException e) {
             AlertBox.display("Change Username Error", e.getMessage());
             onChangeUsernameButtonClicked();
+        }
+    }
+
+    private void oChangePasswordButtonClicked() {
+        ChangePasswordDialog changePasswordDialog = new ChangePasswordDialog(controller);
+        changePasswordDialog.display();
+
+        if(changePasswordDialog.isCancelled()) {
+            return;
+        }
+
+        try {
+            controller.getUserDatabase().changeUserPassword(controller.getLoggedInUser().getUsername(), changePasswordDialog.getNewPassword());
+            AlertBox.display("Change Password Success", "You have now changed your password. Please login again with your your new password.");
+            controller.logout();
+        } catch (UserDatabase.UserDatabaseException e) {
+            AlertBox.display("Change Password Error", e.getMessage());
+            oChangePasswordButtonClicked();
         }
     }
 
