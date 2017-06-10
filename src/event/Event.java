@@ -1,7 +1,14 @@
 package event;
 
 import java.time.ZonedDateTime;
+import javax.xml.bind.annotation.XmlAttribute;  
+import javax.xml.bind.annotation.XmlElement;  
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso; 
 
+@XmlRootElement
+@XmlSeeAlso({CustomerPriceUpdate.class,MailDelivery.class,
+	TransportCostUpdate.class,TransportDiscontinued.class})
 public class Event {
 
 	//Type or priority
@@ -9,6 +16,7 @@ public class Event {
 	public static final String AIR = "AIR";
 	public static final String LAND = "LAND";
 	public static final String DOMESTIC = "DOMESTIC";
+	private static final String eventType = "super";
 
 	// General
 	ZonedDateTime dateTime;
@@ -27,23 +35,39 @@ public class Event {
 		this.destination = destination;
 		this.priority = priority;
 	}
-
-	public ZonedDateTime getDateTime() {
-		return dateTime;
+	
+	public ZonedDateTime getZonedDateTime(){
+		return this.dateTime;
 	}
 
+	//For XML purposes don't remove
+	public Event(){}
+
+	public String getEventType(){
+		return eventType;
+	}
+
+	@XmlElement
+	public String getDateTime() {
+		return dateTime.toString();
+	}
+
+	@XmlElement
 	public String getUser() {
 		return user;
 	}
 
+	@XmlElement
 	public String getOrigin() {
 		return origin;
 	}
 
+	@XmlElement
 	public String getDestination() {
 		return destination;
 	}
-	
+
+	@XmlElement
 	public String getPriority(){
 		return this.priority;
 	}

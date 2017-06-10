@@ -1,7 +1,7 @@
-package gui;
+package gui.dialogs;
 
 import controller.Controller;
-import javafx.event.ActionEvent;
+import gui.AlertBox;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,26 +18,24 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * This is a custom dialog box that is displayed when the database has no users. This allows the new user to create
- * a new account so they can use the application. Should only appear on first run of the application.
+ * This is a dialog box that is allows the user to input and change their username.
  *
  * @author Prashant Bhikhu
  */
-public class LoginFirstTimeInputDialog implements EventHandler {
+public class ChangeUsernameDialog implements EventHandler {
     // Global Components
     private Stage window;
     private Controller controller;
 
     // Textfields
-    private TextField usernameTextField;
-    private TextField passwordTextField;
-    private TextField confirmPasswordTextField;
+    private TextField newUsernameTextField;
+    private TextField confirmNewUsernameTextField;
 
     //
-    private String username;
-    private String password;
+    private String newUsername;
+    private boolean cancelled = false;
 
-    public LoginFirstTimeInputDialog(Controller controller) {
+    public ChangeUsernameDialog(Controller controller) {
         this.controller = controller;
     }
 
@@ -45,40 +43,34 @@ public class LoginFirstTimeInputDialog implements EventHandler {
         window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("First Time Login");
+        window.setTitle("New Username");
 
         BorderPane root = new BorderPane();
-        Scene scene2 = new Scene(root, 350, 200, Color.WHITE);
+        Scene scene2 = new Scene(root, 350, 150, Color.WHITE);
         GridPane gridpane = new GridPane();
         gridpane.setPadding(new Insets(10));
         gridpane.setHgap(10);
         gridpane.setVgap(10);
-        ColumnConstraints column1 = new ColumnConstraints(100);
+        ColumnConstraints column1 = new ColumnConstraints(130);
         ColumnConstraints column2 = new ColumnConstraints(50, 150, 300);
         column2.setHgrow(Priority.ALWAYS);
         gridpane.getColumnConstraints().addAll(column1, column2);
 
-        Label bodyLabel = new Label("Please create the first manager account for the system.");
+        Label bodyLabel = new Label("Enter your new proposed new username:");
         gridpane.add(bodyLabel,0,0, 2, 1);
 
-        Label usernameLabel = new Label("Username:");
-        gridpane.add(usernameLabel, 0, 1);
+        Label newUsernameLabel = new Label("New Username:");
+        gridpane.add(newUsernameLabel, 0, 1);
 
-        usernameTextField = new TextField();
-        gridpane.add(usernameTextField, 1, 1);
-
-        Label passwordLabel = new Label("Password:");
-        gridpane.add(passwordLabel, 0, 2);
-
-        passwordTextField = new PasswordField();
-        gridpane.add(passwordTextField, 1, 2);
+        newUsernameTextField = new TextField();
+        gridpane.add(newUsernameTextField, 1, 1);
 
 
-        Label confirmPasswordLabel = new Label("Re-type Password:");
-        gridpane.add(confirmPasswordLabel, 0, 3);
+        Label confirmNewUsernameLabel = new Label("Re-type New Username:");
+        gridpane.add(confirmNewUsernameLabel, 0, 2);
 
-        confirmPasswordTextField = new PasswordField();
-        gridpane.add(confirmPasswordTextField, 1, 3);
+        confirmNewUsernameTextField = new PasswordField();
+        gridpane.add(confirmNewUsernameTextField, 1, 2);
 
 
         Button okayButton = new Button("Okay");
@@ -88,7 +80,7 @@ public class LoginFirstTimeInputDialog implements EventHandler {
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.CENTER);
         hbBtn.getChildren().add(okayButton);
-        gridpane.add(hbBtn, 0, 4, 2,1);
+        gridpane.add(hbBtn, 0, 3, 2,1);
 
         root.setCenter(gridpane);
 
@@ -100,49 +92,48 @@ public class LoginFirstTimeInputDialog implements EventHandler {
     @Override
     public void handle(Event event) {
         if(event instanceof WindowEvent) {
-            event.consume();
+            window.close();
+            cancelled = true;
             return;
         }
 
         // Retrieve inputs
-        String tmpUsername = usernameTextField.getText();
-        String tmpPassword = passwordTextField.getText();
-        String tmpConfirmPassword = confirmPasswordTextField.getText();
+        String tmpNewUsername = newUsernameTextField.getText();
+        String tmpConfirmNewUsername = confirmNewUsernameTextField.getText();
 
         // Validate Inputs
-        if(tmpUsername.length() == 0 || tmpPassword.length() == 0) {
+        if(tmpNewUsername.length() == 0) {
             // Not enough characters
-            AlertBox.display("Invalid Fields", "Please input a valid username and/or password.");
+            AlertBox.display("Invalid Fields", "Please input a valid newUsername.");
             return;
         }
 
-        if(!tmpPassword.equals(tmpConfirmPassword)) {
+        if(!tmpNewUsername.equals(tmpConfirmNewUsername)) {
             // Matching Passwords needed
-            AlertBox.display("Invalid Fields", "Matching password is required as a confirmation.");
+            AlertBox.display("Invalid Fields", "Matching usernames is required as a confirmation.");
             return;
         }
 
         /* Should never get to the code below, because being in execution path implies that the database has no users.
         if (controller.getUserDatabase().getUser(tmpUsername) != null) {
             // ERROR MESSAGE - USER EXISTS ALREADY
-            AlertBox.display("Username already in use", "Please input a another username, as this " +
+            AlertBox.display("Username already in use", "Please input a another newUsername, as this " +
                     "is already taken.");
             return;
         }*/
 
-        // Store new username and password
-        username = tmpUsername;
-        password = tmpPassword;
+        // Store new newUsername and password
+        newUsername = tmpNewUsername;
 
         // Close window
         window.close();
     }
 
-    String getUsername() {
-        return username;
+    public String getNewUsername() {
+        return newUsername;
     }
 
-    String getPassword() {
-        return password;
+    public boolean isCancelled() {
+        return cancelled;
     }
 }

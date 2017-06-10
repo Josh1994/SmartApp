@@ -1,5 +1,7 @@
 package model;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,14 +46,49 @@ public class EventProcessor {
 			}
 		}
 	}
+
+	public static List<TransportCostUpdate> createTCUs() {
+		ArrayList<TransportCostUpdate> tcus = new ArrayList<>();
+
+		tcus.add(new TransportCostUpdate(ZonedDateTime.now(), "admin", "AKLD",
+				"WGTN", 10, 10, 0 , 0, 0, 0,
+				null, "CourierPost", Event.DOMESTIC));
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "AKLD",
+				"CHCH", 10, 10, 0 , 0, 0, 0,
+				null, "CourierPost", Event.DOMESTIC));
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "WGTN",
+				"AKLD", 10, 10, 0 , 0, 0, 0,
+				null, "CourierPost", Event.DOMESTIC));
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "CHCH",
+				"DNDN", 10, 10, 0 , 0, 0, 0,
+				null, "CourierPost", Event.DOMESTIC));
+
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "AKLD",
+				"SIDNEY", 10, 10, 0 , 0, 0, 0,
+				null, "NZPost", Event.AIR));
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "AKLD",
+				"LA", 10, 10, 0 , 0, 0, 0,
+				null, "PostHaste", Event.AIR));
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "LA",
+				"LONDON", 10, 10, 0 , 0, 0, 0,
+				null, "PostMan", Event.AIR));
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "LA",
+				"DUBLIN", 10, 10, 0 , 0, 0, 0,
+				null, "CouriersNZ", Event.AIR));
+		// Intl Surface
+		tcus.add( new TransportCostUpdate(ZonedDateTime.now(), "admin", "LA",
+				"DUBLIN", 5, 5, 0 , 0, 0, 0,
+				null, "KPFreights", Event.SEA));
+		
+		return tcus;
+	}
+
 	//Add new tcu that didn't exist in the array list.
 	public void addTCU(TransportCostUpdate tcu){
 		this.currentTcu.add(tcu);
 	}
-	//Update existing tcu
+	//Process all the tcu requests added
 	public void processTCU(TransportCostUpdate tcu){
-		//if tcu route is not in the list add it
-		//otherwise just change it
 		for(TransportCostUpdate transportCostUpdate : this.currentTcu){
 			String origin = tcu.getOrigin();
 			String destination = tcu.getDestination();
@@ -63,6 +100,8 @@ public class EventProcessor {
 			}
 		}
 	}
+	
+	
 	public void processTD(TransportDiscontinued td){
 		//It will put all the transport disc request in a list and delete all of them once this method is called.
 		this.currentTd.add(td);
@@ -79,6 +118,7 @@ public class EventProcessor {
 					this.currentTcu.remove(tc);
 					this.currentTd.remove(transportDiscontinued);
 				}
+			
 			}
 
 		}
@@ -98,7 +138,8 @@ public class EventProcessor {
 			String origin = tcu.getOrigin();
 			String destination = tcu.getDestination();
 			String priority = tcu.getPriority();
-			if(origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
+			String firm = tcu.getFirm();
+			if(firm.equals(transportCostUpdate.getFirm()) && origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
 				System.out.println("current Tcu list contains tcu");
 				return true;
 			}
@@ -108,4 +149,22 @@ public class EventProcessor {
 
 
 
+	public Set<String> getLocationNames() {
+		Set<String> locationNames = new HashSet<>();
+
+		for(TransportCostUpdate tcu : currentTcu) {
+			locationNames.add(tcu.getOrigin());
+			locationNames.add(tcu.getDestination());
+		}
+
+		return locationNames;
+	}
+	
+	public Set<String> getFirmNames(){
+		Set<String> firmNames = new HashSet<>();
+		for(TransportCostUpdate tcu : currentTcu){
+			firmNames.add(tcu.getFirm());
+		}
+		return firmNames;
+	}
 }

@@ -2,6 +2,7 @@ package model;
 
 import event.TransportCostUpdate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Route implements Comparable<Route> {
@@ -11,15 +12,6 @@ public class Route implements Comparable<Route> {
 	private String destination;
 
 	private double weightCost;
-	
-
-	public List<TransportCostUpdate> getStages() {
-		return stages;
-	}
-
-	public void setStages(List<TransportCostUpdate> stages) {
-		this.stages = stages;
-	}
 
 	private double volumeCost;
 	private int maxWeight;
@@ -29,16 +21,42 @@ public class Route implements Comparable<Route> {
 	private List<TransportCostUpdate> stages;
 
 	public Route(TransportCostUpdate tcu) {
-		this(tcu.getOrigin(), tcu.getDestination(), tcu.getWeightCost(), tcu.getVolumeCost(), tcu.getMaxWeight(),
-				tcu.getMaxVolume() , tcu.getPriority());
+		this.stages = new ArrayList<>();
+		stages.add(tcu);
+
+		this.origin = tcu.getOrigin();
+		this.destination = tcu.getDestination();
+		this.weightCost = this.weightCost + tcu.getWeightCost();
+		this.volumeCost = this.volumeCost + tcu.getVolumeCost();
+		this.maxWeight = this.maxWeight + tcu.getMaxWeight();
+		this.maxVolume = this.maxVolume + tcu.getMaxVolume();
+		this.priority = tcu.getPriority();
+
+		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
 	}
 
 	public Route(TransportCostUpdate tcu, String priority) {
-		this(tcu.getOrigin(), tcu.getDestination(), tcu.getWeightCost(), tcu.getVolumeCost(), tcu.getMaxWeight(),
-				tcu.getMaxVolume() , priority);
+		this.stages = new ArrayList<>();
+		stages.add(tcu);
+
+		this.origin = tcu.getOrigin();
+		this.destination = tcu.getDestination();
+		this.weightCost = this.weightCost + tcu.getWeightCost();
+		this.volumeCost = this.volumeCost + tcu.getVolumeCost();
+		this.maxWeight = this.maxWeight + tcu.getMaxWeight();
+		this.maxVolume = this.maxVolume + tcu.getMaxVolume();
+		this.priority = priority;
+
+		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
 	}
 
 	public Route(Route route, TransportCostUpdate tcu) {
+		this.stages = new ArrayList<>();
+		for (int i = 0 ; i < route.stages.size(); i++) {
+			this.stages.add(route.stages.get(i));
+		}
+		this.stages.add(tcu);
+
 		this.origin = route.origin;
 		this.destination = tcu.getDestination();
 		this.weightCost = route.weightCost + tcu.getWeightCost();
@@ -47,11 +65,19 @@ public class Route implements Comparable<Route> {
 		this.maxVolume = (route.maxVolume < tcu.getMaxVolume()) ? route.maxVolume : tcu.getMaxVolume();
 		this.priority = route.priority;
 
-		this.effectiveCost = (weightCost * weightCost) + (volumeCost * volumeCost);
+		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
 	}
 	// Combines 2 routes
 
 	public Route(Route first, Route next) {
+		this.stages = new ArrayList<>();
+		for (int i = 0 ; i < first.stages.size(); i++) {
+			this.stages.add(first.stages.get(i));
+		}
+		for (int i = 0 ; i < next.stages.size(); i++) {
+			this.stages.add(next.stages.get(i));
+		}
+
 		this.origin = first.origin;
 		this.destination = next.getDestination();
 		this.weightCost = first.weightCost + next.getWeightCost();
@@ -60,10 +86,18 @@ public class Route implements Comparable<Route> {
 		this.maxVolume = (first.maxVolume < next.getMaxVolume()) ? first.maxVolume : next.getMaxVolume();
 		this.priority = first.priority;
 
-		this.effectiveCost = (weightCost * weightCost) + (volumeCost * volumeCost);
+		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
 	}
 
 	public  Route(Route first, Route next, String priority) {
+		this.stages = new ArrayList<>();
+		for (int i = 0 ; i < first.stages.size(); i++) {
+			this.stages.add(first.stages.get(i));
+		}
+		for (int i = 0 ; i < next.stages.size(); i++) {
+			this.stages.add(next.stages.get(i));
+		}
+
 		this.origin = first.origin;
 		this.destination = next.getDestination();
 		this.weightCost = first.weightCost + next.getWeightCost();
@@ -72,7 +106,7 @@ public class Route implements Comparable<Route> {
 		this.maxVolume = (first.maxVolume < next.getMaxVolume()) ? first.maxVolume : next.getMaxVolume();
 		this.priority = priority;
 
-		this.effectiveCost = (weightCost * weightCost) + (volumeCost * volumeCost);
+		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
 	}
 
 	public Route(String origin, String destination, double weightCost, double volumeCost, int maxWeight,
@@ -85,17 +119,19 @@ public class Route implements Comparable<Route> {
 		this.maxVolume = this.maxVolume + maxVolume;
 		this.priority = priority;
 
-		this.effectiveCost = (weightCost * weightCost) + (volumeCost * volumeCost);
+		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
 	}
 
 	public void addStage(TransportCostUpdate tcu) {
+		this.stages.add(tcu);
+
 		this.destination = tcu.getDestination();
 		this.weightCost = this.weightCost + tcu.getWeightCost();
 		this.volumeCost = this.volumeCost + tcu.getVolumeCost();
 		this.maxWeight = (this.maxWeight < tcu.getMaxWeight()) ? this.maxWeight : tcu.getMaxWeight();
 		this.maxVolume = (this.maxVolume < tcu.getMaxVolume()) ? this.maxVolume : tcu.getMaxVolume();
 
-		this.effectiveCost = (weightCost * weightCost) + (volumeCost * volumeCost);
+		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
 	}
 	@Override
 	public int compareTo(Route other) {
@@ -134,6 +170,16 @@ public class Route implements Comparable<Route> {
 		return priority;
 	}
 
+
+	public List<TransportCostUpdate> getStages() {
+		return stages;
+	}
+
+	public void setStages(List<TransportCostUpdate> stages) {
+		this.stages = stages;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Route{" +
@@ -148,5 +194,6 @@ public class Route implements Comparable<Route> {
 				", stages=" + stages +
 				'}';
 	}
+
 }
 

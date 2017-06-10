@@ -8,12 +8,13 @@ import gui.base.DataEntryGUI;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.User;
@@ -24,8 +25,13 @@ import model.User;
 public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEvent> {
     Button eventButton;
     Button backButton;
-    TextField fromText;
-    TextField toText;
+
+    ComboBox<String> fromText;
+    ComboBox<String> toText;
+
+    Button logoutButton;
+    
+
     TextField weight;
     TextField volume;
 	String prio;
@@ -47,18 +53,27 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         backButton = new Button();
         backButton.setText("Back");
         backButton.setOnAction(this);
+		
+        logoutButton = new Button();
+		logoutButton.setText("Logout");
+		logoutButton.setOnAction(this);
 
         Label fromLabel = new Label("Origin");
         fromLabel.setMinHeight(25);
-        fromText = new TextField();
-        fromText.setMaxHeight(10);
-        fromText.setMaxWidth(200);
+        //fromText = new TextField();
+        //fromText.setMaxHeight(10);
+        //fromText.setMaxWidth(200);
+        fromText = new ComboBox<String>();
+        fromText.setMinWidth(200.0);
+        fromText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+        fromText.setEditable(false);
 
         Label toLabel = new Label("Destination");
         toLabel.setMinHeight(25);
-        toText = new TextField();
-        toText.setMaxHeight(10);
-        toText.setMaxWidth(200);
+        toText = new ComboBox<String>();
+        toText.setMinWidth(200.0);
+        toText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+        toText.setEditable(false);
 
         Label weightLabel = new Label("Price/gram");
         weightLabel.setMinHeight(25);
@@ -88,6 +103,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         vbox1.getChildren().add(volumeLabel);
         vbox1.getChildren().add(priorityLabel);
         vbox1.getChildren().add(backButton);
+        vbox1.getChildren().add(logoutButton);
 
         VBox vbox2 = new VBox(10);
         vbox2.setPadding(new Insets(10, 10, 10, 10));
@@ -115,8 +131,10 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         if(event.getSource() == eventButton){
 			System.out.println("Submit Button pressed");
 			prio = priorityBox.getValue();
-			System.out.println(fromText.getText() +" "+ toText.getText() +" "+ weight.getText() +" "+ volume.getText() +" " + prio);
-			if(fromText.getText().isEmpty() || toText.getText().isEmpty() || weight.getText().isEmpty() || prio==null || volume.getText().isEmpty() ){
+			System.out.println("From: "+ fromText.getValue());
+			System.out.println("To: "+ toText.getValue());
+			System.out.println(fromText.getValue() +" "+ toText.getValue() +" "+ weight.getText() +" "+ volume.getText() +" " + prio);
+			if(fromText.getValue().isEmpty() || toText.getValue().isEmpty() || weight.getText().isEmpty() || prio==null || volume.getText().isEmpty() ){
 				AlertBox.display("Invalid Input", "Invalid Input Fields");
 			}
 			else{
@@ -138,7 +156,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 				User user = controller.getLoggedInUser();
 				double w = Double.parseDouble(weight.getText());
 				double vol = Double.parseDouble(volume.getText());
-				event.CustomerPriceUpdate cpu = new event.CustomerPriceUpdate(zdt, user.getUsername(), fromText.getText(), toText.getText(), w, vol ,prio);
+				event.CustomerPriceUpdate cpu = new event.CustomerPriceUpdate(zdt, user.getUsername(), fromText.getValue(), toText.getValue(), w, vol ,prio);
 				System.out.println(cpu.toString());
 
 				controller.handleEvent(cpu, this);
@@ -146,7 +164,10 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         }
         if(event.getSource() == backButton){
             controller.handleEvent(Controller.EVENTGUI);
-        }
+        }if(event.getSource() == logoutButton){
+			Logout logout = new Logout(controller);
+			logout.display();
+		}
 
     }
 

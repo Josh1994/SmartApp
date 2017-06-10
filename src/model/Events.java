@@ -8,6 +8,11 @@ import event.MailDelivery;
 import event.TransportCostUpdate;
 import event.TransportDiscontinued;
 
+/**
+ * We PROBABLY DONT NEED THIS CLASS
+ * @author julian
+ *
+ */
 public class Events {
 
 	private List<CustomerPriceUpdate> customerPriceUpdate;

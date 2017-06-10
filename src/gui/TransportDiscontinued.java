@@ -1,5 +1,5 @@
 package gui;
-
+import event.Event;
 import java.time.ZonedDateTime;
 
 import controller.Controller;
@@ -15,6 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.User;
@@ -23,14 +24,15 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 
 	Button eventButton;
 	Button backButton;
-	TextField fromText;
-	TextField toText;
 	TextField firm;
 	TextField volume;
 	String prio;
 	ChoiceBox<String> priorityBox;
 	TextField city;
-	
+	ComboBox<String> fromText;
+	ComboBox<String> toText;
+	Button logoutButton;
+
 	static Scene scene;
 	Controller controller;
 
@@ -47,18 +49,24 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		backButton = new Button();
 		backButton.setText("Back");
 		backButton.setOnAction(this);
+		
+		logoutButton = new Button();
+		logoutButton.setText("Logout");
+		logoutButton.setOnAction(this);
 
 		Label fromLabel = new Label("Origin");
 		fromLabel.setMinHeight(25);
-		fromText = new TextField();
-		fromText.setMaxHeight(10);
-		fromText.setMaxWidth(200);
+		fromText = new ComboBox<String>();
+		fromText.setMinWidth(200.0);
+		fromText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		fromText.setEditable(false);
 
 		Label toLabel = new Label("Destination");
 		toLabel.setMinHeight(25);
-		toText = new TextField();
-		toText.setMaxHeight(10);
-		toText.setMaxWidth(200);
+		toText = new ComboBox<String>();
+		toText.setMinWidth(200.0);
+		toText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		toText.setEditable(false);
 
 		Label firmLabel = new Label("Transport Firm");
 		firmLabel.setMinHeight(25);
@@ -68,6 +76,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		
 		Label priorityLabel = new Label("Transport Type");
 		priorityLabel.setMinHeight(25);
+		
 		priorityBox = new ChoiceBox<String>();
 		priorityBox.getItems().addAll("Land", "Air", "Sea", "Domestic");
 		priorityBox.setValue("Land");
@@ -77,7 +86,8 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		city = new TextField();
 		city.setMaxHeight(10);
 		city.setMaxWidth(200);
-				
+
+
 		VBox vbox1 = new VBox(10);
 		vbox1.setPadding(new Insets(10, 10, 10, 10));
 		vbox1.getChildren().add(fromLabel);
@@ -86,6 +96,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		vbox1.getChildren().add(priorityLabel);
 		vbox1.getChildren().add(cityLabel);
 		vbox1.getChildren().add(backButton);
+		vbox1.getChildren().add(logoutButton);
 
 		VBox vbox2 = new VBox(10);
 		vbox2.setPadding(new Insets(10, 10, 10, 10));
@@ -113,8 +124,8 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		if(event.getSource() == eventButton){
 			System.out.println("Submit Button pressed");
 			prio = priorityBox.getValue();
-			System.out.println(fromText.getText() +" "+ toText.getText() +" "+ firm.getText() +" "+ prio);
-			if(fromText.getText().isEmpty() || toText.getText().isEmpty() || firm.getText().isEmpty() || prio==null || city.getText().isEmpty() ){
+			System.out.println(fromText.getValue() +" "+ toText.getValue() +" "+ firm.getText() +" "+ prio);
+			if(fromText.getValue().isEmpty() || toText.getValue().isEmpty() || firm.getText().isEmpty() || prio==null || city.getText().isEmpty() ){
 				AlertBox.display("Invalid Input", "Invalid Input Fields");
 			}
 			else{
@@ -134,14 +145,16 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 				System.out.println(prio);
 				ZonedDateTime zdt = ZonedDateTime.now();
 				User user = controller.getLoggedInUser();
-				event.TransportDiscontinued td = new event.TransportDiscontinued(zdt, user.getUsername(), fromText.getText(), toText.getText(), firm.getText(), prio, city.getText());
+				event.TransportDiscontinued td = new event.TransportDiscontinued(zdt, user.getUsername(), fromText.getValue(), toText.getValue(), firm.getText(), prio, city.getText());
 				System.out.println(td.toString());
-				
 				controller.handleEvent(td, this);
 			}
 		}
 		if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
+		}if(event.getSource() == logoutButton){
+			Logout logout = new Logout(controller);
+			logout.display();
 		}
 
 	}
