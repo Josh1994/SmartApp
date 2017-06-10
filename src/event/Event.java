@@ -71,4 +71,24 @@ public class Event {
 	public String getPriority(){
 		return this.priority;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Event event = (Event) o;
+
+		if (origin != null ? !origin.equals(event.origin) : event.origin != null) return false;
+		if (destination != null ? !destination.equals(event.destination) : event.destination != null) return false;
+		return priority != null ? priority.equals(event.priority) : event.priority == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = origin != null ? origin.hashCode() : 0;
+		result = 31 * result + (destination != null ? destination.hashCode() : 0);
+		result = 31 * result + (priority != null ? priority.hashCode() : 0);
+		return result;
+	}
 }

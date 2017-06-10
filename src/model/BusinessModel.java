@@ -14,7 +14,7 @@ public class BusinessModel {
     //create reference to controller
     private Controller controller;
     // create reference to Routefinder
-    private RouteFinder routeFinder;
+    private EventManager eventManager;
     private Database db;
     XMLParser parser;
 
@@ -22,8 +22,6 @@ public class BusinessModel {
 
         this.controller = controller;
 
-        this.routeFinder = new RouteFinder(this);
-        
         try{
         	parser = new XMLParser("database.xml");
         	db = parser.getDatabase();

@@ -1,8 +1,13 @@
 package model;
 
+import event.CustomerPriceUpdate;
+import event.MailDelivery;
 import event.TransportCostUpdate;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Route implements Comparable<Route> {
@@ -19,6 +24,14 @@ public class Route implements Comparable<Route> {
 	private String priority;
 
 	private List<TransportCostUpdate> stages;
+
+	// Business Figures
+	private double revenue = 0;
+	private double expenditure = 0;
+	private int numberOfEvents = 0;
+	private int amountOfMail = 0;
+	private double avgDeliveryTime = 0;
+
 
 	public Route(TransportCostUpdate tcu) {
 		this.stages = new ArrayList<>();
@@ -110,7 +123,7 @@ public class Route implements Comparable<Route> {
 	}
 
 	public Route(String origin, String destination, double weightCost, double volumeCost, int maxWeight,
-                 int maxVolume, String priority) {
+				 int maxVolume, String priority) {
 		this.origin = origin;
 		this.destination = destination;
 		this.weightCost = this.weightCost + weightCost;
@@ -133,15 +146,11 @@ public class Route implements Comparable<Route> {
 
 		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
 	}
-	@Override
-	public int compareTo(Route other) {
-		if (this.effectiveCost < other.effectiveCost) return -1;
-		else if (this.effectiveCost == other.effectiveCost) return 0;
-		else return 1;
-	}
+
 	public String getOrigin() {
 		return origin;
 	}
+
 	public String getDestination() {
 		return destination;
 	}
@@ -149,7 +158,7 @@ public class Route implements Comparable<Route> {
 	public double getEffectiveCost() {
 		return effectiveCost;
 	}
-	
+
 	public double getWeightCost() {
 		return weightCost;
 	}
@@ -170,16 +179,106 @@ public class Route implements Comparable<Route> {
 		return priority;
 	}
 
+	public double getRevenue() {
+		return revenue;
+	}
+
+	public double getExpenditure() {
+		return expenditure;
+	}
+
+	public int getNumberOfEvents() {
+		return numberOfEvents;
+	}
+
+	public int getAmountOfmail() {
+		return amountOfMail;
+	}
+
+	public double getAvgDeliveryTime() {
+		return deliveryTime(stages);
+	}
 
 	public List<TransportCostUpdate> getStages() {
 		return stages;
+	}
+
+	public boolean isCriticalRoute() {
+		return (revenue - expenditure) <= 0;
 	}
 
 	public void setStages(List<TransportCostUpdate> stages) {
 		this.stages = stages;
 	}
 
+	public void update(Route route) {
+		weightCost = route.weightCost;
+		volumeCost = route.volumeCost;
+		maxVolume = route.maxVolume;
+		maxWeight = route.maxWeight;
+		stages = route.stages;
+	}
+	/**
+	 public void update(CustomerPriceUpdate cpu) {
+	 for (TransportCostUpdate tcu : stages) {
+	 if (tcu.matchCustomerPriceUpdate(cpu)) {
+	 weightCost += (cpu.getWeightCost() - tcu.getWeightCost());
+	 volumeCost += (cpu.getVolumeCost() - tcu.getVolumeCost());
+	 tcu.setWeightCost(cpu.getWeightCost());
+	 tcu.setVolumeCost(cpu.getVolumeCost());
+	 }
+	 }
 
+	 }
+	 */
+	public void update(MailDelivery md, List<CustomerPriceUpdate> cpus) {
+		amountOfMail += 1;
+		numberOfEvents += 1;
+		expenditure += md.getVolume() * volumeCost + md.getWeight() * weightCost;
+		revenue += getCustomerCost(md, cpus);
+	}
+
+	public double getCustomerCost(MailDelivery md, List<CustomerPriceUpdate> cpus) {
+		double cost = 0;
+		double weightCostC = 0;
+		double volCostC = 0;
+		for (TransportCostUpdate tcu : stages) {
+			CustomerPriceUpdate cpu = matchCustomerPriceUpdate(tcu, cpus);
+			weightCostC += cpu == null ? tcu.getWeightCost() : cpu.getWeightCost();
+			volCostC += cpu == null ? tcu.getVolumeCost() : cpu.getVolumeCost();
+		}
+		cost += weightCostC * md.getWeight();
+		cost += volCostC + md.getVolume();
+		return cost;
+	}
+
+	private CustomerPriceUpdate matchCustomerPriceUpdate(TransportCostUpdate tcu,
+														 List<CustomerPriceUpdate> cpus) {
+		for (CustomerPriceUpdate cpu : cpus) {
+			if (tcu.getOrigin().equals(cpu.getOrigin()) &&
+					tcu.getDestination().equals(cpu.getDestination()) &&
+					tcu.getPriority().equals(cpu.getPriority())) {
+				return cpu;
+			} else return null;
+		}
+		return null;
+	}
+
+	public double deliveryTime(List<TransportCostUpdate> tcus) {
+		double hours = 0;
+		for (TransportCostUpdate tcu : tcus) {
+			hours += tcu.getFrequency() * 0.5 + tcu.getDuration();
+		}
+		return hours;
+
+	}
+
+	@Override
+	public int compareTo(Route other) {
+		if (this.effectiveCost < other.effectiveCost) return -1;
+		else if (this.effectiveCost == other.effectiveCost) return 0;
+		else return 1;
+	}
 	@Override
 	public String toString() {
 		return "Route{" +

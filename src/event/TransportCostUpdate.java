@@ -93,4 +93,27 @@ public class TransportCostUpdate extends Event{
 	public String getFirm() {
 		return firm;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof TransportCostUpdate)) return false;
+		if (!super.equals(o)) return false;
+
+		TransportCostUpdate that = (TransportCostUpdate) o;
+
+		return firm != null ? firm.equals(that.firm) : that.firm == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + (firm != null ? firm.hashCode() : 0);
+		return result;
+	}
+	public boolean matchCustomerPriceUpdate(CustomerPriceUpdate cpu){
+		return origin.equals(cpu.getOrigin()) &&
+				destination.equals(cpu.getDestination()) &&
+				priority.equals(cpu.getPriority());
+	}
 }

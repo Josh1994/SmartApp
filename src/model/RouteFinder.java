@@ -17,7 +17,7 @@ import java.util.*;
  * The algorithm can easily find incoming Intl routes if necessary.
  */
 public class RouteFinder {
-    private BusinessModel model;
+    private EventManager manager;
 
     private Set<TransportCostUpdate> stages;
     private Set<String> domesticOrigins;
@@ -30,8 +30,10 @@ public class RouteFinder {
 
     private Map<String , Set<Route>> airRoutes;
 
-    public RouteFinder(BusinessModel model) {
-        this.model = model;
+    private Set<Route> discontinuedRoutes = new HashSet<>();
+
+    public RouteFinder(EventManager manager) {
+        this.manager = manager;
     }
 
     /**
@@ -121,6 +123,7 @@ public class RouteFinder {
             }
         }
         // Now form the lookup maps
+
         for (String start : domesticOrigins) {
             domesticRoutes.put(start, new HashSet<Route>());
             getAllRoutesFromOrigin(start, Event.DOMESTIC);
@@ -157,9 +160,9 @@ public class RouteFinder {
             }
         }
         for (Route route : priorityQueue) {
-            // TEST : System.out.format("pq1 %s  %s",route.getOrigin(), route.getDestination() );
+            //System.out.format("pq1 %s  %s",route.getOrigin(), route.getDestination() );
 
-    }
+        }
         while (!priorityQueue.isEmpty()) {
             Route newRoute = priorityQueue.poll();
             // If we've returned to start discard this route
@@ -182,9 +185,10 @@ public class RouteFinder {
             }
             /**
              * Handy Test which lists all the routes
-
-            for (Route route : routes.get(origin)) {
-            System.out.format("%ncycle2 %s, %s ", route.getOrigin(), route.getDestination());}
+             */
+            /**
+             for (Route route : routes.get(origin)) {
+             System.out.format("%ncycle2 %s, %s ", route.getOrigin(), route.getDestination());}
              */
         }
     }
@@ -200,18 +204,18 @@ public class RouteFinder {
      */
     private boolean findMatch(String nextOrigin, String priority, TransportCostUpdate tcu){
 
-            //if last point of route matches start of TCU;
-            if (tcu.getOrigin().equals(nextOrigin) && tcu.getPriority().equals(priority)) {
-                return true;
-            }
-            // if it's intl surface it can use any route priority available except DOMESTIC
-            // The priority queue will always guarantee the cheapest cost
-            else if (!(priority.equals(Event.AIR) || (priority.equals(Event.DOMESTIC)))
-                    && !tcu.getPriority().equals(Event.DOMESTIC) && tcu.getOrigin().equals(nextOrigin)) {
-                return true;
-            }
+        //if last point of route matches start of TCU;
+        if (tcu.getOrigin().equals(nextOrigin) && tcu.getPriority().equals(priority)) {
+            return true;
+        }
+        // if it's intl surface it can use any route priority available except DOMESTIC
+        // The priority queue will always guarantee the cheapest cost
+        else if (!(priority.equals(Event.AIR) || (priority.equals(Event.DOMESTIC)))
+                && !tcu.getPriority().equals(Event.DOMESTIC) && tcu.getOrigin().equals(nextOrigin)) {
+            return true;
+        }
 
-            return false;
+        return false;
     }
 
     /**
@@ -271,6 +275,11 @@ public class RouteFinder {
                 }
             }
         } return null; // no match found;
+    }
+
+
+    public Set<Route> getDiscontinuedRoutes() {
+        return discontinuedRoutes;
     }
 }
 
