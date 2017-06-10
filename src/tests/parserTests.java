@@ -27,7 +27,7 @@ import java.time.ZonedDateTime;
  */
 public class parserTests {
 	String a = "a";
-	ZonedDateTime date = null;
+	ZonedDateTime date = ZonedDateTime.now();
 	List<String> s = new ArrayList<String>();
 	List<DayOfWeek> days = new ArrayList<DayOfWeek>();
 	TransportDiscontinued  td = new TransportDiscontinued(date, a, a, a, a, a);
