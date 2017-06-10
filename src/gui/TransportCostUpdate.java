@@ -127,13 +127,13 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		HBox days = new HBox();
 		days.setMaxHeight(10);
 		
-		monday = new CheckBox("Monday ");
-		tuesday = new CheckBox("Tuesday ");
-		wednesday = new CheckBox("Wednesday ");
-		thursday = new CheckBox("Thursday ");
-		friday = new CheckBox("Friday ");
-		saturday = new CheckBox("Saturday ");
-		sunday = new CheckBox("Sunday ");
+		monday = new CheckBox("Monday");
+		tuesday = new CheckBox("Tuesday");
+		wednesday = new CheckBox("Wednesday");
+		thursday = new CheckBox("Thursday");
+		friday = new CheckBox("Friday");
+		saturday = new CheckBox("Saturday");
+		sunday = new CheckBox("Sunday");
 		
 		daysOfWeek.add(monday);
 		daysOfWeek.add(tuesday);
