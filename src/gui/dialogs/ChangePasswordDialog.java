@@ -1,7 +1,7 @@
-package gui;
+package gui.dialogs;
 
 import controller.Controller;
-import javafx.event.ActionEvent;
+import gui.AlertBox;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,27 +18,25 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * This is a custom dialog box that is displayed when the database a Manager wants to create. This allows the
- * new user to create a new account so they can use the application.
+ * This is a custom dialog box that is displayed when the database has no users. This allows the new user to create
+ * a new account so they can use the application. Should only appear on first run of the application.
  *
- * @author Jonathan Young, Prashant Bhikhu
+ * @author Prashant Bhikhu
  */
-public class CreateAccount implements EventHandler {
+public class ChangePasswordDialog implements EventHandler {
     // Global Components
     private Stage window;
     private Controller controller;
 
     // Textfields
-    private TextField usernameTextField;
-    private TextField passwordTextField;
-    private TextField confirmPasswordTextField;
+    private TextField oldPasswordTextField;
+    private TextField newPasswordTextField;
+    private TextField confirmNewPasswordTextField;
 
-    //
-    private String username;
     private String password;
     private boolean cancelled = false;
 
-    public CreateAccount(Controller controller) {
+    public ChangePasswordDialog(Controller controller) {
         this.controller = controller;
     }
 
@@ -46,7 +44,7 @@ public class CreateAccount implements EventHandler {
         window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("New Account");
+        window.setTitle("Change Password");
 
         BorderPane root = new BorderPane();
         Scene scene2 = new Scene(root, 350, 200, Color.WHITE);
@@ -59,27 +57,27 @@ public class CreateAccount implements EventHandler {
         column2.setHgrow(Priority.ALWAYS);
         gridpane.getColumnConstraints().addAll(column1, column2);
 
-        Label bodyLabel = new Label("Create a new clerk account.");
+        Label bodyLabel = new Label("Type your old password and your new password twice to confirm the change.");
         gridpane.add(bodyLabel,0,0, 2, 1);
 
-        Label usernameLabel = new Label("Username:");
+        Label usernameLabel = new Label("Old Password:");
         gridpane.add(usernameLabel, 0, 1);
 
-        usernameTextField = new TextField();
-        gridpane.add(usernameTextField, 1, 1);
+        oldPasswordTextField = new PasswordField();
+        gridpane.add(oldPasswordTextField, 1, 1);
 
         Label passwordLabel = new Label("Password:");
         gridpane.add(passwordLabel, 0, 2);
 
-        passwordTextField = new PasswordField();
-        gridpane.add(passwordTextField, 1, 2);
+        newPasswordTextField = new PasswordField();
+        gridpane.add(newPasswordTextField, 1, 2);
 
 
         Label confirmPasswordLabel = new Label("Re-type Password:");
         gridpane.add(confirmPasswordLabel, 0, 3);
 
-        confirmPasswordTextField = new PasswordField();
-        gridpane.add(confirmPasswordTextField, 1, 3);
+        confirmNewPasswordTextField = new PasswordField();
+        gridpane.add(confirmNewPasswordTextField, 1, 3);
 
 
         Button okayButton = new Button("Okay");
@@ -107,44 +105,43 @@ public class CreateAccount implements EventHandler {
         }
 
         // Retrieve inputs
-        String tmpUsername = usernameTextField.getText();
-        String tmpPassword = passwordTextField.getText();
-        String tmpConfirmPassword = confirmPasswordTextField.getText();
+        String tmpOldPassword = oldPasswordTextField.getText();
+        String tmpNewPassword = newPasswordTextField.getText();
+        String tmpConfirmNewPassword = confirmNewPasswordTextField.getText();
 
         // Validate Inputs
-        if(tmpUsername.length() == 0 || tmpPassword.length() == 0) {
+        if(tmpOldPassword.length() == 0) {
             // Not enough characters
-            AlertBox.display("Invalid Fields", "Please input a valid username and/or password.");
+            AlertBox.display("Invalid Fields", "Please input your current password.");
+            return;
+        }
+        if(!tmpOldPassword.equals(controller.getLoggedInUser().getPassword())) {
+            // incorrect password
+            AlertBox.display("Invalid Fields", "Please input your current password correctly.");
             return;
         }
 
-        if(!tmpPassword.equals(tmpConfirmPassword)) {
+        if(tmpNewPassword.length() == 0) {
+            // Not enough characters
+            AlertBox.display("Invalid Fields", "Please input a valid new password.");
+            return;
+        }
+        if(!tmpNewPassword.equals(tmpConfirmNewPassword)) {
             // Matching Passwords needed
             AlertBox.display("Invalid Fields", "Matching password is required as a confirmation.");
             return;
         }
 
-        /* Should never get to the code below, because being in execution path implies that the database has no users.
-        if (controller.getUserDatabase().getUser(tmpUsername) != null) {
-            // ERROR MESSAGE - USER EXISTS ALREADY
-            AlertBox.display("Username already in use", "Please input a another username, as this " +
-                    "is already taken.");
-            return;
-        }*/
 
-        // Store new username and password
-        username = tmpUsername;
-        password = tmpPassword;
+        // Store new password
+        password = tmpNewPassword;
 
         // Close window
         window.close();
     }
 
-    String getUsername() {
-        return username;
-    }
 
-    String getPassword() {
+    public String getNewPassword() {
         return password;
     }
 
