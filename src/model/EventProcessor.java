@@ -16,14 +16,34 @@ public class EventProcessor {
 	//from the list of all current tcu we can get a list of all routes.
 	private List<TransportCostUpdate> currentTcu;
 	private List<TransportDiscontinued> currentTd;
-
+	//private List<CustomerPriceUpdate> currentCpu;
+	
 	public EventProcessor(){
 		this.currentTcu = new ArrayList<TransportCostUpdate>();
 		this.currentTd = new ArrayList<TransportDiscontinued>();
+		//this.currentCpu = new ArrayList<CustomerPriceUpdate>();
 	}
 
 
 	//Event proccessing
+	
+	//Update Customer Price
+	public void processCPU(CustomerPriceUpdate cpu){
+		
+		for(TransportCostUpdate transportCostUpdate : this.currentTcu){
+			String origin = cpu.getOrigin();
+			String destination = cpu.getDestination();
+			String priority = cpu.getPriority();
+			//contains the route then update
+			if(origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
+				System.out.println("Replacing old weight cost "+transportCostUpdate.getWeightCost() +" with new weight cost"+cpu.getWeightCost());
+				System.out.println("Replacing old volume cost "+transportCostUpdate.getVolumeCost() +" with new volume cost"+cpu.getVolumeCost());
+				transportCostUpdate.setWeightCost(cpu.getWeightCost());
+				transportCostUpdate.setVolumeCost(cpu.getVolumeCost());
+				System.out.println("Customer Price update finished");
+			}
+		}
+	}
 	//Add new tcu that didn't exist in the array list.
 	public void addTCU(TransportCostUpdate tcu){
 		this.currentTcu.add(tcu);
@@ -32,7 +52,6 @@ public class EventProcessor {
 	public void processTCU(TransportCostUpdate tcu){
 		//if tcu route is not in the list add it
 		//otherwise just change it
-		boolean updated = false;
 		for(TransportCostUpdate transportCostUpdate : this.currentTcu){
 			String origin = tcu.getOrigin();
 			String destination = tcu.getDestination();
@@ -41,13 +60,7 @@ public class EventProcessor {
 			if(origin.equals(transportCostUpdate.getOrigin()) && destination.equals(transportCostUpdate.getDestination()) && priority.equals(transportCostUpdate.getPriority())){
 				transportCostUpdate = tcu;
 				System.out.println("Replaced old tcu");
-				updated = true;
-				break;
 			}
-		}
-		//if the tcu was not found in the current tcu list. add it to the end
-		if(!updated){
-			this.currentTcu.add(tcu);
 		}
 	}
 	public void processTD(TransportDiscontinued td){
@@ -58,21 +71,6 @@ public class EventProcessor {
 			String destination = td.getDestination();
 			String priority = td.getPriority();
 			String city = td.getCity();
-//			if (priority.equals("LAND")){
-//				System.out.println("Going through LAND route map");
-//			}
-//			else if (priority.equals("AIR")){
-//				System.out.println("Going through AIR route map");
-//
-//			}
-//			else if (priority.equals("SEA")){
-//				System.out.println("Going through SEA route map");
-//
-//			}
-//			else{
-//				System.out.println("Going through DOMESTIC route map");
-//
-//			}
 			//After locating the route. Remove it in the tcu and td arraylists.
 			for(TransportCostUpdate tc : this.currentTcu){
 				if(transportDiscontinued.getOrigin().equals(tc.getOrigin()) && transportDiscontinued.getDestination().equals(tc.getDestination())

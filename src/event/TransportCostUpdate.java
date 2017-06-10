@@ -58,4 +58,12 @@ public class TransportCostUpdate extends Event{
 	public String getFirm() {
 		return firm;
 	}
+	
+	public void setWeightCost(double weight) {
+		this.weightCost = weight;
+	}
+
+	public void setVolumeCost(double vol) {
+		this.volumeCost = vol;
+	}
 }

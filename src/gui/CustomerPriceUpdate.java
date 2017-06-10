@@ -41,7 +41,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         this.controller = controller;
 
         eventButton = new Button();
-        eventButton.setText("Create Event");
+        eventButton.setText("Update");
         eventButton.setOnAction(this);
 
         backButton = new Button();
