@@ -43,31 +43,31 @@ public class ChangeUsernameDialog implements EventHandler {
         window.setTitle("New Username");
 
         BorderPane root = new BorderPane();
-        Scene scene2 = new Scene(root, 350, 200, Color.WHITE);
+        Scene scene2 = new Scene(root, 350, 150, Color.WHITE);
         GridPane gridpane = new GridPane();
         gridpane.setPadding(new Insets(10));
         gridpane.setHgap(10);
         gridpane.setVgap(10);
-        ColumnConstraints column1 = new ColumnConstraints(100);
+        ColumnConstraints column1 = new ColumnConstraints(130);
         ColumnConstraints column2 = new ColumnConstraints(50, 150, 300);
         column2.setHgrow(Priority.ALWAYS);
         gridpane.getColumnConstraints().addAll(column1, column2);
 
-        Label bodyLabel = new Label("Enter your new proposed newUsername:");
+        Label bodyLabel = new Label("Enter your new proposed new username:");
         gridpane.add(bodyLabel,0,0, 2, 1);
 
         Label newUsernameLabel = new Label("New Username:");
         gridpane.add(newUsernameLabel, 0, 1);
 
         newUsernameTextField = new TextField();
-        gridpane.add(newUsernameTextField, 1, 2);
+        gridpane.add(newUsernameTextField, 1, 1);
 
 
         Label confirmNewUsernameLabel = new Label("Re-type New Username:");
-        gridpane.add(confirmNewUsernameLabel, 0, 4);
+        gridpane.add(confirmNewUsernameLabel, 0, 2);
 
         confirmNewUsernameTextField = new PasswordField();
-        gridpane.add(confirmNewUsernameTextField, 1, 5);
+        gridpane.add(confirmNewUsernameTextField, 1, 2);
 
 
         Button okayButton = new Button("Okay");
@@ -77,7 +77,7 @@ public class ChangeUsernameDialog implements EventHandler {
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.CENTER);
         hbBtn.getChildren().add(okayButton);
-        gridpane.add(hbBtn, 0, 4, 2,1);
+        gridpane.add(hbBtn, 0, 3, 2,1);
 
         root.setCenter(gridpane);
 

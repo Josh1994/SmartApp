@@ -8,13 +8,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.VBox;
 import model.User;
 
-import java.io.IOException;
 import java.util.List;
 
 public class UserAccountManagement implements EventHandler<MouseEvent> {
@@ -94,11 +91,11 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 		box.setAlignment(Pos.CENTER);
 
 		//This adds spaces when items are being added (top,left, bottom, right)
-		box.setMargin(changeUsernameButton, new Insets(10,20,10,20));
-		box.setMargin(changePasswordButton, new Insets(10,20,10,20));
-		box.setMargin(newAccountButton, new Insets(10,20,10,20));
-		box.setMargin(promoteAccountButton, new Insets(10,20,10,20));
-		box.setMargin(deleteAccountButton, new Insets(10,20,10,20));
+        VBox.setMargin(changeUsernameButton, new Insets(10,20,10,20));
+        VBox.setMargin(changePasswordButton, new Insets(10,20,10,20));
+        VBox.setMargin(newAccountButton, new Insets(10,20,10,20));
+        VBox.setMargin(promoteAccountButton, new Insets(10,20,10,20));
+        VBox.setMargin(deleteAccountButton, new Insets(10,20,10,20));
 		
 		VBox box2 = new VBox(10);
 		box2.setMinHeight(100);
@@ -123,6 +120,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 		Button buttonClicked = (Button) event.getSource();
 		switch (buttonClicked.getText()) {
 			case "Change Username":
+			    onChangeUsernameButtonClicked();
 				break;
 			case "Change Password":
 				break;
@@ -145,6 +143,25 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 				throw new IllegalArgumentException("Event passed into handler method has not been handled correctly.");
 		}
 	}
+
+    private void onChangeUsernameButtonClicked() {
+        ChangeUsernameDialog changeUsernameDialog = new ChangeUsernameDialog(controller);
+        changeUsernameDialog.display();
+
+        if(changeUsernameDialog.isCancelled()) {
+            return;
+        }
+
+        try {
+            controller.getUserDatabase().changeUserUsername(controller.getLoggedInUser().getUsername(), changeUsernameDialog.getNewUsername());
+            //TODO: Update All events, change user field of all events, to new username.
+            AlertBox.display("Change Username Success", "You have now changed your username. Please login again with your your new username.");
+            controller.logout();
+        } catch (UserDatabase.UserDatabaseException e) {
+            AlertBox.display("Change Username Error", e.getMessage());
+            onChangeUsernameButtonClicked();
+        }
+    }
 
     private void onCreateAccountButtonClicked() {
         CreateAccount createAccount = new CreateAccount(controller);
@@ -248,7 +265,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 						} else {
 							// User rejected the deletion of their own account
 							deletionStatus_LoggedInUser = 2;
-							continue;
+							//continue;
 						}
 					}
 				} else {
