@@ -2,6 +2,10 @@ package gui;
 
 import controller.Controller;
 import controller.UserDatabase;
+import gui.dialogs.ChangePasswordDialog;
+import gui.dialogs.ChangeUserPermissionsDialog;
+import gui.dialogs.ChangeUsernameDialog;
+import gui.dialogs.DeleteUserAccountsDialog;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +18,13 @@ import model.User;
 
 import java.util.List;
 
+/**
+ * Displays the account management operations such changing a logged-in user's username or password.
+ * More options are displayed if the logged-in user is an admin, where they can promote/demote a user to a
+ * manager/clerk, delete users and create new accounts.
+ *
+ * @author Jonathan Young, Prashant Bhikhu
+ */
 public class UserAccountManagement implements EventHandler<MouseEvent> {
 	private Controller controller;
 	private Scene scene = null;
@@ -199,11 +210,11 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
     }
 
 	private void onDeleteAccountButtonClicked() {
-		ListUserAccountBox listUserAccountBox = new ListUserAccountBox(controller);
-		listUserAccountBox.display("Delete Account", "delete");
+		DeleteUserAccountsDialog deleteUserAccountsDialog = new DeleteUserAccountsDialog(controller);
+		deleteUserAccountsDialog.display("Delete Account", "delete");
 
 		// Ends the delete operation if the user does not want to continue.
-		if (listUserAccountBox.isCancelled()) {
+		if (deleteUserAccountsDialog.isCancelled()) {
 			return;
 		}
 
@@ -215,8 +226,8 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 			// 2 = Logged-in User was selected Selected for deletion, Rejected for deletion
 			int deletionStatus_LoggedInUser = 0;
 
-			for (Object o : listUserAccountBox.getSelectedIndices()) {
-				String username = (String) listUserAccountBox.getListItems().get((Integer) o);
+			for (Object o : deleteUserAccountsDialog.getSelectedIndices()) {
+				String username = (String) deleteUserAccountsDialog.getListItems().get((Integer) o);
 
 				// Handling User trying to delete themselves
 				if (username.equals(controller.getLoggedInUser().getUsername())) {
@@ -243,7 +254,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 						// Generally we allow deletion operation with confirmation, but first we have to check that
 						// the the logged-in user is not deleting all accounts or all manangers, otherwise we will
 						// be locked out of the program.
-						if(listUserAccountBox.getSelectedIndices().size() == listUserAccountBox.getListItems().size()) {
+						if(deleteUserAccountsDialog.getSelectedIndices().size() == deleteUserAccountsDialog.getListItems().size()) {
 							// if the above is true, do not allow the user to deletion of own account
 							AlertBox.display("User Deletion Error", "You cannot delete yourself when deleting all other users on the system. All other selected deletions will continue.");
 							deletionStatus_LoggedInUser = 2;
@@ -251,8 +262,8 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 						}
 
 						boolean isAllSelectedManagers = true;
-						for (Object o2 : listUserAccountBox.getSelectedIndices()) {
-							String username2 = (String) listUserAccountBox.getListItems().get((Integer) o2);
+						for (Object o2 : deleteUserAccountsDialog.getSelectedIndices()) {
+							String username2 = (String) deleteUserAccountsDialog.getListItems().get((Integer) o2);
 							User user2 = controller.getUserDatabase().getUser(username2);
 
 							if(!user2.isManager()) {

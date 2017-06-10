@@ -1,6 +1,7 @@
-package gui;
+package gui.dialogs;
 
 import controller.Controller;
+import gui.AlertBox;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -24,9 +25,9 @@ import java.util.List;
  * This is a custom dialog box that is displayed a list view of users. This allows to select multiple users for
  * modification operations like deleting users, promoting/demoting etc.
  *
- * @Author Prashant Bhikhu
+ * @author Prashant Bhikhu
  */
-public class ListUserAccountBox implements EventHandler {
+public class DeleteUserAccountsDialog implements EventHandler {
     // Global Components
     private Stage window;
     private Controller controller;
@@ -35,7 +36,7 @@ public class ListUserAccountBox implements EventHandler {
     private String action;
     private boolean isCancelled = false;
 
-    public ListUserAccountBox(Controller controller) {
+    public DeleteUserAccountsDialog(Controller controller) {
         this.controller = controller;
     }
 

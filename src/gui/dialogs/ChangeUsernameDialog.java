@@ -1,6 +1,7 @@
-package gui;
+package gui.dialogs;
 
 import controller.Controller;
+import gui.AlertBox;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,7 +18,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * This is a custom dialog box that is allows the user to change their newUsername
+ * This is a dialog box that is allows the user to input and change their username.
+ *
+ * @author Prashant Bhikhu
  */
 public class ChangeUsernameDialog implements EventHandler {
     // Global Components
@@ -126,7 +129,7 @@ public class ChangeUsernameDialog implements EventHandler {
         window.close();
     }
 
-    String getNewUsername() {
+    public String getNewUsername() {
         return newUsername;
     }
 

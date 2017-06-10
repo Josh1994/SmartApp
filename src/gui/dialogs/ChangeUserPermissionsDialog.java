@@ -1,6 +1,7 @@
-package gui;
+package gui.dialogs;
 
 import controller.Controller;
+import gui.AlertBox;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -21,8 +22,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This is a custom dialog box that is displayed when the database has no users. This allows the new user to create
- * a new account so they can use the application. Should only appear on first run of the application.
+ * This is a dialog box that is displayed when the a logged-in manager wants to change user's permission.
+ * It displays a dropdown list of users which that the user can select, and they they can choose whether the
+ * user is a a manager or not.
+ *
+ * @author Prashant Bhikhu
  */
 public class ChangeUserPermissionsDialog implements EventHandler {
     // Global Components

@@ -15,6 +15,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Displays an alert at the user if an issue or error appears.
+ *
+ * @author Julian Moreno
+ */
 public class AlertBox {
 	private Stage window;
 	public static void display(String title, String message){
