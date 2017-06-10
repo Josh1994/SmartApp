@@ -16,6 +16,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * This is a custom dialog box that is displayed a list view of users. This allows to select multiple users for
  * modification operations like deleting users, promoting/demoting etc.
@@ -59,9 +63,13 @@ public class ListUserAccountBox implements EventHandler {
 
         listView = new ListView();
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        List<String> tempUsernameList = new ArrayList<String>();
         for(User user: controller.getUserDatabase().getUsers()) {
-            listView.getItems().add(user.getUsername());
+            tempUsernameList.add(user.getUsername());
         }
+        Collections.sort(tempUsernameList);
+        listView.getItems().addAll(tempUsernameList);
         gridpane.add(listView, 0, 1,2,1);
 
 

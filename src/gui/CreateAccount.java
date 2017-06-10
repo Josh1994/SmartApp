@@ -34,6 +34,7 @@ public class CreateAccount implements EventHandler {
     //
     private String username;
     private String password;
+    private boolean cancelled = false;
 
     public CreateAccount(Controller controller) {
         this.controller = controller;
@@ -98,7 +99,8 @@ public class CreateAccount implements EventHandler {
     @Override
     public void handle(Event event) {
         if(event instanceof WindowEvent) {
-            event.consume();
+            window.close();
+            cancelled = true;
             return;
         }
 
@@ -142,5 +144,9 @@ public class CreateAccount implements EventHandler {
 
     String getPassword() {
         return password;
+    }
+
+    public boolean isCancelled() {
+        return cancelled;
     }
 }
