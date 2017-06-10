@@ -8,7 +8,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.VBox;
 import model.User;
 
@@ -30,46 +32,53 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 
 		//Button Creation
 		 Button changeUsernameButton = new Button ("Change Username", null);
-		 changeUsernameButton.setMaxSize(150, 100);
+		 changeUsernameButton.setPadding(new Insets(4, 20, 4, 20));
+		 changeUsernameButton.setMaxSize(250, 100);
 		 changeUsernameButton.setWrapText(true);
 		 changeUsernameButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 
 		Button changePasswordButton = new Button ("Change Password", null);
-		changePasswordButton.setMaxSize(150, 100);
+         changePasswordButton.setPadding(new Insets(4, 20, 4, 20));
+		changePasswordButton.setMaxSize(250, 100);
 		changePasswordButton.setWrapText(true);
 		changePasswordButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 
-		Button newAccountButton = new Button ("New Account", null);
-		newAccountButton.setMaxSize(150, 100);
+		Button newAccountButton = new Button ("Create new User Account", null);
+         newAccountButton.setPadding(new Insets(4, 20, 4, 20));
+		newAccountButton.setMaxSize(250, 100);
 		newAccountButton.setWrapText(true);
 		//Mouse event handling for creating a New Account
 		newAccountButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 
 
-		Button promoteAccountButton = new Button ("Promote Account", null);
-		promoteAccountButton.setMaxSize(150, 100);
+		Button promoteAccountButton = new Button ("Change User Accounts Permissions", null);
+         promoteAccountButton.setPadding(new Insets(4, 20, 4, 20));
+		promoteAccountButton.setMaxSize(250, 100);
 		promoteAccountButton.setWrapText(true);
 		//Mouse event handling for Promoting an Account, only appears if the
 		//user has proper permissions
 		promoteAccountButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 		
 		
-		Button deleteAccountButton = new Button("Delete Account");
-		deleteAccountButton.setMaxSize(150, 100);
+		Button deleteAccountButton = new Button("Delete User Accounts");
+         deleteAccountButton.setPadding(new Insets(4, 20, 4, 20));
+		deleteAccountButton.setMaxSize(250, 100);
 		deleteAccountButton.setWrapText(true);
 		//Mouse event handling for Deleting Account
 		deleteAccountButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 		
 		
-		Button backButton = new Button ("Back" , null);
+		Button backButton = new Button ("Back");
 		backButton.setMaxSize(150, 100);
 		backButton.setWrapText(true);
+		backButton.setStyle("fx-scale-y: 1.0;");
 		backButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 		
 		
-		Button logoutButton = new Button ("Logout", null);
+		Button logoutButton = new Button ("Logout");
 		logoutButton.setMaxSize(150, 100);
 		logoutButton.setWrapText(true);
+         logoutButton.setStyle("fx-scale-y: 1.0;");
 		logoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 		
 		
@@ -78,22 +87,24 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 		VBox box = new VBox();
 
 		//Add all buttons to a container. Place the container on the center of the BorderPane
-		box.getChildren().addAll(changeUsernameButton, changePasswordButton, newAccountButton, deleteAccountButton);
-		if(controller.getLoggedInUser().isManager())box.getChildren().add(promoteAccountButton);
+		box.getChildren().addAll(changeUsernameButton, changePasswordButton);
+		if(controller.getLoggedInUser().isManager()) {
+            box.getChildren().addAll(newAccountButton, deleteAccountButton, promoteAccountButton);
+        }
 		box.setAlignment(Pos.CENTER);
 
 		//This adds spaces when items are being added (top,left, bottom, right)
-		box.setMargin(changeUsernameButton, new Insets(15,20,15,20));
-		box.setMargin(changePasswordButton, new Insets(15,20,15,20));
-		box.setMargin(newAccountButton, new Insets(15,20,15,20));
-		box.setMargin(promoteAccountButton, new Insets(15,20,15,20));
-		box.setMargin(deleteAccountButton, new Insets(15,20,15,20));
+		box.setMargin(changeUsernameButton, new Insets(10,20,10,20));
+		box.setMargin(changePasswordButton, new Insets(10,20,10,20));
+		box.setMargin(newAccountButton, new Insets(10,20,10,20));
+		box.setMargin(promoteAccountButton, new Insets(10,20,10,20));
+		box.setMargin(deleteAccountButton, new Insets(10,20,10,20));
 		
-		VBox box2 = new VBox();
+		VBox box2 = new VBox(10);
+		box2.setMinHeight(100);
 		box2.getChildren().addAll(backButton, logoutButton);
 		box2.setAlignment(Pos.BOTTOM_RIGHT);
-		box2.setMargin(backButton, new Insets(10,10,10,10));
-		box2.setMargin(logoutButton, new Insets(10,10,10,10));
+		box2.setPadding(new Insets(10));
 
 		root.setCenter(box);
 		root.setBottom(box2);
@@ -115,20 +126,13 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 				break;
 			case "Change Password":
 				break;
-			case "New Account":
-				CreateAccount createAccount = new CreateAccount(controller);
-				createAccount.display();
-				try {
-					controller.getUserDatabase().addUser(createAccount.getUsername(),
-							createAccount.getPassword(), false);
-				} catch (UserDatabase.UserDatabaseException e) {
-					AlertBox.display("Create Account Error", e.getMessage());
-				}
+			case "Create new User Account":
+				onCreateAccountButtonClicked();
 				break;
-			case "Delete Account":
+			case "Delete User Accounts":
 				onDeleteAccountButtonClicked();
 				break;
-			case "Promote Account":
+			case "Change User Accounts Permissions":
 				break;
 			case "Back":
 				controller.handleEvent(Controller.MAINSCREEN);
@@ -141,6 +145,21 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 				throw new IllegalArgumentException("Event passed into handler method has not been handled correctly.");
 		}
 	}
+
+    private void onCreateAccountButtonClicked() {
+        CreateAccount createAccount = new CreateAccount(controller);
+        createAccount.display();
+
+        if(createAccount.isCancelled()) {
+            return;
+        }
+
+        try {
+            controller.getUserDatabase().addUser(createAccount.getUsername(), createAccount.getPassword(), false);
+        } catch (UserDatabase.UserDatabaseException e) {
+            AlertBox.display("Create Account Error", e.getMessage());
+        }
+    }
 
 	private void onDeleteAccountButtonClicked() {
 		ListUserAccountBox listUserAccountBox = new ListUserAccountBox(controller);
