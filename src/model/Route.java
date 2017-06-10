@@ -279,6 +279,7 @@ public class Route implements Comparable<Route> {
 		else if (this.effectiveCost == other.effectiveCost) return 0;
 		else return 1;
 	}
+
 	@Override
 	public String toString() {
 		return "Route{" +
@@ -291,8 +292,34 @@ public class Route implements Comparable<Route> {
 				", maxVolume=" + maxVolume +
 				", priority='" + priority + '\'' +
 				", stages=" + stages +
+				", revenue=" + revenue +
+				", expenditure=" + expenditure +
+				", numberOfEvents=" + numberOfEvents +
+				", amountOfMail=" + amountOfMail +
+				", avgDeliveryTime=" + avgDeliveryTime +
 				'}';
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Route)) return false;
+
+		Route route = (Route) o;
+
+		if (amountOfMail != route.amountOfMail) return false;
+		if (Double.compare(route.avgDeliveryTime, avgDeliveryTime) != 0) return false;
+		if (origin != null ? !origin.equals(route.origin) : route.origin != null) return false;
+		if (destination != null ? !destination.equals(route.destination) : route.destination != null) return false;
+		return priority != null ? priority.equals(route.priority) : route.priority == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = origin != null ? origin.hashCode() : 0;
+		result = 31 * result + (destination != null ? destination.hashCode() : 0);
+		result = 31 * result + (priority != null ? priority.hashCode() : 0);
+		return result;
+	}
 }
 

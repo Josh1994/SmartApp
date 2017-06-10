@@ -97,10 +97,12 @@ public class EventManager {
      */
     private void addTcu(List<TransportCostUpdate> tcus, TransportCostUpdate tcu) {
         if (tcus.size() == 0) tcus.add(tcu);
-        for (int i = 0 ; i < tcus.size(); i++) {
-            if (tcus.get(i).equals(tcu)) tcus.remove(i);
-            tcus.add(tcu);
+        else {
+            for (int i = 0 ; i < tcus.size(); i++) {
+                if (tcus.get(i).equals(tcu)) tcus.remove(i);
+            }
         }
+        tcus.add(tcu);
     }
 
     private void cancelTcu(List<TransportCostUpdate> tcus, TransportDiscontinued td) {
@@ -118,15 +120,15 @@ public class EventManager {
         if (routeFinder == null) {
             this.routeFinder = new RouteFinder(this);
             routeFinder.initiateRouteFinder(new HashSet<>(currentTcus));
+        } else {
+
+            local = new RouteFinder(null);
+            local.initiateRouteFinder(new HashSet<TransportCostUpdate>(currentTcus));
+
+            mergeRouteMaps(routeFinder.getDomesticRoutes(), local.getDomesticRoutes());
+            mergeRouteMaps(routeFinder.getAirRoutes(), local.getAirRoutes());
+            mergeRouteMaps(routeFinder.getSurfaceRoutes(), local.getSurfaceRoutes());
         }
-
-        local = new RouteFinder(null);
-        local.initiateRouteFinder(new HashSet<TransportCostUpdate>(currentTcus));
-
-        mergeRouteMaps(routeFinder.getDomesticRoutes(), local.getDomesticRoutes());
-        mergeRouteMaps(routeFinder.getAirRoutes(), local.getAirRoutes());
-        mergeRouteMaps(routeFinder.getSurfaceRoutes(), local.getSurfaceRoutes());
-
 
     }
 

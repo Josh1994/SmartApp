@@ -21,34 +21,34 @@ public class RouteFinderTest {
         ArrayList<TransportCostUpdate> tcus = new ArrayList<>();
 
         tcus.add(new TransportCostUpdate(null, null, "AKLD",
-                "WGTN", 10, 10, 0 , 0, 10, 10,
-                null, "A", Event.DOMESTIC));
+                "WGTN", 10, 10, 0 , 0, 0, 0,
+                null, null, Event.DOMESTIC));
         tcus.add( new TransportCostUpdate(null, null, "AKLD",
-                "CHCH", 10, 10, 0 , 0, 10, 10,
-                null, "A", Event.DOMESTIC));
+                "CHCH", 10, 10, 0 , 0, 0, 0,
+                null, null, Event.DOMESTIC));
         tcus.add( new TransportCostUpdate(null, null, "WGTN",
-                "AKLD", 10, 10, 0 , 0, 10, 10,
-                null, "A", Event.DOMESTIC));
+                "AKLD", 10, 10, 0 , 0, 0, 0,
+                null, null, Event.DOMESTIC));
         tcus.add( new TransportCostUpdate(null, null, "CHCH",
-                "DNDN", 10, 10, 0 , 0, 10, 10,
-                null, "A", Event.DOMESTIC));
+                "DNDN", 10, 10, 0 , 0, 0, 0,
+                null, null, Event.DOMESTIC));
 
         tcus.add( new TransportCostUpdate(null, null, "AKLD",
-                "SIDNEY", 10, 10, 0 , 0, 10, 10,
-                null, "A", Event.AIR));
+                "SIDNEY", 10, 10, 0 , 0, 0, 0,
+                null, null, Event.AIR));
         tcus.add( new TransportCostUpdate(null, null, "AKLD",
                 "LA", 10, 10, 0 , 0, 10, 10,
-                null, "A", Event.AIR));
+                null, null, Event.AIR));
         tcus.add( new TransportCostUpdate(null, null, "LA",
-                "LONDON", 10, 10, 0 , 0, 10, 10,
-                null, "A", Event.AIR));
+                "LONDON", 10, 10, 0 , 0, 0, 0,
+                null, null, Event.AIR));
         tcus.add( new TransportCostUpdate(null, null, "LA",
                 "DUBLIN", 10, 10, 0 , 0, 10, 10,
-                null, "A", Event.AIR));
+                null, null, Event.AIR));
         // Intl Surface
         tcus.add( new TransportCostUpdate(null, null, "LA",
                 "DUBLIN", 5, 5, 0 , 0, 10, 10,
-                null, "A", Event.SEA));
+                null, null, Event.SEA));
 
 
         return tcus;
@@ -153,7 +153,7 @@ public class RouteFinderTest {
 
 
     @Test
-    public static void testDomesticRoutes() {
+    public void testDomesticRoutes() {
         RouteFinder finder = new RouteFinder(null);
         finder.initiateRouteFinder(new HashSet<TransportCostUpdate>(createTCUs()));
         Map<String, Set<Route>> domestics = finder.getDomesticRoutes();
@@ -205,7 +205,7 @@ public class RouteFinderTest {
      * A -> F, Should be 11.0 for weight and volume cost of final route.
      */
     @Test
-    public static  void testDomesticRoutes_Generic() {
+    public void testDomesticRoutes_Generic() {
         RouteFinder finder = new RouteFinder(null);
         finder.initiateRouteFinder(new HashSet<TransportCostUpdate>(createTCUs_GenericGraph()));
         Map<String, Set<Route>> domestics = finder.getDomesticRoutes();
@@ -322,7 +322,7 @@ public class RouteFinderTest {
     }
 
     @Test
-    public static  void testInternationalAirRoutes() {
+    public void testInternationalAirRoutes() {
         RouteFinder finder = new RouteFinder(null);
         finder.initiateRouteFinder(new HashSet<TransportCostUpdate>(createTCUs()));
         Map<String, Set<Route>> domestics = finder.getDomesticRoutes();
@@ -363,7 +363,7 @@ public class RouteFinderTest {
     }
 
     @Test
-    public static  void testInternationalSurfaceRoutes() {
+    public void testInternationalSurfaceRoutes() {
 
         RouteFinder finder = new RouteFinder(null);
         finder.initiateRouteFinder(new HashSet<TransportCostUpdate>(createTCUs()));
