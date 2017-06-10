@@ -132,6 +132,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 				onDeleteAccountButtonClicked();
 				break;
 			case "Change User Accounts Permissions":
+			    onChangeUserAccountPermissionsButtonClicked();
 				break;
 			case "Back":
 				controller.handleEvent(Controller.MAINSCREEN);
@@ -303,4 +304,38 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 			AlertBox.display("User Deletion Error", e.getMessage());
 		}
 	}
+
+    private void onChangeUserAccountPermissionsButtonClicked() {
+        ChangeUserPermissionsDialog changeUserPermissionsDialog = new ChangeUserPermissionsDialog(controller);
+        changeUserPermissionsDialog.display();
+
+        if(changeUserPermissionsDialog.isCancelled()) {
+            return;
+        }
+
+        try {
+            List<User> users = controller.getUserDatabase().getUsers();
+            List<User> managers = controller.getUserDatabase().getManagers();
+
+            //checkinf if changing your own permissions or not, and whether your the only manager or not.
+            if(changeUserPermissionsDialog.getUsername().equals(controller.getLoggedInUser().getUsername()) && managers.size() == 1) {
+                // if user is demoting themselves to clerk, reject this operation as they are the only manager.
+                if(!changeUserPermissionsDialog.getIsManager()) {
+                    AlertBox.display("Change User Permission Error", "You cannot make be a Clerk as you are the only manager on the system.");
+                    return;
+                }
+            } else {
+                controller.getUserDatabase().changeUserPermission(changeUserPermissionsDialog.getUsername(), changeUserPermissionsDialog.getIsManager());
+            }
+
+            if(changeUserPermissionsDialog.getUsername().equals(controller.getLoggedInUser().getUsername())) {
+                AlertBox.display("Change User Permission Success", "You have now changed your own permissions to be a " + (changeUserPermissionsDialog.getIsManager() ? "Manager" : "Clerk") + ". Please login again.");
+                controller.logout();
+            } else {
+                AlertBox.display("Change User Permission Success", "You have successfully changed \"" + changeUserPermissionsDialog.getUsername() + "\" to be a " + (changeUserPermissionsDialog.getIsManager() ? "Manager" : "Clerk") + ".");
+            }
+        } catch (UserDatabase.UserDatabaseException e) {
+            AlertBox.display("Change User Permission Error", e.getMessage());
+        }
+    }
 }
