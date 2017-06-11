@@ -1,24 +1,15 @@
 package gui;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
 import controller.Controller;
-import javafx.application.Application;
+import gui.dialogs.LogoutDialog;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class MainScreen{
 private Scene scene = null;
@@ -66,16 +57,16 @@ private Scene scene = null;
 			});
 		
 		
-		Button button5 = new Button ("Logout", null);
+		Button button5 = new Button ("LogoutDialog", null);
 		button5.setMaxSize(150, 100);
 		button5.setWrapText(true);
 		//Mouse event handling for Transport Discontinued
 		button5.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
-			        	System.out.println("Logout button clicked");
-			            Logout logout = new Logout(controller);
-			            logout.display();
+			        	System.out.println("LogoutDialog button clicked");
+			            LogoutDialog logoutDialog = new LogoutDialog(controller);
+			            logoutDialog.display();
 			        }
 			});
 

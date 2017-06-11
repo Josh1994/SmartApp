@@ -7,6 +7,7 @@ import event.Event;
 
 import controller.Controller;
 import gui.base.DataEntryGUI;
+import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -51,7 +52,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		backButton.setOnAction(this);
 
 		logoutButton = new Button();
-		logoutButton.setText("Logout");
+		logoutButton.setText("LogoutDialog");
 		logoutButton.setOnAction(this);
 
 		Label fromLabel = new Label("Origin");
@@ -186,8 +187,8 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		}if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
 		}if(event.getSource() == logoutButton){
-			Logout logout = new Logout(controller);
-			logout.display();
+			LogoutDialog logoutDialog = new LogoutDialog(controller);
+			logoutDialog.display();
 		}
 
 	}

@@ -2,10 +2,7 @@ package gui;
 
 import controller.Controller;
 import controller.UserDatabase;
-import gui.dialogs.ChangePasswordDialog;
-import gui.dialogs.ChangeUserPermissionsDialog;
-import gui.dialogs.ChangeUsernameDialog;
-import gui.dialogs.DeleteUserAccountsDialog;
+import gui.dialogs.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -83,7 +80,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 		backButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 		
 		
-		Button logoutButton = new Button ("Logout");
+		Button logoutButton = new Button ("LogoutDialog");
 		logoutButton.setMaxSize(150, 100);
 		logoutButton.setWrapText(true);
          logoutButton.setStyle("fx-scale-y: 1.0;");
@@ -148,9 +145,9 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 			case "Back":
 				controller.handleEvent(Controller.MAINSCREEN);
 				break;
-			case "Logout":
-				Logout logout = new Logout(controller);
-				logout.display();
+			case "LogoutDialog":
+				LogoutDialog logoutDialog = new LogoutDialog(controller);
+				logoutDialog.display();
 				break;
 			default:
 				throw new IllegalArgumentException("Event passed into handler method has not been handled correctly.");
