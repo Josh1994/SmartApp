@@ -72,7 +72,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		backButton.setOnAction(this);
 
         logoutButton = new Button();
-		logoutButton.setText("LogoutDialog");
+		logoutButton.setText("Logout");
 		logoutButton.setOnAction(this);
 		
 		Label fromLabel = new Label("Origin: ");

@@ -54,7 +54,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		backButton.setOnAction(this);
 
 		logoutButton = new Button();
-		logoutButton.setText("LogoutDialog");
+		logoutButton.setText("Logout");
 		logoutButton.setOnAction(this);
 
 		Label fromLabel = new Label("Origin");

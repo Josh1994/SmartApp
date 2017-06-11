@@ -113,14 +113,14 @@ private Scene scene = null;
 			});
 		
 		
-		Button button6 = new Button ("LogoutDialog", null);
+		Button button6 = new Button ("Logout", null);
 		button6.setMaxSize(150, 100);
 		button6.setWrapText(true);
 		//Mouse event handling for Transport Discontinued
 		button6.addEventHandler(MouseEvent.MOUSE_CLICKED,
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
-			        	System.out.println("LogoutDialog button clicked");
+			        	System.out.println("Logout button clicked");
 			            LogoutDialog logoutDialog = new LogoutDialog(controller);
 			            logoutDialog.display();
 			        }

@@ -36,14 +36,14 @@ public class LogoutDialog implements EventHandler<ActionEvent>{
         window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("LogoutDialog");
+        window.setTitle("Logout");
         window.setMinWidth(250);
         window.setMinHeight(100);
         
         Label bodyLabel = new Label("Do you wish to logout?");
         bodyLabel.setPadding(new Insets(10));
 
-        logoutButton = new Button("LogoutDialog");
+        logoutButton = new Button("Logout");
         logoutButton.setOnAction(this);
         logoutButton.setAlignment(Pos.CENTER);
         
@@ -72,7 +72,7 @@ public class LogoutDialog implements EventHandler<ActionEvent>{
     		// System.out.println("Cancel Button clicked");
     		window.close();
     	}else if(event.getSource().equals(logoutButton)){
-    		// System.out.println("LogoutDialog Button clicked");
+    		// System.out.println("Logout Button clicked");
     		controller.logout();
     		window.close();
     	}

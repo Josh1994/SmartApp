@@ -80,7 +80,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 		backButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 		
 		
-		Button logoutButton = new Button ("LogoutDialog");
+		Button logoutButton = new Button ("Logout");
 		logoutButton.setMaxSize(150, 100);
 		logoutButton.setWrapText(true);
          logoutButton.setStyle("fx-scale-y: 1.0;");
@@ -145,7 +145,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 			case "Back":
 				controller.handleEvent(Controller.MAINSCREEN);
 				break;
-			case "LogoutDialog":
+			case "Logout":
 				LogoutDialog logoutDialog = new LogoutDialog(controller);
 				logoutDialog.display();
 				break;
