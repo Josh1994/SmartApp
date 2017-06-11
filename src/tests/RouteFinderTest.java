@@ -21,34 +21,34 @@ public class RouteFinderTest {
         ArrayList<TransportCostUpdate> tcus = new ArrayList<>();
 
         tcus.add(new TransportCostUpdate(null, null, "AKLD",
-                "WGTN", 10, 10, 0 , 0, 0, 0,
-                null, null, Event.DOMESTIC));
+                "WGTN", 10, 10, 0 , 0, 10, 10,
+                null, "A", Event.DOMESTIC));
         tcus.add( new TransportCostUpdate(null, null, "AKLD",
-                "CHCH", 10, 10, 0 , 0, 0, 0,
-                null, null, Event.DOMESTIC));
+                "CHCH", 10, 10, 0 , 0, 10, 10,
+                null, "A", Event.DOMESTIC));
         tcus.add( new TransportCostUpdate(null, null, "WGTN",
-                "AKLD", 10, 10, 0 , 0, 0, 0,
-                null, null, Event.DOMESTIC));
+                "AKLD", 10, 10, 0 , 0, 10, 10,
+                null, "A", Event.DOMESTIC));
         tcus.add( new TransportCostUpdate(null, null, "CHCH",
-                "DNDN", 10, 10, 0 , 0, 0, 0,
-                null, null, Event.DOMESTIC));
+                "DNDN", 10, 10, 0 , 0, 10, 10,
+                null, "A", Event.DOMESTIC));
 
         tcus.add( new TransportCostUpdate(null, null, "AKLD",
-                "SIDNEY", 10, 10, 0 , 0, 0, 0,
-                null, null, Event.AIR));
+                "SIDNEY", 10, 10, 0 , 0, 10, 10,
+                null, "A", Event.AIR));
         tcus.add( new TransportCostUpdate(null, null, "AKLD",
                 "LA", 10, 10, 0 , 0, 10, 10,
-                null, null, Event.AIR));
+                null, "A", Event.AIR));
         tcus.add( new TransportCostUpdate(null, null, "LA",
-                "LONDON", 10, 10, 0 , 0, 0, 0,
-                null, null, Event.AIR));
+                "LONDON", 10, 10, 0 , 0, 10, 10,
+                null, "A", Event.AIR));
         tcus.add( new TransportCostUpdate(null, null, "LA",
                 "DUBLIN", 10, 10, 0 , 0, 10, 10,
-                null, null, Event.AIR));
+                null, "A", Event.AIR));
         // Intl Surface
         tcus.add( new TransportCostUpdate(null, null, "LA",
                 "DUBLIN", 5, 5, 0 , 0, 10, 10,
-                null, null, Event.SEA));
+                null, "A", Event.SEA));
 
 
         return tcus;

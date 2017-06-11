@@ -13,6 +13,7 @@ public class EventManager {
     private List<Event> eventList;
     private List<TransportCostUpdate> currentTcus;
     private List<MailDelivery> currentMds;
+
     private List<CustomerPriceUpdate> currentCpus;
     private List<TransportDiscontinued> currentTds;
     private boolean newChange = false;
@@ -42,7 +43,11 @@ public class EventManager {
         }
     }
 
-    private void processSingleEvent(Event event, boolean batch) {
+    public void processEvent(Event event) {
+        processSingleEvent(event, false);
+    }
+
+    public void processSingleEvent(Event event, boolean batch) {
         if (!batch) eventList.add(event);
         totalEvents += 1;
         if (event instanceof TransportCostUpdate) {
@@ -101,8 +106,9 @@ public class EventManager {
             for (int i = 0 ; i < tcus.size(); i++) {
                 if (tcus.get(i).equals(tcu)) tcus.remove(i);
             }
+            tcus.add(tcu);
         }
-        tcus.add(tcu);
+
     }
 
     private void cancelTcu(List<TransportCostUpdate> tcus, TransportDiscontinued td) {
@@ -185,4 +191,9 @@ public class EventManager {
     public RouteFinder getRouteFinder() {
         return routeFinder;
     }
+
+    public List<CustomerPriceUpdate> getCurrentCpus() {
+        return currentCpus;
+    }
+
 }

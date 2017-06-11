@@ -81,7 +81,14 @@ public class Event {
 
 		if (origin != null ? !origin.equals(event.origin) : event.origin != null) return false;
 		if (destination != null ? !destination.equals(event.destination) : event.destination != null) return false;
-		return priority != null ? priority.equals(event.priority) : event.priority == null;
+		return priority != null ? samePriority(priority, event.priority) : event.priority == null;
+	}
+
+	// create Surface equality
+	public boolean samePriority(String priority1, String priority2) {
+		if (priority1.equals(Event.SEA) || priority1.equals(Event.LAND)) {
+			return (priority2.equals(Event.SEA) || priority2.equals(Event.LAND));
+		} else return priority1.equals(priority2);
 	}
 
 	@Override

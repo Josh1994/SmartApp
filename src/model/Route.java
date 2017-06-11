@@ -1,6 +1,7 @@
 package model;
 
 import event.CustomerPriceUpdate;
+import event.Event;
 import event.MailDelivery;
 import event.TransportCostUpdate;
 
@@ -242,17 +243,21 @@ public class Route implements Comparable<Route> {
 		double cost = 0;
 		double weightCostC = 0;
 		double volCostC = 0;
+
 		for (TransportCostUpdate tcu : stages) {
 			CustomerPriceUpdate cpu = matchCustomerPriceUpdate(tcu, cpus);
 			weightCostC += cpu == null ? tcu.getWeightCost() : cpu.getWeightCost();
+
 			volCostC += cpu == null ? tcu.getVolumeCost() : cpu.getVolumeCost();
 		}
 		cost += weightCostC * md.getWeight();
-		cost += volCostC + md.getVolume();
+		cost += volCostC * md.getVolume();
+		System.out.format("cpu : %f  ", cost);
 		return cost;
+
 	}
 
-	private CustomerPriceUpdate matchCustomerPriceUpdate(TransportCostUpdate tcu,
+	public CustomerPriceUpdate matchCustomerPriceUpdate(TransportCostUpdate tcu,
 														 List<CustomerPriceUpdate> cpus) {
 		for (CustomerPriceUpdate cpu : cpus) {
 			if (tcu.getOrigin().equals(cpu.getOrigin()) &&
@@ -307,11 +312,15 @@ public class Route implements Comparable<Route> {
 
 		Route route = (Route) o;
 
-		if (amountOfMail != route.amountOfMail) return false;
-		if (Double.compare(route.avgDeliveryTime, avgDeliveryTime) != 0) return false;
 		if (origin != null ? !origin.equals(route.origin) : route.origin != null) return false;
 		if (destination != null ? !destination.equals(route.destination) : route.destination != null) return false;
-		return priority != null ? priority.equals(route.priority) : route.priority == null;
+		return priority != null ? samePriority(priority, route.priority) : route.priority == null;
+	}
+	// create Surface equality
+	public boolean samePriority(String priority1, String priority2) {
+		if (priority1.equals(Event.SEA) || priority1.equals(Event.LAND)) {
+			return (priority2.equals(Event.SEA) || priority2.equals(Event.LAND));
+		} else return priority1.equals(priority2);
 	}
 
 	@Override
