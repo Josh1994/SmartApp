@@ -54,6 +54,10 @@ public class RouteFinder {
         return domesticRoutes;
     }
 
+    public void setDomesticRoutes(Map<String, Set<Route>> map) {
+        domesticRoutes = map;
+    }
+
     /**
      *  Key - NZ cities which are the start of International Air routes
      * @return
@@ -62,12 +66,20 @@ public class RouteFinder {
         return surfaceRoutes;
     }
 
+    public void setSurfaceRoutes(Map<String, Set<Route>> map) {
+        surfaceRoutes = map;
+    }
+
     /**
      * Key - NZ cities which are the start of International Surface routes
      * @return
      */
     public Map<String, Set<Route>> getAirRoutes() {
         return airRoutes;
+    }
+
+    public void setAirRoutes(Map<String, Set<Route>> map) {
+        airRoutes = map;
     }
 
     /**

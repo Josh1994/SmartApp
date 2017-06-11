@@ -212,12 +212,28 @@ public class Route implements Comparable<Route> {
 		this.stages = stages;
 	}
 
+	/**
 	public void update(Route route) {
 		weightCost = route.weightCost;
 		volumeCost = route.volumeCost;
 		maxVolume = route.maxVolume;
 		maxWeight = route.maxWeight;
 		stages = route.stages;
+
+		private double revenue = 0;
+		private double expenditure = 0;
+		private int numberOfEvents = 0;
+		private int amountOfMail = 0;
+		private double avgDeliveryTime = 0;
+	}
+	 */
+	public void update(Route route) {
+
+		revenue = route.revenue;
+		expenditure = route.expenditure;
+		numberOfEvents = route.numberOfEvents;
+		amountOfMail = route.amountOfMail;
+		avgDeliveryTime = route.avgDeliveryTime;
 	}
 	/**
 	 public void update(CustomerPriceUpdate cpu) {

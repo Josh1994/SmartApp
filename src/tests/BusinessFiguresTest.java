@@ -3,6 +3,7 @@ package tests;
 
 import event.*;
 import model.EventManager;
+import model.EventManager1;
 import model.Route;
 import model.RouteFinder;
 import org.junit.Assert;
@@ -34,6 +35,28 @@ public class BusinessFiguresTest {
         events.add(new CustomerPriceUpdate(null, null, "LA",
                 "DUBLIN", 10, 10, Event.AIR));
 
+        // Domestic 6 - 10
+
+        events.add(new MailDelivery(null,
+                null, "AKLD", "DNDN", 10, 10, Event.DOMESTIC));
+
+        events.add(new CustomerPriceUpdate(null, null, "CHCH",
+                "DNDN", 20, 20, Event.DOMESTIC));
+
+        events.add(new TransportDiscontinued(null, null, "CHCH",
+                "DNDN", "A", Event.DOMESTIC));
+
+        events.add( new TransportCostUpdate(null, null, "AKLD",
+                "CHCH", 20, 20, 0 , 0, 10, 10,
+                null, "A", Event.DOMESTIC));
+
+        events.add( new TransportCostUpdate(null, null, "AKLD",
+                "NLSN", 10, 10, 0 , 0, 10, 10,
+                null, "A", Event.DOMESTIC));
+
+        events.add(new CustomerPriceUpdate(null, null, "CHCH",
+                "DNDN", 10, 10, Event.DOMESTIC));
+
         return events;
     }
 
@@ -46,6 +69,7 @@ public class BusinessFiguresTest {
                 (events));
         return em;
     }
+
     @Test
     public void testBusinessFigures_1(){
         EventManager em = eventManager();
@@ -100,7 +124,69 @@ public class BusinessFiguresTest {
     }
 
     @Test
-    public void testBusinessFigures_3() {
+    public void testBusinessFigures_Domestic() {
+        EventManager em = eventManager();
+        Assert.assertEquals(em.getTotalEvents(), 9);
+
+        em.processSingleEvent(event().get(5), false);
+        // Test business figures
+        Route ak_dn = em.getRouteFinder().getRoute("AKLD", "DNDN", Event.DOMESTIC);
+        Assert.assertEquals(ak_dn.getAvgDeliveryTime(), 30, 0.1);
+        Assert.assertEquals(ak_dn.getAmountOfmail(), 1);
+        Assert.assertEquals(ak_dn.getCustomerCost((MailDelivery) event().get(0),em.getCurrentCpus()),
+                400, 0.1);
+        Assert.assertEquals(ak_dn.getExpenditure(), 400, 0.1);
+
+        em.processSingleEvent(event().get(5), false);
+
+        Assert.assertEquals(ak_dn.getExpenditure(), 800, 0.1);
+
+        em.processEvent(event().get(6));
+
+        Assert.assertEquals(ak_dn.getExpenditure(), 800, 0.1);
+
+        em.processEvent(event().get(5));
+
+        Assert.assertEquals(ak_dn.getExpenditure(), 1200, 0.1);
+
+        Assert.assertEquals(ak_dn.getRevenue(), 1400, 0.1);
+
+        em.processEvent(event().get(8));
+
+        Route ak_dn1 = em.getRouteFinder().getRoute("AKLD", "DNDN", Event.DOMESTIC);
+
+        Assert.assertTrue(ak_dn.equals(ak_dn1));
+
+        System.out.format("true : %b  %n", ak_dn.equals(ak_dn1));
+
+        Assert.assertEquals(ak_dn1.getExpenditure(), 1200, 0.1);
+
+        Assert.assertEquals(ak_dn1.getRevenue(), 1400, 0.1);
+
+        em.processEvent(event().get(5));
+
+        System.out.format("3 : %s", ak_dn.toString());
+
+        Assert.assertEquals(ak_dn1.getExpenditure(), 1800, 0.1);
+
+        Assert.assertEquals(ak_dn1.getRevenue(), 2200, 0.1);
+
+        em.processEvent(event().get(9));
+
+        Route ak_nn = em.getRouteFinder().getRoute("AKLD", "NLSN", Event.DOMESTIC);
+
+        Assert.assertEquals(ak_nn.getRevenue(), 0, 0.1);
+
+        em.processEvent(event().get(7));
+
+        Route ak_dn3 = em.getRouteFinder().getRoute("AKLD", "DNDN", Event.DOMESTIC);
+
+        Assert.assertEquals(ak_dn3, null);
+
+    }
+
+    @Test
+    public void testBusinessFigures_4() {
         EventManager em = eventManager();
         Assert.assertEquals(em.getTotalEvents(), 9);
 
@@ -151,21 +237,12 @@ public class BusinessFiguresTest {
 
         em.processEvent(event().get(0));
 
-        Assert.assertEquals(dublinSurface1.getExpenditure(), 1900, 0.1);
+        Route ds2 = em.getRouteFinder().getRoute("AKLD", "DUBLIN", Event.SEA);
 
-        Assert.assertEquals(dublinSurface1.getRevenue(), 2000, 0.1);
+        Assert.assertEquals(ds2.getExpenditure(), 1900, 0.1);
 
-        em.processEvent(event().get(4));
+        Assert.assertEquals(ds2.getRevenue(), 2000, 0.1);
 
-        em.processEvent(event().get(0));
-
-        Assert.assertEquals(dublinSurface1.getExpenditure(), 2500, 0.1);
-
-        System.out.format("4 : %s", dublinSurface.toString());
-
-        System.out.format("4 : %s", dublinSurface.matchCustomerPriceUpdate( (TransportCostUpdate) event().get(3),
-                 em.getCurrentCpus()).toString());
-        Assert.assertEquals(dublinSurface1.getRevenue(), 2400, 0.1);
 
     }
 

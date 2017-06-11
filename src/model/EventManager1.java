@@ -8,7 +8,7 @@ import java.util.*;
  * Created by phoal on 5/25/2017.
  * Module to take interact with EventFile
  */
-public class EventManager {
+public class EventManager1 {
     private BusinessModel model;
     private List<Event> eventList;
     private List<TransportCostUpdate> currentTcus;
@@ -22,7 +22,7 @@ public class EventManager {
     private int totalEvents = 0;
     private int totalMailDelivery = 0;
 
-    public EventManager(BusinessModel model, List<Event>eventList) {
+    public EventManager1(BusinessModel model, List<Event>eventList) {
         this.model = model;
 
         this.currentTcus = new ArrayList<TransportCostUpdate>();
@@ -126,7 +126,7 @@ public class EventManager {
     public void getNewRoutes() {
         RouteFinder local;
         if (routeFinder == null) {
-            this.routeFinder = new RouteFinder(this);
+            this.routeFinder = new RouteFinder(null);
             routeFinder.initiateRouteFinder(new HashSet<>(currentTcus));
         } else {
 
@@ -136,39 +136,43 @@ public class EventManager {
             mergeRouteMaps(routeFinder.getDomesticRoutes(), local.getDomesticRoutes());
             mergeRouteMaps(routeFinder.getAirRoutes(), local.getAirRoutes());
             mergeRouteMaps(routeFinder.getSurfaceRoutes(), local.getSurfaceRoutes());
-
-            routeFinder.setDomesticRoutes(local.getDomesticRoutes());
-            routeFinder.setAirRoutes(local.getAirRoutes());
-            routeFinder.setSurfaceRoutes(local.getSurfaceRoutes());
         }
 
     }
 
     private void mergeRouteMaps(Map<String , Set<Route>> oldMap, Map<String , Set<Route>> newMap){
         for (String origin : newMap.keySet()) {
-            System.out.format("%s  %b  : ", origin, oldMap.containsKey(origin));
-            if (oldMap.containsKey(origin)) {
-                System.out.format("%s  %b  : ", origin, oldMap.containsKey(origin));
-                for (Route route : newMap.get(origin)) {
-                    for (Route route1 : oldMap.get(origin)) {
-                        if (route.equals(route1)) {
-                            route.update(route1);
-                        }
-                    }
+            if (!oldMap.containsKey(origin)) oldMap.put(origin, newMap.get(origin));
+            else {
+                Set<Route> news = newMap.get(origin);
+                Set<Route> olds = oldMap.get(origin);
+                for (Route route : news) {
+                    addRoute(olds, route);
                 }
             }
         }
-        for (String origin : oldMap.keySet()) {
+        List<String> keys = new ArrayList<String>(oldMap.keySet());
+        for (int j =0; j < keys.size(); j++) {
+            String origin = keys.get(j);
             boolean contains = false;
-            if (!newMap.containsKey(origin)) routeFinder.getDiscontinuedRoutes().addAll(oldMap.get(origin));
+            if (!newMap.containsKey(origin)) {
+                routeFinder.getDiscontinuedRoutes().addAll(oldMap.get(origin));
+                oldMap.remove(origin);
+            }
             else {
-                for (Route route : oldMap.get(origin)) {
-                    contains = false;
-                    for (Route route1 : newMap.get(origin) ) {
-                        if (route.equals(route1)) contains = true;
+                List<Route> news = new ArrayList<Route>(newMap.get(origin));
+                List<Route> olds = new ArrayList<>(oldMap.get(origin));
+                for (int i = 0; i < olds.size() ; i++) {
+                    Route route = olds.get(i);
+                    for (Route route1 : news) {
+                       if (route1.equals(route)) contains = true;
                     }
-                    if (!contains) routeFinder.getDiscontinuedRoutes().add(route);
+                    if (!contains) {
+                        routeFinder.getDiscontinuedRoutes().add(route);
+                        olds.remove(route);
+                    }
                 }
+                oldMap.put(origin, new HashSet<>(olds));
             }
         }
     }
