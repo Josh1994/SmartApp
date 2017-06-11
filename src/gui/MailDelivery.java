@@ -7,6 +7,8 @@ import event.Event;
 
 import controller.Controller;
 import gui.base.DataEntryGUI;
+import gui.dialogs.AlertDialog;
+import gui.dialogs.ConfirmDialog;
 import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -170,9 +172,9 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 				//TODO
 				//need a confirm box showing the total cost and duration first before sending an event to the controller.
 				String message = "Total Cost for Delivery: ";
-				ConfirmBox confirmBox = new ConfirmBox();
-				confirmBox.display("Mail Delivery Confirmation", message);
-				if(confirmBox.confirm){
+				ConfirmDialog confirmDialog = new ConfirmDialog();
+				confirmDialog.display("Mail Delivery Confirmation", message);
+				if(confirmDialog.confirm){
 					mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
 					System.out.println(mdEvent.toString());
 					controller.handleEvent(mdEvent, this);
@@ -180,7 +182,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 			}
 			else{
-				AlertBox.display("Invalid Input", "Please enter valid input");
+				AlertDialog.display("Invalid Input", "Please enter valid input");
 			}
 
 

@@ -1,7 +1,6 @@
 package gui.dialogs;
 
 import controller.Controller;
-import gui.AlertBox;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -126,7 +125,7 @@ public class ChangeUserPermissionsDialog implements EventHandler {
 
         // validate input
         if(userSelectChoiceBox.getValue() == null) {
-            AlertBox.display("Change User Permissions Error", "You must select a user.");
+            AlertDialog.display("Change User Permissions Error", "You must select a user.");
             return;
         }
 

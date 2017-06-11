@@ -1,7 +1,7 @@
-package gui;
+package gui.dialogs;
 
 import controller.Controller;
-import javafx.event.ActionEvent;
+import gui.dialogs.AlertDialog;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,7 +23,7 @@ import javafx.stage.WindowEvent;
  *
  * @author Prashant Bhikhu
  */
-public class LoginFirstTimeInputDialog implements EventHandler {
+public class InitialCreateAccountDialog implements EventHandler {
     // Global Components
     private Stage window;
     private Controller controller;
@@ -37,7 +37,7 @@ public class LoginFirstTimeInputDialog implements EventHandler {
     private String username;
     private String password;
 
-    public LoginFirstTimeInputDialog(Controller controller) {
+    public InitialCreateAccountDialog(Controller controller) {
         this.controller = controller;
     }
 
@@ -112,20 +112,20 @@ public class LoginFirstTimeInputDialog implements EventHandler {
         // Validate Inputs
         if(tmpUsername.length() == 0 || tmpPassword.length() == 0) {
             // Not enough characters
-            AlertBox.display("Invalid Fields", "Please input a valid username and/or password.");
+            AlertDialog.display("Invalid Fields", "Please input a valid username and/or password.");
             return;
         }
 
         if(!tmpPassword.equals(tmpConfirmPassword)) {
             // Matching Passwords needed
-            AlertBox.display("Invalid Fields", "Matching password is required as a confirmation.");
+            AlertDialog.display("Invalid Fields", "Matching password is required as a confirmation.");
             return;
         }
 
         /* Should never get to the code below, because being in execution path implies that the database has no users.
         if (controller.getUserDatabase().getUser(tmpUsername) != null) {
             // ERROR MESSAGE - USER EXISTS ALREADY
-            AlertBox.display("Username already in use", "Please input a another username, as this " +
+            AlertDialog.display("Username already in use", "Please input a another username, as this " +
                     "is already taken.");
             return;
         }*/
@@ -138,11 +138,11 @@ public class LoginFirstTimeInputDialog implements EventHandler {
         window.close();
     }
 
-    String getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
 }

@@ -1,6 +1,8 @@
 package gui;
 
 import controller.Controller;
+import gui.dialogs.AlertDialog;
+import gui.dialogs.InitialCreateAccountDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -72,10 +74,10 @@ public class Login implements EventHandler<ActionEvent> {
 		scene = new Scene(grid, 600, 400);
 
 		if(controller.getUserDatabase().getUsers().size() == 0) {
-            LoginFirstTimeInputDialog loginFirstTimeInputDialog = new LoginFirstTimeInputDialog(controller);
-            loginFirstTimeInputDialog.display();
-            controller.getUserDatabase().addUser(loginFirstTimeInputDialog.getUsername(),
-                    loginFirstTimeInputDialog.getPassword(), true);
+            InitialCreateAccountDialog initialCreateAccountDialog = new InitialCreateAccountDialog(controller);
+            initialCreateAccountDialog.display();
+            controller.getUserDatabase().addUser(initialCreateAccountDialog.getUsername(),
+                    initialCreateAccountDialog.getPassword(), true);
         }
 	}
 
@@ -89,7 +91,7 @@ public class Login implements EventHandler<ActionEvent> {
 
 			if(!isSuccessfulLogin) {
 				// Display Error message here if user
-				AlertBox.display("Incorrect Credentials",
+				AlertDialog.display("Incorrect Credentials",
 						"Please input the correct credentials to login to KPSmart.");
 			}
 			

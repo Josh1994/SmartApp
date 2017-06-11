@@ -165,10 +165,10 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
         try {
             controller.getUserDatabase().changeUserUsername(controller.getLoggedInUser().getUsername(), changeUsernameDialog.getNewUsername());
             //TODO: Update All events, change user field of all events, to new username.
-            AlertBox.display("Change Username Success", "You have now changed your username. Please login again with your your new username.");
+            AlertDialog.display("Change Username Success", "You have now changed your username. Please login again with your your new username.");
             controller.logout();
         } catch (UserDatabase.UserDatabaseException e) {
-            AlertBox.display("Change Username Error", e.getMessage());
+            AlertDialog.display("Change Username Error", e.getMessage());
             onChangeUsernameButtonClicked();
         }
     }
@@ -183,26 +183,26 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 
         try {
             controller.getUserDatabase().changeUserPassword(controller.getLoggedInUser().getUsername(), changePasswordDialog.getNewPassword());
-            AlertBox.display("Change Password Success", "You have now changed your password. Please login again with your your new password.");
+            AlertDialog.display("Change Password Success", "You have now changed your password. Please login again with your your new password.");
             controller.logout();
         } catch (UserDatabase.UserDatabaseException e) {
-            AlertBox.display("Change Password Error", e.getMessage());
+            AlertDialog.display("Change Password Error", e.getMessage());
             oChangePasswordButtonClicked();
         }
     }
 
     private void onCreateAccountButtonClicked() {
-        CreateAccount createAccount = new CreateAccount(controller);
-        createAccount.display();
+        CreateAccountDialog createAccountDialog = new CreateAccountDialog(controller);
+        createAccountDialog.display();
 
-        if(createAccount.isCancelled()) {
+        if(createAccountDialog.isCancelled()) {
             return;
         }
 
         try {
-            controller.getUserDatabase().addUser(createAccount.getUsername(), createAccount.getPassword(), false);
+            controller.getUserDatabase().addUser(createAccountDialog.getUsername(), createAccountDialog.getPassword(), false);
         } catch (UserDatabase.UserDatabaseException e) {
-            AlertBox.display("Create Account Error", e.getMessage());
+            AlertDialog.display("Create Account Error", e.getMessage());
         }
     }
 
@@ -237,7 +237,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 					// User is the only manager
 					if (/*isLoggedInUserManager && */managers.size() == 1) {
 						// Reject this particular deletion as user should not be able delete themselves if they are the only manager
-						AlertBox.display("User Deletion Error", "You cannot delete yourself as you are the only manager on the system. All other selected deletions will continue.");
+						AlertDialog.display("User Deletion Error", "You cannot delete yourself as you are the only manager on the system. All other selected deletions will continue.");
 						deletionStatus_LoggedInUser = 2;
 
 						// When the currently logged in user is only user in UserDatabase, ignore all success messages
@@ -253,7 +253,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 						// be locked out of the program.
 						if(deleteUserAccountsDialog.getSelectedIndices().size() == deleteUserAccountsDialog.getListItems().size()) {
 							// if the above is true, do not allow the user to deletion of own account
-							AlertBox.display("User Deletion Error", "You cannot delete yourself when deleting all other users on the system. All other selected deletions will continue.");
+							AlertDialog.display("User Deletion Error", "You cannot delete yourself when deleting all other users on the system. All other selected deletions will continue.");
 							deletionStatus_LoggedInUser = 2;
 							continue;
 						}
@@ -270,15 +270,15 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 						}
 
 						if(isAllSelectedManagers) {
-							AlertBox.display("User Deletion Error", "You cannot delete yourself when deleting all other managers on the system. All other selected deletions will continue.");
+							AlertDialog.display("User Deletion Error", "You cannot delete yourself when deleting all other managers on the system. All other selected deletions will continue.");
 							deletionStatus_LoggedInUser = 2;
 							continue;
 						}
 
 
 						// Allow deletion operation with confirmation, user can delete themselves as other managers exist
-						ConfirmBox confirmBox = new ConfirmBox();
-						confirmBox.display("User Deletion Confirmation", "Are you sure you " +
+						ConfirmDialog confirmDialog = new ConfirmDialog();
+						confirmDialog.display("User Deletion Confirmation", "Are you sure you " +
 								"want to delete your own account?"
 								+ System.lineSeparator() + System.lineSeparator() +
 								"If you choose Okay, all selected deletions will continue, then at the end of the " +
@@ -287,7 +287,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 								" your own account will remain in the system.");
 
 						// Verify confirmation from user
-						if (confirmBox.confirm) {
+						if (confirmDialog.confirm) {
 							controller.getUserDatabase().deleteUser(username);
 							deletionStatus_LoggedInUser = 1;
 						} else {
@@ -301,7 +301,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 				}
 			}
 			// Display success message after all deletions occcured
-			AlertBox.display("User Deletion Success", "All selected users" + (deletionStatus_LoggedInUser == 2 ? " (except the current user)" : "") + " were successfully deleted.");
+			AlertDialog.display("User Deletion Success", "All selected users" + (deletionStatus_LoggedInUser == 2 ? " (except the current user)" : "") + " were successfully deleted.");
 
 			// If user deleted themselves, logged them out now
 			if(deletionStatus_LoggedInUser == 1) {
@@ -309,7 +309,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
 			}
 		} catch (UserDatabase.UserDatabaseException e) {
 			// Display error if something when wrong
-			AlertBox.display("User Deletion Error", e.getMessage());
+			AlertDialog.display("User Deletion Error", e.getMessage());
 		}
 	}
 
@@ -329,7 +329,7 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
             if(changeUserPermissionsDialog.getUsername().equals(controller.getLoggedInUser().getUsername()) && managers.size() == 1) {
                 // if user is demoting themselves to clerk, reject this operation as they are the only manager.
                 if(!changeUserPermissionsDialog.getIsManager()) {
-                    AlertBox.display("Change User Permission Error", "You cannot make be a Clerk as you are the only manager on the system.");
+                    AlertDialog.display("Change User Permission Error", "You cannot make be a Clerk as you are the only manager on the system.");
                     return;
                 }
             } else {
@@ -337,13 +337,13 @@ public class UserAccountManagement implements EventHandler<MouseEvent> {
             }
 
             if(changeUserPermissionsDialog.getUsername().equals(controller.getLoggedInUser().getUsername())) {
-                AlertBox.display("Change User Permission Success", "You have now changed your own permissions to be a " + (changeUserPermissionsDialog.getIsManager() ? "Manager" : "Clerk") + ". Please login again.");
+                AlertDialog.display("Change User Permission Success", "You have now changed your own permissions to be a " + (changeUserPermissionsDialog.getIsManager() ? "Manager" : "Clerk") + ". Please login again.");
                 controller.logout();
             } else {
-                AlertBox.display("Change User Permission Success", "You have successfully changed \"" + changeUserPermissionsDialog.getUsername() + "\" to be a " + (changeUserPermissionsDialog.getIsManager() ? "Manager" : "Clerk") + ".");
+                AlertDialog.display("Change User Permission Success", "You have successfully changed \"" + changeUserPermissionsDialog.getUsername() + "\" to be a " + (changeUserPermissionsDialog.getIsManager() ? "Manager" : "Clerk") + ".");
             }
         } catch (UserDatabase.UserDatabaseException e) {
-            AlertBox.display("Change User Permission Error", e.getMessage());
+            AlertDialog.display("Change User Permission Error", e.getMessage());
         }
     }
 }

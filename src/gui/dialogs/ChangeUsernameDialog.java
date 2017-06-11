@@ -1,7 +1,6 @@
 package gui.dialogs;
 
 import controller.Controller;
-import gui.AlertBox;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -104,20 +103,20 @@ public class ChangeUsernameDialog implements EventHandler {
         // Validate Inputs
         if(tmpNewUsername.length() == 0) {
             // Not enough characters
-            AlertBox.display("Invalid Fields", "Please input a valid newUsername.");
+            AlertDialog.display("Invalid Fields", "Please input a valid newUsername.");
             return;
         }
 
         if(!tmpNewUsername.equals(tmpConfirmNewUsername)) {
             // Matching Passwords needed
-            AlertBox.display("Invalid Fields", "Matching usernames is required as a confirmation.");
+            AlertDialog.display("Invalid Fields", "Matching usernames is required as a confirmation.");
             return;
         }
 
         /* Should never get to the code below, because being in execution path implies that the database has no users.
         if (controller.getUserDatabase().getUser(tmpUsername) != null) {
             // ERROR MESSAGE - USER EXISTS ALREADY
-            AlertBox.display("Username already in use", "Please input a another newUsername, as this " +
+            AlertDialog.display("Username already in use", "Please input a another newUsername, as this " +
                     "is already taken.");
             return;
         }*/

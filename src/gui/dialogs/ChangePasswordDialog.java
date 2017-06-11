@@ -1,7 +1,6 @@
 package gui.dialogs;
 
 import controller.Controller;
-import gui.AlertBox;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -112,23 +111,23 @@ public class ChangePasswordDialog implements EventHandler {
         // Validate Inputs
         if(tmpOldPassword.length() == 0) {
             // Not enough characters
-            AlertBox.display("Invalid Fields", "Please input your current password.");
+            AlertDialog.display("Invalid Fields", "Please input your current password.");
             return;
         }
         if(!tmpOldPassword.equals(controller.getLoggedInUser().getPassword())) {
             // incorrect password
-            AlertBox.display("Invalid Fields", "Please input your current password correctly.");
+            AlertDialog.display("Invalid Fields", "Please input your current password correctly.");
             return;
         }
 
         if(tmpNewPassword.length() == 0) {
             // Not enough characters
-            AlertBox.display("Invalid Fields", "Please input a valid new password.");
+            AlertDialog.display("Invalid Fields", "Please input a valid new password.");
             return;
         }
         if(!tmpNewPassword.equals(tmpConfirmNewPassword)) {
             // Matching Passwords needed
-            AlertBox.display("Invalid Fields", "Matching password is required as a confirmation.");
+            AlertDialog.display("Invalid Fields", "Matching password is required as a confirmation.");
             return;
         }
 

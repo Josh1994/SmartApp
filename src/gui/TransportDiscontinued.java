@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 
 import controller.Controller;
 import gui.base.DataEntryGUI;
+import gui.dialogs.AlertDialog;
 import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -124,7 +125,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 			prio = priorityBox.getValue();
 			System.out.println(fromText.getValue() +" "+ toText.getValue() +" "+ firm.getText() +" "+ prio);
 			if(fromText.getValue().isEmpty() || toText.getValue().isEmpty() || firm.getText().isEmpty() || prio==null || city.getText().isEmpty() ){
-				AlertBox.display("Invalid Input", "Invalid Input Fields");
+				AlertDialog.display("Invalid Input", "Invalid Input Fields");
 			}
 			else{
 				

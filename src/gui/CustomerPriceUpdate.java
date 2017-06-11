@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import controller.Controller;
 import event.Event;
 import gui.base.DataEntryGUI;
+import gui.dialogs.AlertDialog;
 import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -135,7 +136,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 			System.out.println("To: "+ toText.getValue());
 			System.out.println(fromText.getValue() +" "+ toText.getValue() +" "+ weight.getText() +" "+ volume.getText() +" " + prio);
 			if(fromText.getValue().isEmpty() || toText.getValue().isEmpty() || weight.getText().isEmpty() || prio==null || volume.getText().isEmpty() ){
-				AlertBox.display("Invalid Input", "Invalid Input Fields");
+				AlertDialog.display("Invalid Input", "Invalid Input Fields");
 			}
 			else{
 

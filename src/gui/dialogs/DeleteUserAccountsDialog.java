@@ -1,7 +1,6 @@
 package gui.dialogs;
 
 import controller.Controller;
-import gui.AlertBox;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -108,7 +107,7 @@ public class DeleteUserAccountsDialog implements EventHandler {
                     break;
                 case "Okay":
                     if (listView.getSelectionModel().getSelectedIndices().size() == 0) {
-                        AlertBox.display("Selection Error", "Please select one or more username for" +
+                        AlertDialog.display("Selection Error", "Please select one or more username for" +
                                 " the " + action + " operation to continue.");
                     }
                     break;
