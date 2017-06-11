@@ -3,7 +3,6 @@ package tests;
 
 import event.*;
 import model.EventManager;
-import model.EventManager1;
 import model.Route;
 import model.RouteFinder;
 import org.junit.Assert;

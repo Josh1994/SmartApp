@@ -31,7 +31,13 @@ public class Route implements Comparable<Route> {
 	private double expenditure = 0;
 	private int numberOfEvents = 0;
 	private int amountOfMail = 0;
+	private double weightOfMail = 0;
+	private double volumeOfMail = 0;
 	private double avgDeliveryTime = 0;
+
+	public boolean isCriticalRoute() {
+		return (revenue - expenditure) <= 0;
+	}
 
 
 	public Route(TransportCostUpdate tcu) {
@@ -204,9 +210,7 @@ public class Route implements Comparable<Route> {
 		return stages;
 	}
 
-	public boolean isCriticalRoute() {
-		return (revenue - expenditure) <= 0;
-	}
+
 
 	public void setStages(List<TransportCostUpdate> stages) {
 		this.stages = stages;
@@ -233,7 +237,11 @@ public class Route implements Comparable<Route> {
 		expenditure = route.expenditure;
 		numberOfEvents = route.numberOfEvents;
 		amountOfMail = route.amountOfMail;
+		weightOfMail = route.weightOfMail;
+		volumeOfMail = route.volumeOfMail;
+
 		avgDeliveryTime = route.avgDeliveryTime;
+
 	}
 	/**
 	 public void update(CustomerPriceUpdate cpu) {
@@ -253,6 +261,8 @@ public class Route implements Comparable<Route> {
 		numberOfEvents += 1;
 		expenditure += md.getVolume() * volumeCost + md.getWeight() * weightCost;
 		revenue += getCustomerCost(md, cpus);
+		weightOfMail += md.getWeight();
+		volumeOfMail += md.getVolume();
 	}
 
 	public double getCustomerCost(MailDelivery md, List<CustomerPriceUpdate> cpus) {
