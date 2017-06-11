@@ -3,8 +3,9 @@ import event.Event;
 import java.time.ZonedDateTime;
 
 import controller.Controller;
-import event.Event;
 import gui.base.DataEntryGUI;
+import gui.dialogs.AlertDialog;
+import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,9 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.User;
@@ -126,7 +125,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 			prio = priorityBox.getValue();
 			System.out.println(fromText.getValue() +" "+ toText.getValue() +" "+ firm.getText() +" "+ prio);
 			if(fromText.getValue().isEmpty() || toText.getValue().isEmpty() || firm.getText().isEmpty() || prio==null || city.getText().isEmpty() ){
-				AlertBox.display("Invalid Input", "Invalid Input Fields");
+				AlertDialog.display("Invalid Input", "Invalid Input Fields");
 			}
 			else{
 				
@@ -153,8 +152,8 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
 		}if(event.getSource() == logoutButton){
-			Logout logout = new Logout(controller);
-			logout.display();
+			LogoutDialog logoutDialog = new LogoutDialog(controller);
+			logoutDialog.display();
 		}
 
 	}

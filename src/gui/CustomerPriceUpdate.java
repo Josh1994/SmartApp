@@ -5,10 +5,11 @@ import java.time.ZonedDateTime;
 import controller.Controller;
 import event.Event;
 import gui.base.DataEntryGUI;
+import gui.dialogs.AlertDialog;
+import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -135,7 +136,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 			System.out.println("To: "+ toText.getValue());
 			System.out.println(fromText.getValue() +" "+ toText.getValue() +" "+ weight.getText() +" "+ volume.getText() +" " + prio);
 			if(fromText.getValue().isEmpty() || toText.getValue().isEmpty() || weight.getText().isEmpty() || prio==null || volume.getText().isEmpty() ){
-				AlertBox.display("Invalid Input", "Invalid Input Fields");
+				AlertDialog.display("Invalid Input", "Invalid Input Fields");
 			}
 			else{
 
@@ -165,8 +166,8 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         if(event.getSource() == backButton){
             controller.handleEvent(Controller.EVENTGUI);
         }if(event.getSource() == logoutButton){
-			Logout logout = new Logout(controller);
-			logout.display();
+			LogoutDialog logoutDialog = new LogoutDialog(controller);
+			logoutDialog.display();
 		}
 
     }

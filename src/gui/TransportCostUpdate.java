@@ -1,8 +1,6 @@
 package gui;
 
 
-import event.MailDelivery;
-
 import event.Event;
 
 import java.time.DayOfWeek;
@@ -12,6 +10,9 @@ import java.util.List;
 
 import controller.Controller;
 import gui.base.DataEntryGUI;
+import gui.dialogs.AlertDialog;
+import gui.dialogs.ConfirmDialog;
+import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -230,21 +231,21 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 			}
 			
 			if(firm.getValue() == null || type.getSelectedToggle() == null || origin.getValue()==null || destination.getValue()==null || weightPrice.getText().isEmpty() || volumePrice.getText().isEmpty() || frequency.getText().isEmpty() || duration.getText().isEmpty()){
-				AlertBox.display("Invalid Input", "Invalid Input Fields");
+				AlertDialog.display("Invalid Input", "Invalid Input Fields");
 			}
 			
 			
 			else if(count == 0){
-				AlertBox.display("Invalid Input", "Selected days can't be zero");
+				AlertDialog.display("Invalid Input", "Selected days can't be zero");
 			}
 			else{
 				
 				//Tell the controller that there is a price update
-				ConfirmBox confirmBox = new ConfirmBox();
+				ConfirmDialog confirmDialog = new ConfirmDialog();
 				String message = "Are you sure you want to update transport cost for " + this.firm.getValue();
 				String title = "Transport Cost Update Confirmation";
-				confirmBox.display(title, message);
-				if(confirmBox.confirm){
+				confirmDialog.display(title, message);
+				if(confirmDialog.confirm){
 					String priority;
 					event.TransportCostUpdate tcu;
 					
@@ -309,8 +310,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
 		}if(event.getSource() == logoutButton){
-			Logout logout = new Logout(controller);
-			logout.display();
+			LogoutDialog logoutDialog = new LogoutDialog(controller);
+			logoutDialog.display();
 		}
 		
 	}
