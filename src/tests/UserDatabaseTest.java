@@ -136,4 +136,20 @@ public class UserDatabaseTest {
         } catch (UserDatabase.UserDatabaseException e) {
         }
     }
+
+    @Test
+    public void getManagers_Success() {
+        userDatabase.addUser("user", "password123", false);
+        userDatabase.addUser("user2", "password1234", false);
+
+        Assert.assertEquals(userDatabase.getUsers().size(),2);
+        Assert.assertEquals(userDatabase.getManagers().size(),0);
+
+        userDatabase.addUser("manager1", "password12345", true);
+        userDatabase.addUser("manager2", "password1234567", true);
+        userDatabase.addUser("manager3", "password12345678", true);
+
+        Assert.assertEquals(userDatabase.getUsers().size(),5);
+        Assert.assertEquals(userDatabase.getManagers().size(),3);
+    }
 }
