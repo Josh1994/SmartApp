@@ -20,6 +20,8 @@ import javafx.stage.WindowEvent;
 /**
  * This is a custom dialog box that is displayed when the database has no users. This allows the new user to create
  * a new account so they can use the application. Should only appear on first run of the application.
+ *
+ * @author Prashant Bhikhu
  */
 public class LoginFirstTimeInputDialog implements EventHandler {
     // Global Components
