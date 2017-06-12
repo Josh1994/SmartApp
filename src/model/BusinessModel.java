@@ -14,7 +14,7 @@ public class BusinessModel {
     //create reference to controller
     private Controller controller;
     // create reference to Routefinder
-    private EventManager1 eventManager;
+    private EventManager eventManager;
     private Database db;
     XMLParser parser;
 

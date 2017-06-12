@@ -56,6 +56,20 @@ public class BusinessFiguresTest {
         events.add(new CustomerPriceUpdate(null, null, "CHCH",
                 "DNDN", 10, 10, Event.DOMESTIC));
 
+        // AIR 11 -
+        events.add(new MailDelivery(null,
+                null, "AKLD", "LA", 10, 10, Event.AIR));
+
+        events.add(new CustomerPriceUpdate(null, null, "AKLD",
+                "LA", 20, 20, Event.AIR));
+
+        events.add(new TransportDiscontinued(null, null, "LA",
+                "DUBLIN", "A", Event.DOMESTIC));
+
+        events.add( new TransportCostUpdate(null, null, "AKLD",
+                "LONDON", 20, 20, 0 , 0, 10, 10,
+                null, "A", Event.DOMESTIC));
+
         return events;
     }
 
@@ -182,6 +196,52 @@ public class BusinessFiguresTest {
 
         Assert.assertEquals(ak_dn3, null);
 
+    }
+
+    @Test
+    public void testBusinessFigures_AIR() {
+        EventManager em = eventManager();
+        Assert.assertEquals(em.getTotalEvents(), 9);
+
+        em.processSingleEvent(event().get(11), false);
+        // Test business figures
+        Route ak_la = em.getRouteFinder().getRoute("AKLD", "LA", Event.AIR);
+        Assert.assertEquals(ak_la.getAvgDeliveryTime(), 15, 0.1);
+        Assert.assertEquals(ak_la.getAmountOfmail(), 1);
+        Assert.assertEquals(ak_la.getCustomerCost((MailDelivery) event().get(0),em.getCurrentCpus()),
+                200, 0.1);
+        Assert.assertEquals(ak_la.getExpenditure(), 200, 0.1);
+        Assert.assertEquals(em.getAverageRoute().getRevenue(),200, 0.1);
+        Assert.assertEquals(em.getAverageRoute().getExpenditure(),200, 0.1);
+
+        em.processSingleEvent(event().get(11), false);
+
+        Assert.assertEquals(ak_la.getExpenditure(), 400, 0.1);
+        Assert.assertEquals(ak_la.getRevenue(), 400, 0.1);
+
+        Assert.assertEquals(em.getAverageRoute().getRevenue(),400, 0.1);
+        Assert.assertEquals(em.getAverageRoute().getExpenditure(),400, 0.1);
+
+        em.processEvent(event().get(12));
+
+        Assert.assertEquals(ak_la.getExpenditure(), 400, 0.1);
+        Assert.assertEquals(ak_la.getRevenue(), 400, 0.1);
+
+        Assert.assertEquals(em.getAverageRoute().getRevenue(),400, 0.1);
+        Assert.assertEquals(em.getAverageRoute().getExpenditure(),400, 0.1);
+
+        em.processEvent(event().get(11));
+
+        Assert.assertEquals(ak_la.getExpenditure(), 600, 0.1);
+        Assert.assertEquals(ak_la.getRevenue(), 800, 0.1);
+
+        Assert.assertEquals(em.getAverageRoute().getRevenue(),800, 0.1);
+        Assert.assertEquals(em.getAverageRoute().getExpenditure(),600, 0.1);
+
+        Assert.assertEquals(em.getAverageAir().getRevenue(),800, 0.1);
+        Assert.assertEquals(em.getAverageAir().getExpenditure(),600, 0.1);
+
+        
     }
 
     @Test

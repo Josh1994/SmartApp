@@ -263,6 +263,8 @@ public class RouteFinder {
         Route intlRoute;
         String intlStart;
 
+        Route domestic1;
+
         if (priority.equals(Event.AIR)) routes = airRoutes;
         else routes = surfaceRoutes;
 
@@ -280,7 +282,7 @@ public class RouteFinder {
                             intlRoute = route;
                             intlStart = s1;
                             // Now find domestic connection
-                            Route domestic1 = getRoute(origin, intlStart, Event.DOMESTIC);
+                            domestic1 = getRoute(origin, intlStart, Event.DOMESTIC);
                             if (domestic1 != null) return new Route(domestic1, intlRoute, priority);
                         }
                     }

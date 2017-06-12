@@ -5,13 +5,14 @@ import event.Event;
 import event.MailDelivery;
 import event.TransportCostUpdate;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class Route implements Comparable<Route> {
+
+	private Route domestic;
+	private Route international;
+	private boolean isCombinedRoute = false;
 
 	private double effectiveCost;
 	private String origin;
@@ -107,6 +108,11 @@ public class Route implements Comparable<Route> {
 		this.priority = first.priority;
 
 		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
+
+		domestic = first;
+		international = next;
+		isCombinedRoute = true;
+
 	}
 
 	public  Route(Route first, Route next, String priority) {
@@ -127,6 +133,10 @@ public class Route implements Comparable<Route> {
 		this.priority = priority;
 
 		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
+
+		domestic = first;
+		international = next;
+		isCombinedRoute = true;
 	}
 
 	public Route(String origin, String destination, double weightCost, double volumeCost, int maxWeight,
@@ -202,6 +212,14 @@ public class Route implements Comparable<Route> {
 		return amountOfMail;
 	}
 
+	public double getWeightOfMail() {
+		return weightOfMail;
+	}
+
+	public double getVolumeOfMail() {
+		return volumeOfMail;
+	}
+
 	public double getAvgDeliveryTime() {
 		return deliveryTime(stages);
 	}
@@ -216,21 +234,7 @@ public class Route implements Comparable<Route> {
 		this.stages = stages;
 	}
 
-	/**
-	public void update(Route route) {
-		weightCost = route.weightCost;
-		volumeCost = route.volumeCost;
-		maxVolume = route.maxVolume;
-		maxWeight = route.maxWeight;
-		stages = route.stages;
 
-		private double revenue = 0;
-		private double expenditure = 0;
-		private int numberOfEvents = 0;
-		private int amountOfMail = 0;
-		private double avgDeliveryTime = 0;
-	}
-	 */
 	public void update(Route route) {
 
 		revenue = route.revenue;
@@ -243,28 +247,27 @@ public class Route implements Comparable<Route> {
 		avgDeliveryTime = route.avgDeliveryTime;
 
 	}
-	/**
-	 public void update(CustomerPriceUpdate cpu) {
-	 for (TransportCostUpdate tcu : stages) {
-	 if (tcu.matchCustomerPriceUpdate(cpu)) {
-	 weightCost += (cpu.getWeightCost() - tcu.getWeightCost());
-	 volumeCost += (cpu.getVolumeCost() - tcu.getVolumeCost());
-	 tcu.setWeightCost(cpu.getWeightCost());
-	 tcu.setVolumeCost(cpu.getVolumeCost());
-	 }
-	 }
 
-	 }
-	 */
-	public void update(MailDelivery md, List<CustomerPriceUpdate> cpus) {
+	public double[] update(MailDelivery md, List<CustomerPriceUpdate> cpus) {
 		amountOfMail += 1;
 		numberOfEvents += 1;
-		expenditure += md.getVolume() * volumeCost + md.getWeight() * weightCost;
-		revenue += getCustomerCost(md, cpus);
+		double costE = md.getVolume() * volumeCost + md.getWeight() * weightCost;
+		expenditure += costE;
+		double costC = getCustomerCost(md, cpus);
+		revenue += costC;
 		weightOfMail += md.getWeight();
 		volumeOfMail += md.getVolume();
+
+		double[] costs = {costE, costC, md.getWeight(), md.getVolume()};
+		return costs;
 	}
 
+	/**
+	 *
+	 * @param md
+	 * @param cpus
+	 * @return
+	 */
 	public double getCustomerCost(MailDelivery md, List<CustomerPriceUpdate> cpus) {
 		double cost = 0;
 		double weightCostC = 0;
@@ -278,24 +281,36 @@ public class Route implements Comparable<Route> {
 		}
 		cost += weightCostC * md.getWeight();
 		cost += volCostC * md.getVolume();
-		System.out.format("cpu : %f  ", cost);
+		//System.out.format("cpu : %f  ", cost);
 		return cost;
 
 	}
 
+	/**
+	 * Matches a CPU to a TCU and returns it.
+	 * @param tcu
+	 * @param cpus
+	 * @return
+	 */
 	public CustomerPriceUpdate matchCustomerPriceUpdate(TransportCostUpdate tcu,
 														 List<CustomerPriceUpdate> cpus) {
+		CustomerPriceUpdate latestCpu = null;
 		for (CustomerPriceUpdate cpu : cpus) {
 			if (tcu.getOrigin().equals(cpu.getOrigin()) &&
 					tcu.getDestination().equals(cpu.getDestination()) &&
 					tcu.getPriority().equals(cpu.getPriority())) {
-				return cpu;
-			} else return null;
+				latestCpu = cpu;
+			}
 		}
-		return null;
+		return latestCpu;
 	}
 
-	public double deliveryTime(List<TransportCostUpdate> tcus) {
+	/**
+	 * Simplification for now - just takes half the wait time for next delivery and the trip duration.
+	 * @param tcus
+	 * @return
+	 */
+	private double deliveryTime(List<TransportCostUpdate> tcus) {
 		double hours = 0;
 		for (TransportCostUpdate tcu : tcus) {
 			hours += tcu.getFrequency() * 0.5 + tcu.getDuration();
@@ -356,5 +371,47 @@ public class Route implements Comparable<Route> {
 		result = 31 * result + (priority != null ? priority.hashCode() : 0);
 		return result;
 	}
+
+
+	public Route getDomestic() {
+		return domestic;
+	}
+
+	public Route getInternational() {
+		return international;
+	}
+
+	public boolean isCombinedRoute() {
+		return isCombinedRoute;
+	}
+
+	public void setRevenue(double revenue) {
+		this.revenue = revenue;
+	}
+
+	public void setExpenditure(double expenditure) {
+		this.expenditure = expenditure;
+	}
+
+	public void setNumberOfEvents(int numberOfEvents) {
+		this.numberOfEvents = numberOfEvents;
+	}
+
+	public void setAmountOfMail(int amountOfMail) {
+		this.amountOfMail = amountOfMail;
+	}
+
+	public void setWeightOfMail(double weightOfMail) {
+		this.weightOfMail = weightOfMail;
+	}
+
+	public void setVolumeOfMail(double volumeOfMail) {
+		this.volumeOfMail = volumeOfMail;
+	}
+
+	public void setAvgDeliveryTime(double avgDeliveryTime) {
+		this.avgDeliveryTime = avgDeliveryTime;
+	}
+
 }
 
