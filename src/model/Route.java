@@ -350,32 +350,6 @@ public class Route implements Comparable<Route> {
 				'}';
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Route)) return false;
-
-		Route route = (Route) o;
-
-		if (origin != null ? !origin.equals(route.origin) : route.origin != null) return false;
-		if (destination != null ? !destination.equals(route.destination) : route.destination != null) return false;
-		return priority != null ? samePriority(priority, route.priority) : route.priority == null;
-	}
-	// create Surface equality
-	public boolean samePriority(String priority1, String priority2) {
-		if (priority1.equals(Event.SEA) || priority1.equals(Event.LAND)) {
-			return (priority2.equals(Event.SEA) || priority2.equals(Event.LAND));
-		} else return priority1.equals(priority2);
-	}
-
-	@Override
-	public int hashCode() {
-		int result = origin != null ? origin.hashCode() : 0;
-		result = 31 * result + (destination != null ? destination.hashCode() : 0);
-		result = 31 * result + (priority != null ? priority.hashCode() : 0);
-		return result;
-	}
-
 
 	public Route getDomestic() {
 		return domestic;
@@ -415,6 +389,32 @@ public class Route implements Comparable<Route> {
 
 	public void setAvgDeliveryTime(double avgDeliveryTime) {
 		this.avgDeliveryTime = avgDeliveryTime;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Route)) return false;
+
+		Route route = (Route) o;
+
+		if (origin != null ? !origin.equals(route.origin) : route.origin != null) return false;
+		if (destination != null ? !destination.equals(route.destination) : route.destination != null) return false;
+		return priority != null ? samePriority(priority, route.priority) : route.priority == null;
+	}
+	// create Surface equality
+	public boolean samePriority(String priority1, String priority2) {
+		if (priority1.equals(Event.SEA) || priority1.equals(Event.LAND)) {
+			return (priority2.equals(Event.SEA) || priority2.equals(Event.LAND));
+		} else return priority1.equals(priority2);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = origin != null ? origin.hashCode() : 0;
+		result = 31 * result + (destination != null ? destination.hashCode() : 0);
+		result = 31 * result + (priority != null ? priority.hashCode() : 0);
+		return result;
 	}
 
 }
