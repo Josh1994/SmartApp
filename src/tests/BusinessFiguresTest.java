@@ -241,7 +241,7 @@ public class BusinessFiguresTest {
         Assert.assertEquals(em.getAverageAir().getRevenue(),800, 0.1);
         Assert.assertEquals(em.getAverageAir().getExpenditure(),600, 0.1);
 
-        
+
     }
 
     @Test

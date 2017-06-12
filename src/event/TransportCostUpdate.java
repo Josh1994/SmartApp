@@ -41,8 +41,10 @@ public class TransportCostUpdate extends Event{
 		sb.append("\nPrice per kg: " + this.weightCost);
 		sb.append("\nPrice per cubic cm: " + this.volumeCost);
 		sb.append("\nDays:");
-		for(DayOfWeek day : this.days){
-			sb.append("\n" + day.toString());
+		if (this.days != null) {
+			for (DayOfWeek day : this.days) {
+				sb.append("\n" + day.toString());
+			}
 		}
 		sb.append("\nPriority: " + this.priority);
 		sb.append("\nUser: "+ this.user);
