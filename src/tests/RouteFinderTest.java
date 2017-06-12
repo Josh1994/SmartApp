@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by phoal on 6/1/2017.
+ * Created by philip clark on 6/1/2017.
  */
 public class RouteFinderTest {
 

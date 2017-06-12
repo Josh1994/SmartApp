@@ -8,6 +8,10 @@ import event.TransportCostUpdate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class for representing a route comprised of Transport Cost Updates
+ * and their associated business figures
+ */
 public class Route implements Comparable<Route> {
 
 	private Route domestic;

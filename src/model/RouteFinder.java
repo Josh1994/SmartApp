@@ -6,7 +6,7 @@ import event.TransportCostUpdate;
 import java.util.*;
 
 /**
- * Created by phoal on 5/31/2017.
+ * Created by philip clark on 5/31/2017.
  * Use a variation of djistra's algorithm to find all routes from each NZ city
  * Routes are composed of directed paths (Transport Cost Updates)
  * Routes are separated into: Domestic, Intl Air, Intl Surface (Sea or Land or Air)

@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.util.*;
 
 /**
- * Created by phoal on 6/10/2017.
+ * Created by philip clark on 6/10/2017.
  */
 public class BusinessFiguresTest {
 
