@@ -1,5 +1,6 @@
-package gui;
+package gui.dialogs;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ConfirmBox {
+public class ConfirmDialog {
 	private Stage window;
 	public boolean confirm = false;
 	
@@ -21,9 +22,12 @@ public class ConfirmBox {
 		window.setTitle(title);
 		window.setMinWidth(250);
 		window.setMinHeight(100);
+		window.setMaxWidth(500);
 		
 		Label label = new Label();
 		label.setText(message);
+		label.setMaxWidth(350);
+		label.setWrapText(true);
 		Button yesButton = new Button("Yes");
 		Button noButton = new Button("Cancel");
 		
@@ -33,6 +37,7 @@ public class ConfirmBox {
 		HBox hbox = new HBox(10);
 		hbox.getChildren().addAll(yesButton, noButton);
 		hbox.setAlignment(Pos.CENTER);
+		hbox.setPadding(new Insets(10));
 		VBox vbox = new VBox(15);
 		vbox.getChildren().addAll(label, hbox);
 		vbox.setAlignment(Pos.CENTER);

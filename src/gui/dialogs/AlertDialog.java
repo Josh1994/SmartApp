@@ -1,21 +1,21 @@
-package gui;
+package gui.dialogs;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-public class AlertBox {
+/**
+ * Displays an alert at the user if an issue or error appears.
+ *
+ * @author Julian Moreno
+ */
+public class AlertDialog {
 	private Stage window;
 	public static void display(String title, String message){
 		Stage window = new Stage();

@@ -1,8 +1,6 @@
 package gui;
 
 
-import event.MailDelivery;
-
 import event.Event;
 
 import java.time.DayOfWeek;
@@ -12,17 +10,14 @@ import java.util.List;
 
 import controller.Controller;
 import gui.base.DataEntryGUI;
+import gui.dialogs.AlertDialog;
+import gui.dialogs.ConfirmDialog;
+import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.User;
@@ -31,7 +26,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 
 	Button eventButton;
 	Button backButton;
-	TextField firm;
+	Button logoutButton;
+	ComboBox<String> firm;
 	//land sea air
 	ToggleGroup type;
 	RadioButton land;
@@ -47,8 +43,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	CheckBox friday;
 	CheckBox saturday;
 	List<CheckBox> daysOfWeek;
-	TextField origin;
-	TextField destination;
+	ComboBox<String> origin;
+	ComboBox<String> destination;
 	TextField weightPrice;
 	TextField volumePrice;
 	TextField frequency;
@@ -74,18 +70,24 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		backButton = new Button();
 		backButton.setText("Back");
 		backButton.setOnAction(this);
+
+        logoutButton = new Button();
+		logoutButton.setText("Logout");
+		logoutButton.setOnAction(this);
 		
 		Label fromLabel = new Label("Origin: ");
 		fromLabel.setMinHeight(25);
-		origin = new TextField();
-		origin.setMaxHeight(10);
-		origin.setMaxWidth(200);
+		origin = new ComboBox<String>();
+		origin.setMinWidth(200.0);
+		origin.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		origin.setEditable(true);
 		
 		Label toLabel = new Label("Destination: ");
 		toLabel.setMinHeight(25);
-		destination = new TextField();
-		destination.setMaxHeight(10);
-		destination.setMaxWidth(200);
+		destination = new ComboBox<String>();
+		destination.setMinWidth(200.0);
+		destination.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		destination.setEditable(true);
 		
 		Label weightLabel = new Label("Price per kg: ");
 		weightLabel.setMinHeight(25);
@@ -113,7 +115,10 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		
 		Label firmLabel = new Label("Firm: ");
 		firmLabel.setMinHeight(25);
-		firm = new TextField();
+		firm = new ComboBox<String>();
+		firm.setMinWidth(200);
+		firm.getItems().addAll(controller.getEventProcessor().getFirmNames());
+		firm.setEditable(true);
 		firm.setMaxHeight(10);
 		firm.setMaxWidth(200);
 		
@@ -123,13 +128,13 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		HBox days = new HBox();
 		days.setMaxHeight(10);
 		
-		monday = new CheckBox("Monday ");
-		tuesday = new CheckBox("Tuesday ");
-		wednesday = new CheckBox("Wednesday ");
-		thursday = new CheckBox("Thursday ");
-		friday = new CheckBox("Friday ");
-		saturday = new CheckBox("Saturday ");
-		sunday = new CheckBox("Sunday ");
+		monday = new CheckBox("Monday");
+		tuesday = new CheckBox("Tuesday");
+		wednesday = new CheckBox("Wednesday");
+		thursday = new CheckBox("Thursday");
+		friday = new CheckBox("Friday");
+		saturday = new CheckBox("Saturday");
+		sunday = new CheckBox("Sunday");
 		
 		daysOfWeek.add(monday);
 		daysOfWeek.add(tuesday);
@@ -185,6 +190,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		vbox1.getChildren().add(frequencyLabel);
 		vbox1.getChildren().add(durationLabel);
 		vbox1.getChildren().add(backButton);
+		vbox1.getChildren().add(logoutButton);
 		
 		VBox vbox2 = new VBox(10);
 		vbox2.setPadding(new Insets(10, 10, 10, 10));
@@ -205,7 +211,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		hbox.setPadding(new Insets(20, 20, 20, 20));
 		hbox.getChildren().addAll(vbox1, vbox2);
 		
-		scene = new Scene(hbox, 800, 480);
+		scene = new Scene(hbox, 800, 550);
 	}
 	
 	public static Scene scene() {
@@ -224,22 +230,22 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 				}
 			}
 			
-			if(firm.getText().isEmpty() || type.getSelectedToggle() == null || origin.getText().isEmpty() || destination.getText().isEmpty() || weightPrice.getText().isEmpty() || volumePrice.getText().isEmpty() || frequency.getText().isEmpty() || duration.getText().isEmpty()){
-				AlertBox.display("Invalid Input", "Invalid Input Fields");
+			if(firm.getValue() == null || type.getSelectedToggle() == null || origin.getValue()==null || destination.getValue()==null || weightPrice.getText().isEmpty() || volumePrice.getText().isEmpty() || frequency.getText().isEmpty() || duration.getText().isEmpty()){
+				AlertDialog.display("Invalid Input", "Invalid Input Fields");
 			}
 			
 			
 			else if(count == 0){
-				AlertBox.display("Invalid Input", "Selected days can't be zero");
+				AlertDialog.display("Invalid Input", "Selected days can't be zero");
 			}
 			else{
 				
 				//Tell the controller that there is a price update
-				ConfirmBox confirmBox = new ConfirmBox();
-				String message = "Are you sure you want to update transport cost for " + this.firm.getText();
+				ConfirmDialog confirmDialog = new ConfirmDialog();
+				String message = "Are you sure you want to update transport cost for " + this.firm.getValue();
 				String title = "Transport Cost Update Confirmation";
-				confirmBox.display(title, message);
-				if(confirmBox.confirm){
+				confirmDialog.display(title, message);
+				if(confirmDialog.confirm){
 					String priority;
 					event.TransportCostUpdate tcu;
 					
@@ -282,8 +288,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 						}
 					}
 					
-					String from = origin.getText();
-					String to = destination.getText();
+					String from = origin.getValue();
+					String to = destination.getValue();
 					double weightPr = Double.parseDouble(weightPrice.getText());
 					double volPr = Double.parseDouble(volumePrice.getText());
 					double freq = Double.parseDouble(frequency.getText());
@@ -293,7 +299,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 					ZonedDateTime zdt = ZonedDateTime.now();
 					User user = controller.getLoggedInUser();
 					//make transport cost update event and send it to the controller
-					tcu = new event.TransportCostUpdate(zdt, user.getUsername(), from, to, weightPr, volPr, maxWei, maxVol, freq, dur, days, firm.getText(), priority);
+					tcu = new event.TransportCostUpdate(zdt, user.getUsername(), from, to, weightPr, volPr, maxWei, maxVol, freq, dur, days, firm.getValue(), priority);
 					System.out.println(tcu.toString());
 					
 					controller.handleEvent(tcu, this);
@@ -303,6 +309,9 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		}
 		if(event.getSource() == backButton){
 			controller.handleEvent(Controller.EVENTGUI);
+		}if(event.getSource() == logoutButton){
+			LogoutDialog logoutDialog = new LogoutDialog(controller);
+			logoutDialog.display();
 		}
 		
 	}

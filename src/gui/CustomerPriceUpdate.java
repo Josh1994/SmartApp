@@ -1,17 +1,24 @@
 package gui;
 
+import java.time.ZonedDateTime;
+
 import controller.Controller;
+import event.Event;
 import gui.base.DataEntryGUI;
+import gui.dialogs.AlertDialog;
+import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.User;
 
 /**
  * Created by phoal on 5/27/2017.
@@ -19,11 +26,17 @@ import javafx.scene.layout.VBox;
 public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEvent> {
     Button eventButton;
     Button backButton;
-    TextField fromText;
-    TextField toText;
+
+    ComboBox<String> fromText;
+    ComboBox<String> toText;
+
+    Button logoutButton;
+    
+
     TextField weight;
     TextField volume;
-    TextField priority;
+	String prio;
+    ChoiceBox<String> priorityBox;
 
     static Scene scene;
     Controller controller;
@@ -35,24 +48,33 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         this.controller = controller;
 
         eventButton = new Button();
-        eventButton.setText("Create Event");
+        eventButton.setText("Update");
         eventButton.setOnAction(this);
 
         backButton = new Button();
         backButton.setText("Back");
         backButton.setOnAction(this);
+		
+        logoutButton = new Button();
+		logoutButton.setText("Logout");
+		logoutButton.setOnAction(this);
 
         Label fromLabel = new Label("Origin");
         fromLabel.setMinHeight(25);
-        fromText = new TextField();
-        fromText.setMaxHeight(10);
-        fromText.setMaxWidth(200);
+        //fromText = new TextField();
+        //fromText.setMaxHeight(10);
+        //fromText.setMaxWidth(200);
+        fromText = new ComboBox<String>();
+        fromText.setMinWidth(200.0);
+        fromText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+        fromText.setEditable(false);
 
         Label toLabel = new Label("Destination");
         toLabel.setMinHeight(25);
-        toText = new TextField();
-        toText.setMaxHeight(10);
-        toText.setMaxWidth(200);
+        toText = new ComboBox<String>();
+        toText.setMinWidth(200.0);
+        toText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+        toText.setEditable(false);
 
         Label weightLabel = new Label("Price/gram");
         weightLabel.setMinHeight(25);
@@ -62,15 +84,15 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 
         Label volumeLabel = new Label("Price/volume");
         volumeLabel.setMinHeight(25);
-        volume = new PasswordField();
+        volume = new TextField();
         volume.setMaxHeight(10);
         volume.setMaxWidth(200);
 
-        Label priorityLabel = new Label("Priority");
-        priorityLabel.setMinHeight(25);
-        priority = new PasswordField();
-        priority.setMaxHeight(10);
-        priority.setMaxWidth(200);
+		Label priorityLabel = new Label("Transport Type");
+		priorityLabel.setMinHeight(25);
+		priorityBox = new ChoiceBox<String>();
+		priorityBox.getItems().addAll("Land", "Air", "Sea", "Domestic");
+		priorityBox.setValue("Land");
 
 
 
@@ -82,6 +104,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         vbox1.getChildren().add(volumeLabel);
         vbox1.getChildren().add(priorityLabel);
         vbox1.getChildren().add(backButton);
+        vbox1.getChildren().add(logoutButton);
 
         VBox vbox2 = new VBox(10);
         vbox2.setPadding(new Insets(10, 10, 10, 10));
@@ -89,7 +112,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         vbox2.getChildren().add(toText);
         vbox2.getChildren().add(weight);
         vbox2.getChildren().add(volume);
-        vbox2.getChildren().add(priority);
+        vbox2.getChildren().add(priorityBox);
         vbox2.getChildren().add(eventButton);
 
         HBox hbox = new HBox(20);
@@ -107,11 +130,45 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
     public void handle(ActionEvent event) {
         // TODO Auto-generated method stub
         if(event.getSource() == eventButton){
-            controller.handleEvent(Controller.MAIL);
+			System.out.println("Submit Button pressed");
+			prio = priorityBox.getValue();
+			System.out.println("From: "+ fromText.getValue());
+			System.out.println("To: "+ toText.getValue());
+			System.out.println(fromText.getValue() +" "+ toText.getValue() +" "+ weight.getText() +" "+ volume.getText() +" " + prio);
+			if(fromText.getValue().isEmpty() || toText.getValue().isEmpty() || weight.getText().isEmpty() || prio==null || volume.getText().isEmpty() ){
+				AlertDialog.display("Invalid Input", "Invalid Input Fields");
+			}
+			else{
+
+				if(prio.equals("Land")){
+					prio = Event.LAND;
+				}
+				else if(prio.equals("Air")){
+					prio = Event.AIR;
+				}
+				else if(prio.equals("Sea")){
+					prio = Event.SEA;
+				}
+				else{
+					prio = Event.DOMESTIC;
+				}
+				System.out.println(prio);
+				ZonedDateTime zdt = ZonedDateTime.now();
+				User user = controller.getLoggedInUser();
+				double w = Double.parseDouble(weight.getText());
+				double vol = Double.parseDouble(volume.getText());
+				event.CustomerPriceUpdate cpu = new event.CustomerPriceUpdate(zdt, user.getUsername(), fromText.getValue(), toText.getValue(), w, vol ,prio);
+				System.out.println(cpu.toString());
+
+				controller.handleEvent(cpu, this);
+			}
         }
         if(event.getSource() == backButton){
             controller.handleEvent(Controller.EVENTGUI);
-        }
+        }if(event.getSource() == logoutButton){
+			LogoutDialog logoutDialog = new LogoutDialog(controller);
+			logoutDialog.display();
+		}
 
     }
 

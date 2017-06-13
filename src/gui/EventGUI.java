@@ -2,10 +2,9 @@ package gui;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 import controller.Controller;
-import javafx.application.Application;
+import gui.dialogs.LogoutDialog;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,10 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class EventGUI{
 private Scene scene = null;
@@ -103,6 +99,32 @@ private Scene scene = null;
 			            controller.handleEvent(Controller.TRANSPORTDISC);
 			        }
 			});
+		
+		
+		Button button5 = new Button ("Back" , null);
+		button5.setMaxSize(150, 100);
+		button5.setWrapText(true);
+		button5.addEventHandler(MouseEvent.MOUSE_CLICKED,
+			    new EventHandler<MouseEvent>() {
+			        @Override public void handle(MouseEvent e) {
+			        	System.out.println("Back button clicked");
+			        	controller.handleEvent(Controller.MAINSCREEN);
+			        }
+			});
+		
+		
+		Button button6 = new Button ("Logout", null);
+		button6.setMaxSize(150, 100);
+		button6.setWrapText(true);
+		//Mouse event handling for Transport Discontinued
+		button6.addEventHandler(MouseEvent.MOUSE_CLICKED,
+			    new EventHandler<MouseEvent>() {
+			        @Override public void handle(MouseEvent e) {
+			        	System.out.println("Logout button clicked");
+			            LogoutDialog logoutDialog = new LogoutDialog(controller);
+			            logoutDialog.display();
+			        }
+			});
 
 		scene = new Scene(root, 600, 400);
 		VBox box = new VBox();
@@ -118,6 +140,15 @@ private Scene scene = null;
 		box.setMargin(button4, new Insets(20,20,20,20));
 
 		root.setCenter(box);
+		
+		VBox box2 = new VBox();
+		box2.getChildren().addAll(button5, button6);
+		box2.setAlignment(Pos.BOTTOM_RIGHT);
+		box2.setMargin(button5, new Insets(10,10,10,10));
+		box2.setMargin(button6, new Insets(10,10,10,10));
+
+		root.setCenter(box);
+		root.setBottom(box2);
 
 	}
 
