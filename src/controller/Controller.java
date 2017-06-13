@@ -3,9 +3,11 @@ package controller;
 import event.Event;
 import gui.*;
 import gui.base.DataEntryGUI;
+import gui.dialogs.AlertDialog;
 import javafx.stage.Stage;
 import model.BusinessModel;
 import model.EventProcessor;
+import model.Route;
 import model.User;
 
 import java.util.List;
@@ -46,8 +48,22 @@ public class Controller {
 		// first check for accuracy
 		if (validateEvent(entry)) {
 			if(entry instanceof event.TransportCostUpdate){
-				this.eventProcessor.processTCU((event.TransportCostUpdate)entry);
+				this.model.processEvent(entry);
 			}
+			if(entry instanceof event.MailDelivery){
+				//get route.
+				Route r = getRoute((event.MailDelivery)entry);
+				if(r == null){
+					AlertDialog.display("Route not found", "Route for this delivery is not available");
+				}
+				else{
+					
+					boolean b = this.model.processEvent(entry);
+					sourceView.displayRoute(r);
+					
+				}
+			}
+			
 			// Then send it to model
 			model.processEvent(entry);
 			//notify the user all okay.
@@ -88,6 +104,8 @@ public class Controller {
 		}
 
 	}
+	
+	
 
 	private boolean validateEvent(Event entry) {
 		// if entry not valid call the source GUI e.g.
@@ -137,5 +155,18 @@ public class Controller {
 		setLoggedInUser(null);
 		handleEvent(Controller.LOGIN);
 		return true;
+	}
+	
+	public Route getRoute(event.MailDelivery event){
+		//pass event to model.
+		if(event instanceof event.MailDelivery){
+			
+		}
+		
+		return null;
+	}
+	
+	public BusinessModel getModel(){
+		return this.model;
 	}
 }

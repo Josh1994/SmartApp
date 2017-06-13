@@ -43,4 +43,8 @@ public class BusinessModel {
     	eventManager.processSingleEvent(event, false);
     	return parser.convertToXML(db, "database.xml");
     }
+    
+    public EventManager getEventManager(){
+    	return this.eventManager;
+    }
 }
