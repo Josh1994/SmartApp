@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.Route;
 import model.User;
 
 public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEvent>{
@@ -79,14 +80,14 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		fromLabel.setMinHeight(25);
 		origin = new ComboBox<String>();
 		origin.setMinWidth(200.0);
-		origin.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		origin.getItems().addAll(controller.getModel().getEventManager().getLocationNames());
 		origin.setEditable(true);
 		
 		Label toLabel = new Label("Destination: ");
 		toLabel.setMinHeight(25);
 		destination = new ComboBox<String>();
 		destination.setMinWidth(200.0);
-		destination.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		destination.getItems().addAll(controller.getModel().getEventManager().getLocationNames());
 		destination.setEditable(true);
 		
 		Label weightLabel = new Label("Price per kg: ");
@@ -117,7 +118,7 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		firmLabel.setMinHeight(25);
 		firm = new ComboBox<String>();
 		firm.setMinWidth(200);
-		firm.getItems().addAll(controller.getEventProcessor().getFirmNames());
+		firm.getItems().addAll(controller.getModel().getEventManager().getFirmNames());
 		firm.setEditable(true);
 		firm.setMaxHeight(10);
 		firm.setMaxWidth(200);
@@ -317,6 +318,18 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	}
 	public void showError(String errormsg) {
 
+	}
+
+	@Override
+	public void displayRoute(Route route) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Controller getController() {
+		// TODO Auto-generated method stub
+		return this.controller;
 	}
 }
 

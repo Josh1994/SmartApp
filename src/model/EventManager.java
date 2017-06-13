@@ -322,5 +322,24 @@ public class EventManager {
     public List<Double> getAvgSurfaceDeliveryTimes() {
         return avgSurfaceDeliveryTimes;
     }
+    
+    public Set<String> getLocationNames() {
+		Set<String> locationNames = new HashSet<>();
+
+		for(TransportCostUpdate tcu : currentTcus) {
+			locationNames.add(tcu.getOrigin());
+			locationNames.add(tcu.getDestination());
+		}
+
+		return locationNames;
+	}
+	
+	public Set<String> getFirmNames(){
+		Set<String> firmNames = new HashSet<>();
+		for(TransportCostUpdate tcu : currentTcus){
+			firmNames.add(tcu.getFirm());
+		}
+		return firmNames;
+	}
 
 }
