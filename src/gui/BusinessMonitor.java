@@ -80,6 +80,9 @@ public class BusinessMonitor{
 	}
 	
 	
+	public void setRevenue(String revenue){
+		this.revenueLabel = revenue;
+	}
 	
 	
 	public VBox vbox(){

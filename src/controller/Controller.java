@@ -199,4 +199,8 @@ public class Controller {
 	public Database getDatabase(){
 		return model.getDatabase();
 	}
+	
+	public Route getAverageRoute(){
+		return this.model.getEventManager().getAverageRoute();
+	}
 }
