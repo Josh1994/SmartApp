@@ -1,2 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<database/>
+<database>
+    <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transportCostUpdate" eventType="transportCostUpdate">
+        <dateTime>2017-06-13T13:54:34.555+12:00[Pacific/Auckland]</dateTime>
+        <destination>AKLD</destination>
+        <origin>WGTN</origin>
+        <priority>DOMESTIC</priority>
+        <user>j</user>
+        <day>MONDAY</day>
+        <day>TUESDAY</day>
+        <duration>13.0</duration>
+        <firm>a</firm>
+        <frequency>1.0</frequency>
+        <maxVolume>10</maxVolume>
+        <maxWeight>10</maxWeight>
+        <volumeCost>1.0</volumeCost>
+        <weightCost>1.0</weightCost>
+    </event>
+    <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transportCostUpdate" eventType="transportCostUpdate">
+        <dateTime>2017-06-13T14:00:49.222+12:00[Pacific/Auckland]</dateTime>
+        <destination>WGTN</destination>
+        <origin>AKLD</origin>
+        <priority>DOMESTIC</priority>
+        <user>j</user>
+        <day>MONDAY</day>
+        <day>TUESDAY</day>
+        <day>WEDNESDAY</day>
+        <day>THURSDAY</day>
+        <day>FRIDAY</day>
+        <day>SATURDAY</day>
+        <duration>54.0</duration>
+        <firm>A</firm>
+        <frequency>12.0</frequency>
+        <maxVolume>45</maxVolume>
+        <maxWeight>15</maxWeight>
+        <volumeCost>45.0</volumeCost>
+        <weightCost>2.0</weightCost>
+    </event>
+</database>

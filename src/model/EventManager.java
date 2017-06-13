@@ -11,7 +11,7 @@ import java.util.*;
 public class EventManager {
     private BusinessModel model;
 
-    private List<Event> eventList;
+    private Database db;
     private List<TransportCostUpdate> currentTcus;
     private List<MailDelivery> currentMds;
     private List<CustomerPriceUpdate> currentCpus;
@@ -38,14 +38,14 @@ public class EventManager {
 
 
 
-    public EventManager(BusinessModel model, List<Event>eventList) {
+    public EventManager(BusinessModel model, Database db) {
         this.model = model;
 
         this.currentTcus = new ArrayList<TransportCostUpdate>();
         this.currentMds = new ArrayList<MailDelivery>();
         this.currentCpus = new ArrayList<CustomerPriceUpdate>();
         this.currentTds = new ArrayList<TransportDiscontinued>();
-        this.eventList = eventList;
+        this.db = db;
         this.model = model;
 
         this.averageRoute = new Route("AVERAGE OVERALL", "AVG", 0, 0,
@@ -57,7 +57,7 @@ public class EventManager {
         this.averageSurface = new Route("AVERAGE SURFACE", "AVG", 0, 0,
                 0, 0, "AVG");
 
-        processAllEvents(eventList);
+        processAllEvents(db.getEvent());
     }
 
     // Code for creating Business Figures
@@ -78,7 +78,7 @@ public class EventManager {
     }
 
     public void processSingleEvent(Event event, boolean batch) {
-        if (!batch) eventList.add(event);
+        if (!batch) db.addEvent(event);
         totalEvents += 1;
         if (event instanceof TransportCostUpdate) {
             TransportCostUpdate tcu = (TransportCostUpdate) event;

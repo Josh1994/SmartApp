@@ -18,12 +18,16 @@ public class Database {
 		return event.add(e);
 	}
 	
-	public void setEvent(ArrayList<Event> e){
-		event = e;
+	public void setEvent(List<Event> events){
+		event = events;
 	}
 	
 	@XmlElement
 	public List<Event> getEvent(){
+		return event;
+	}
+	
+	public List<Event> getEventList(){
 		return event;
 	}
 }
