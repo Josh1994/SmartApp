@@ -49,7 +49,14 @@ public class Controller {
 		// first check for accuracy
 		if (validateEvent(entry)) {
 			if(entry instanceof event.TransportCostUpdate){
-				this.model.processEvent(entry);
+				boolean b = model.processEvent(entry);
+				Route r = getRoute(entry);
+				if(r != null){
+					sourceView.displayRoute(r);
+				}
+				else{
+					System.out.println("No route found");
+				}
 			}
 			if(entry instanceof event.MailDelivery){
 				//get route.
@@ -65,14 +72,28 @@ public class Controller {
 				}
 			}
 			if(entry instanceof event.TransportDiscontinued){
-				
+				boolean b = model.processEvent(entry);
+				Route r = getRoute(entry);
+				if(r != null){
+					sourceView.displayRoute(r);
+				}
+				else{
+					System.out.println("Route not found");
+				}
 			}
 			if(entry instanceof event.CustomerPriceUpdate){
-				
+				boolean b = model.processEvent(entry);
+				Route r = getRoute(entry);
+				if(r != null){
+					sourceView.displayRoute(r);
+				}
+				else{
+					System.out.println("Route not found");
+				}
 			}
 			
 			// Then send it to model
-			model.processEvent(entry);
+			
 			//notify the user all okay.
 		}
 		// if event is not validated, we must notify the user.
@@ -164,13 +185,11 @@ public class Controller {
 		return true;
 	}
 	
-	public Route getRoute(event.MailDelivery event){
+	public Route getRoute(Event event){
 		//pass event to model.
-		if(event instanceof event.MailDelivery){
-			
-		}
+		return model.getRoute(event);
 		
-		return null;
+		
 	}
 	
 	public BusinessModel getModel(){
