@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import gui.base.DataEntryGUI;
 import javafx.scene.control.Label;
@@ -84,6 +85,7 @@ public class BusinessMonitor{
 
 		vbox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
+<<<<<<< HEAD
 
 	public void display(Route route){
 
@@ -112,6 +114,40 @@ public class BusinessMonitor{
 		//disBox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
 
+=======
+	
+	
+	public void setRevenue(String revenue){
+		this.revenueLabel = revenue;
+	}
+	
+	public void setExpenditure(String exp){
+		this.expLabel = exp;
+	}
+	
+	public void setCritLabels(ArrayList<String> critLabels){
+		this.critLabels = critLabels;
+	}
+	
+	public void setNumEvents(String numEv){
+		this.numEvLabel = numEv;
+	}
+	
+	public void setMailAmount(String amount){
+		this.mailAmountLabel = amount;
+	}
+	
+	public void setAveDelTime(String avgDelTime){
+		this.avgDelTimeLabel = avgDelTime;
+	}
+	
+	public void setCritLabel(String critLabel){
+		this.critLabel = critLabel;
+	}
+	
+	
+	
+>>>>>>> 89f1843b14f91a58a1f54c4aac2d92ca5fbfe6bb
 	public VBox vbox(){
 
 		return vbox;
