@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 import controller.Controller;
+import model.Database;
 import event.Event;
 
 /**
@@ -47,4 +48,9 @@ public class BusinessModel {
     public EventManager getEventManager(){
     	return this.eventManager;
     }
+
+	public Database getDatabase() {
+		// TODO Auto-generated method stub
+		return this.db;
+	}
 }
