@@ -1,8 +1,8 @@
 package event;
 
 import java.time.ZonedDateTime;
-import javax.xml.bind.annotation.XmlAttribute;  
-import javax.xml.bind.annotation.XmlElement;  
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -16,34 +16,36 @@ public class TransportDiscontinued extends Event {
 		super(dateTime, user, origin, destination, priority);
 		this.firm = firm;
 		this.city=city;
-//		this.type 
+//		this.type
 	}
-	
+
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("TransportDiscontinued Event");
 		sb.append("\nFirm: " + this.firm);
+		if(this.city != null){
 		sb.append("\nCity: "+ this.city);
+		}
 		sb.append("\nOrigin: " + this.origin);
 		sb.append("\nDestination: " + this.destination);
 		sb.append("\nPriority: " + this.priority);
 		sb.append("\nUser: "+ this.user);
 		return sb.toString();
 	}
-	
+
 	//For XML puposes don't remove
 	public TransportDiscontinued(){}
-	
+
 	@XmlAttribute
 	public String getEventType(){
 		return eventType;
 	}
-	
+
 	@XmlElement
 	public String getFirm() {
 		return firm;
 	}
-	
+
 	@XmlElement
 	public String getType() {
 		return priority;

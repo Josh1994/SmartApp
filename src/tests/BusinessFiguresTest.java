@@ -25,7 +25,7 @@ public class BusinessFiguresTest {
                 "DUBLIN", 10, 10, Event.SEA));
 
         events.add(new TransportDiscontinued(null, null, "LA",
-                "DUBLIN", "A", Event.SEA));
+                "DUBLIN", "A", Event.SEA, null));
 
         events.add( new TransportCostUpdate(null, null, "LA",
                 "DUBLIN", 20, 20, 0 , 0, 10, 10,
@@ -43,7 +43,7 @@ public class BusinessFiguresTest {
                 "DNDN", 20, 20, Event.DOMESTIC));
 
         events.add(new TransportDiscontinued(null, null, "CHCH",
-                "DNDN", "A", Event.DOMESTIC));
+                "DNDN", "A", Event.DOMESTIC, null));
 
         events.add( new TransportCostUpdate(null, null, "AKLD",
                 "CHCH", 20, 20, 0 , 0, 10, 10,
@@ -64,7 +64,7 @@ public class BusinessFiguresTest {
                 "LA", 20, 20, Event.AIR));
 
         events.add(new TransportDiscontinued(null, null, "LA",
-                "DUBLIN", "A", Event.DOMESTIC));
+                "DUBLIN", "A", Event.DOMESTIC, null));
 
         events.add( new TransportCostUpdate(null, null, "AKLD",
                 "LONDON", 20, 20, 0 , 0, 10, 10,
