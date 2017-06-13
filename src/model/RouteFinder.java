@@ -6,7 +6,7 @@ import event.TransportCostUpdate;
 import java.util.*;
 
 /**
- * Created by phoal on 5/31/2017.
+ * Created by philip clark on 5/31/2017.
  * Use a variation of djistra's algorithm to find all routes from each NZ city
  * Routes are composed of directed paths (Transport Cost Updates)
  * Routes are separated into: Domestic, Intl Air, Intl Surface (Sea or Land or Air)
@@ -17,7 +17,7 @@ import java.util.*;
  * The algorithm can easily find incoming Intl routes if necessary.
  */
 public class RouteFinder {
-    private BusinessModel model;
+    private EventManager manager;
 
     private Set<TransportCostUpdate> stages;
     private Set<String> domesticOrigins;
@@ -30,8 +30,10 @@ public class RouteFinder {
 
     private Map<String , Set<Route>> airRoutes;
 
-    public RouteFinder(BusinessModel model) {
-        this.model = model;
+    private Set<Route> discontinuedRoutes = new HashSet<>();
+
+    public RouteFinder(EventManager manager) {
+        this.manager = manager;
     }
 
     /**
@@ -52,6 +54,10 @@ public class RouteFinder {
         return domesticRoutes;
     }
 
+    public void setDomesticRoutes(Map<String, Set<Route>> map) {
+        domesticRoutes = map;
+    }
+
     /**
      *  Key - NZ cities which are the start of International Surface routes
      * @return
@@ -60,12 +66,20 @@ public class RouteFinder {
         return surfaceRoutes;
     }
 
+    public void setSurfaceRoutes(Map<String, Set<Route>> map) {
+        surfaceRoutes = map;
+    }
+
     /**
      * Key - NZ cities which are the start of International Air routes
      * @return
      */
     public Map<String, Set<Route>> getAirRoutes() {
         return airRoutes;
+    }
+
+    public void setAirRoutes(Map<String, Set<Route>> map) {
+        airRoutes = map;
     }
 
     /**
@@ -121,6 +135,7 @@ public class RouteFinder {
             }
         }
         // Now form the lookup maps
+
         for (String start : domesticOrigins) {
             domesticRoutes.put(start, new HashSet<Route>());
             getAllRoutesFromOrigin(start, Event.DOMESTIC);
@@ -157,9 +172,9 @@ public class RouteFinder {
             }
         }
         for (Route route : priorityQueue) {
-            // TEST : System.out.format("pq1 %s  %s",route.getOrigin(), route.getDestination() );
+            //System.out.format("pq1 %s  %s",route.getOrigin(), route.getDestination() );
 
-    }
+        }
         while (!priorityQueue.isEmpty()) {
             Route newRoute = priorityQueue.poll();
             // If we've returned to start discard this route
@@ -182,9 +197,10 @@ public class RouteFinder {
             }
             /**
              * Handy Test which lists all the routes
-
-            for (Route route : routes.get(origin)) {
-            System.out.format("%ncycle2 %s, %s ", route.getOrigin(), route.getDestination());}
+             */
+            /**
+             for (Route route : routes.get(origin)) {
+             System.out.format("%ncycle2 %s, %s ", route.getOrigin(), route.getDestination());}
              */
         }
     }
@@ -200,18 +216,18 @@ public class RouteFinder {
      */
     private boolean findMatch(String nextOrigin, String priority, TransportCostUpdate tcu){
 
-            //if last point of route matches start of TCU;
-            if (tcu.getOrigin().equals(nextOrigin) && tcu.getPriority().equals(priority)) {
-                return true;
-            }
-            // if it's intl surface it can use any route priority available except DOMESTIC
-            // The priority queue will always guarantee the cheapest cost
-            else if (!(priority.equals(Event.AIR) || (priority.equals(Event.DOMESTIC)))
-                    && !tcu.getPriority().equals(Event.DOMESTIC) && tcu.getOrigin().equals(nextOrigin)) {
-                return true;
-            }
+        //if last point of route matches start of TCU;
+        if (tcu.getOrigin().equals(nextOrigin) && tcu.getPriority().equals(priority)) {
+            return true;
+        }
+        // if it's intl surface it can use any route priority available except DOMESTIC
+        // The priority queue will always guarantee the cheapest cost
+        else if (!(priority.equals(Event.AIR) || (priority.equals(Event.DOMESTIC)))
+                && !tcu.getPriority().equals(Event.DOMESTIC) && tcu.getOrigin().equals(nextOrigin)) {
+            return true;
+        }
 
-            return false;
+        return false;
     }
 
     /**
@@ -247,6 +263,8 @@ public class RouteFinder {
         Route intlRoute;
         String intlStart;
 
+        Route domestic1;
+
         if (priority.equals(Event.AIR)) routes = airRoutes;
         else routes = surfaceRoutes;
 
@@ -264,13 +282,18 @@ public class RouteFinder {
                             intlRoute = route;
                             intlStart = s1;
                             // Now find domestic connection
-                            Route domestic1 = getRoute(origin, intlStart, Event.DOMESTIC);
+                            domestic1 = getRoute(origin, intlStart, Event.DOMESTIC);
                             if (domestic1 != null) return new Route(domestic1, intlRoute, priority);
                         }
                     }
                 }
             }
         } return null; // no match found;
+    }
+
+
+    public Set<Route> getDiscontinuedRoutes() {
+        return discontinuedRoutes;
     }
 }
 

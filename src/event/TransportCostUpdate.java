@@ -41,8 +41,10 @@ public class TransportCostUpdate extends Event{
 		sb.append("\nPrice per kg: " + this.weightCost);
 		sb.append("\nPrice per cubic cm: " + this.volumeCost);
 		sb.append("\nDays:");
-		for(DayOfWeek day : this.days){
-			sb.append("\n" + day.toString());
+		if (this.days != null) {
+			for (DayOfWeek day : this.days) {
+				sb.append("\n" + day.toString());
+			}
 		}
 		sb.append("\nPriority: " + this.priority);
 		sb.append("\nUser: "+ this.user);
@@ -98,6 +100,30 @@ public class TransportCostUpdate extends Event{
 	public String getFirm() {
 		return firm;
 	}
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof TransportCostUpdate)) return false;
+		if (!super.equals(o)) return false;
+
+		TransportCostUpdate that = (TransportCostUpdate) o;
+
+		return firm != null ? firm.equals(that.firm) : that.firm == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + (firm != null ? firm.hashCode() : 0);
+		return result;
+	}
+	public boolean matchCustomerPriceUpdate(CustomerPriceUpdate cpu){
+		return origin.equals(cpu.getOrigin()) &&
+				destination.equals(cpu.getDestination()) &&
+				priority.equals(cpu.getPriority());
+
 	
 	public void setWeightCost(double weight) {
 		this.weightCost = weight;
@@ -105,5 +131,6 @@ public class TransportCostUpdate extends Event{
 
 	public void setVolumeCost(double vol) {
 		this.volumeCost = vol;
+
 	}
 }
