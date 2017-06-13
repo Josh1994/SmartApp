@@ -27,7 +27,6 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 	BusinessMonitor bs;
 	EventManager eventManager;
 	Database fullEventDatabase;
-	Database eventList;
 	Controller controller;
 	int counter = 0;
 	Button forwardButton;
@@ -36,6 +35,8 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	public DecisionSupport(Controller controller){
 		BorderPane root = new BorderPane();
+		this.fullEventDatabase = controller.getDatabase();
+		System.out.println(fullEventDatabase.getEvent().isEmpty());
 		this.controller = controller;
 
 		forwardButton = new Button();
@@ -53,12 +54,12 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		mainContainer.setAlignment(Pos.TOP_CENTER);
 		mainContainer.getChildren().addAll(vbox);
 
-		eventList = controller.getDatabase();
-		//bs.display(route);
 
 		scene = new Scene(root, 600, 400);
 		root.setCenter(mainContainer);
 		root.setBottom(hbox);
+
+		initialize();
 
 	}
 
@@ -74,7 +75,8 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		e.add(fullEventDatabase.getEvent().get(0));
 		db.setEvent(e);
 
-		EventManager em = new EventManager(null,db);
+		eventManager = new EventManager(null,db);
+		eventManager.getNewRoutes();
 	}
 
 	public void handle(ActionEvent event) {
@@ -92,8 +94,13 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		counter++;
 		if(counter > fullEventDatabase.getEvent().size()-1){ counter =  fullEventDatabase.getEvent().size()-1;};
 		Event eve = fullEventDatabase.getEvent().get(counter);
+		eventManager.processEvent(eve);
 		Route route = eventManager.getRoute(eve);
-		displayRoute(route);
+		if(route != null){
+		displayRoute(route);}
+		else{
+			System.out.print("Route is null");
+		}
 	}
 
 	public void clickBackward(){

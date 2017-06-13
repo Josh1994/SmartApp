@@ -40,19 +40,21 @@ public class Controller {
 		this.userDatabase = new UserDatabase();
 		this.eventProcessor = new EventProcessor();
 		model = new BusinessModel(this);
-		
-		
+
+
 	}
 
 	public void handleEvent(Event entry, DataEntryGUI sourceView) {
 		this.currentView = sourceView;
-
 		// first check for accuracy
 		if (validateEvent(entry)) {
 			if(entry instanceof event.TransportCostUpdate){
 				boolean b = model.processEvent(entry);
 				Route r = getRoute(entry);
+
 				if(r != null){
+
+					System.out.println("Transport Cost Update found");
 					sourceView.displayRoute(r);
 				}
 				else{
@@ -66,16 +68,18 @@ public class Controller {
 					AlertDialog.display("Route not found", "Route for this delivery is not available");
 				}
 				else{
-					
+					System.out.println("Mail Delivery found");
 					boolean b = this.model.processEvent(entry);
 					sourceView.displayRoute(r);
-					
+
 				}
 			}
 			if(entry instanceof event.TransportDiscontinued){
 				boolean b = model.processEvent(entry);
 				Route r = getRoute(entry);
 				if(r != null){
+
+					System.out.println("Transport Discontinued found");
 					sourceView.displayRoute(r);
 				}
 				else{
@@ -86,15 +90,17 @@ public class Controller {
 				boolean b = model.processEvent(entry);
 				Route r = getRoute(entry);
 				if(r != null){
+
+					System.out.println("Customer Price Update found");
 					sourceView.displayRoute(r);
 				}
 				else{
 					System.out.println("Route not found");
 				}
 			}
-			
+
 			// Then send it to model
-			
+
 			//notify the user all okay.
 		}
 		// if event is not validated, we must notify the user.
@@ -136,8 +142,8 @@ public class Controller {
 		}
 
 	}
-	
-	
+
+
 
 	private boolean validateEvent(Event entry) {
 		// if entry not valid call the source GUI e.g.
@@ -182,24 +188,24 @@ public class Controller {
 		}
 		return false;
 	}
-	
+
 	public boolean logout(){
 		setLoggedInUser(null);
 		handleEvent(Controller.LOGIN);
 		return true;
 	}
-	
+
 	public Route getRoute(Event event){
 		//pass event to model.
 		return model.getRoute(event);
-		
-		
+
+
 	}
-	
+
 	public BusinessModel getModel(){
 		return this.model;
 	}
-	
+
 	public Database getDatabase(){
 		return model.getDatabase();
 	}

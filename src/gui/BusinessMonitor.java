@@ -25,14 +25,14 @@ public class BusinessMonitor{
 	TextField avgDelTime;
 	TextField critRev;
 	DataEntryGUI gui; //Responsible critical routes
+	Label rev, expend, numE, mail, avg, crit;
+	Label revVal, expendVal, numVal, mailVal, avgVal, critVal;
 
 	HBox hbox = new HBox(10);
 	VBox vbox;
 	VBox disBox;
 
 	public BusinessMonitor(DataEntryGUI gui){
-		vbox = new VBox();
-		this.gui = gui;
 		HBox revBox = new HBox(20);
 		HBox expBox = new HBox(20);
 		HBox evntBox = new HBox(20);
@@ -40,48 +40,62 @@ public class BusinessMonitor{
 		HBox avgBox = new HBox(20);
 		HBox critBox = new HBox(20);
 
+		vbox = new VBox();
+		this.gui = gui;
 
-		Label rev = new Label("Revenue");
+
+
+		rev = new Label("Revenue");
 		rev.setMinHeight(25);
+		revVal = new Label("0");
+		System.out.println(revVal.getText());
+		revVal.setMinHeight(25);
+		revBox.getChildren().addAll(rev, revVal);
 
-		Label expend = new Label("Expenditure");
+		expend = new Label("Expenditure");
 		expend.setMinHeight(25);
+		expendVal = new Label("0");
+		expendVal.setMinHeight(25);
+		expBox.getChildren().addAll(expend, expendVal);
 
-
-		Label numE = new Label("Number of Events");
+		numE = new Label("Number of Events");
 		numE.setMinHeight(25);
+		numVal = new Label("0");
+		numVal.setMinHeight(25);
+		evntBox.getChildren().addAll(numE, numVal);
 
-		Label mail = new Label("Mail Amount");
+		mail = new Label("Mail Amount");
 		mail.setMinHeight(25);
+		mailVal = new Label("0");
+		mailVal.setMinHeight(25);
+		mailBox.getChildren().addAll(mail, mailVal);
 
-		Label avg = new Label("Average Delivery Time");
+		avg = new Label("Average Delivery Time");
 		avg.setMinHeight(25);
+		avgVal = new Label("0");
+		avgVal.setMinHeight(25);
+		avgBox.getChildren().addAll(avg, avgVal);
 
-		Label crit = new Label("Critical Routes");
+		crit = new Label("Critical Routes");
 		crit.setMinHeight(25);
+//
+//		hbox.getChildren().addAll(rev, expend, numE, mail, avg, crit);
+//		vbox.getChildren().add(hbox);
 
-		vbox.getChildren().addAll(rev, expend, numE, mail, avg, crit);
-		hbox.getChildren().add(vbox);
+		vbox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
 
 	public void display(Route route){
-		disBox = new VBox();
-		HBox critBox = new HBox(20);
 
-		Label revVal = new Label(Double.toString(route.getRevenue()));
-		revVal.setMinHeight(25);
+		revVal.setText(Double.toString(route.getRevenue()));
 
-		Label expendVal = new Label(Double.toString(route.getExpenditure()));
-		expendVal.setMinHeight(25);
+		expendVal.setText(Double.toString(route.getExpenditure()));
 
-		Label numVal = new Label(Double.toString(route.getNumberOfEvents()));
-		numVal.setMinHeight(25);
+		numVal.setText(Double.toString(route.getNumberOfEvents()));
 
-		Label mailVal = new Label(Integer.toString(route.getAmountOfmail()));
-		mailVal.setMinHeight(25);
+		mailVal.setText(Double.toString(route.getAmountOfmail()));
 
-		Label avgVal = new Label(Double.toString(route.getAvgDeliveryTime()));
-		avgVal.setMinHeight(25);
+		avgVal.setText(Double.toString(route.getAvgDeliveryTime()));
 
 //		Critical Routes obtaining only 5 at most
 //		ArrayList <Route> critRoutes = gui.getController().getModel().getEventManager().getCriticalRoutes().take(5) ;
@@ -94,8 +108,8 @@ public class BusinessMonitor{
 //			l.setMinHeight(25);
 //			critBox.getChildren().addAll(d,o,p);
 //		}
-//		vbox.getChildren().addAll(vBox);
-//		hbox.getChildren().addAll(vbox,disBox);
+		//vbox.getChildren().addAll(vbox);
+		//disBox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
 
 	public VBox vbox(){
@@ -105,6 +119,54 @@ public class BusinessMonitor{
 	public HBox hbox(){
 
 		return hbox;
+	}
+
+	public String getRevenueLabel() {
+		return revenueLabel;
+	}
+
+	public void setRevenueLabel(String revenueLabel) {
+		this.revenueLabel = revenueLabel;
+	}
+
+	public String getExpLabel() {
+		return expLabel;
+	}
+
+	public void setExpLabel(String expLabel) {
+		this.expLabel = expLabel;
+	}
+
+	public String getNumEvLabel() {
+		return numEvLabel;
+	}
+
+	public void setNumEvLabel(String numEvLabel) {
+		this.numEvLabel = numEvLabel;
+	}
+
+	public String getMailAmountLabel() {
+		return mailAmountLabel;
+	}
+
+	public void setMailAmountLabel(String mailAmountLabel) {
+		this.mailAmountLabel = mailAmountLabel;
+	}
+
+	public String getAvgDelTimeLabel() {
+		return avgDelTimeLabel;
+	}
+
+	public void setAvgDelTimeLabel(String avgDelTimeLabel) {
+		this.avgDelTimeLabel = avgDelTimeLabel;
+	}
+
+	public String getCritLabel() {
+		return critLabel;
+	}
+
+	public void setCritLabel(String critLabel) {
+		this.critLabel = critLabel;
 	}
 
 

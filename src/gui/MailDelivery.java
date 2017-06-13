@@ -39,8 +39,8 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 	ArrayList <String> critLabels = new ArrayList();
 	static Scene scene;
 	Controller controller;
-
-
+	BusinessMonitor bm;
+	VBox vbox;
 
 	public MailDelivery(Controller controller){
 
@@ -129,7 +129,8 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		critLabels.add("Expenditure");
 		HBox hbox = new HBox(10);
 		//TODO
-		VBox vbox = new BusinessMonitor(null).vbox();
+		bm = new BusinessMonitor(this);
+		vbox = bm.vbox();
 
 		vbox.setPadding(new Insets(20));
 		vbox.setAlignment(Pos.TOP_CENTER);
@@ -174,11 +175,11 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 			if(type!=null && toText.getValue()!=null && fromText.getValue()!=null && !weight.getText().isEmpty() && !volume.getText().isEmpty()){
 				//TODO
 				//need a confirm box showing the total cost and duration first before sending an event to the controller.
-				
+
 				mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
 				System.out.println(mdEvent.toString());
 				controller.handleEvent(mdEvent, this);
-				
+
 			}
 			else{
 				AlertDialog.display("Invalid Input", "Please enter valid input");
@@ -203,8 +204,11 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		StringBuilder sb = new StringBuilder();
 		sb.append("Route: ");
 		sb.append(route.toString());
-		AlertDialog.display("Route", sb.toString());
 		
+		bm.display(route);
+		this.vbox = bm.vbox();
+		//AlertDialog.display("Route", sb.toString());
+
 	}
 
 	@Override
