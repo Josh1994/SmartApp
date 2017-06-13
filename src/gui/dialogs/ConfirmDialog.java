@@ -1,4 +1,4 @@
-package gui;
+package gui.dialogs;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ConfirmBox {
+public class ConfirmDialog {
 	private Stage window;
 	public boolean confirm = false;
 	

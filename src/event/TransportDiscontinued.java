@@ -8,12 +8,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class TransportDiscontinued extends Event {
 	private String firm;
+	String city;
 //	String type;
 	private static final String eventType = "transportDiscontinued";
 
-	public TransportDiscontinued(ZonedDateTime dateTime, String user, String origin, String destination, String firm, String priority) {
+	public TransportDiscontinued(ZonedDateTime dateTime, String user, String origin, String destination, String firm, String priority, String city) {
 		super(dateTime, user, origin, destination, priority);
 		this.firm = firm;
+		this.city=city;
 //		this.type 
 	}
 	
@@ -21,11 +23,11 @@ public class TransportDiscontinued extends Event {
 		StringBuilder sb = new StringBuilder();
 		sb.append("TransportDiscontinued Event");
 		sb.append("\nFirm: " + this.firm);
+		sb.append("\nCity: "+ this.city);
 		sb.append("\nOrigin: " + this.origin);
 		sb.append("\nDestination: " + this.destination);
 		sb.append("\nPriority: " + this.priority);
 		sb.append("\nUser: "+ this.user);
-		
 		return sb.toString();
 	}
 	
@@ -45,5 +47,9 @@ public class TransportDiscontinued extends Event {
 	@XmlElement
 	public String getType() {
 		return priority;
+	}
+	@XmlElement
+	public String getCity() {
+		return city;
 	}
 }

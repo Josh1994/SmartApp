@@ -30,6 +30,7 @@ public class XMLParser {
 	private String origin = "";
 	private String destination = "";
 	private String firm = "";
+	private String city = "";
 	private double weightCost = 0;
 	private double volumeCost = 0;
 	private double frequency = 0;
@@ -77,15 +78,17 @@ public class XMLParser {
 		NodeList cNodes = node.getChildNodes();
 		for(int i=0;i<cNodes.getLength();i++){
 			Node cNode = cNodes.item(i);
+			System.out.println(cNode);
 			parseVariable(cNode);
 		}
-		return new TransportDiscontinued(dateTime, user, origin, destination, firm, priority);
+		return new TransportDiscontinued(dateTime, user, origin, destination, firm, priority, city);
 	}
 
 	private TransportCostUpdate transportCostUpdateParser(Node node) {
 		NodeList cNodes = node.getChildNodes();
 		for(int i=0;i<cNodes.getLength();i++){
 			Node cNode = cNodes.item(i);
+			System.out.println(cNode);
 			parseVariable(cNode);
 		}
 		return new TransportCostUpdate(dateTime, user, origin, destination, weightCost, 
@@ -117,6 +120,7 @@ public class XMLParser {
 			case "origin":origin=s;break;
 			case "destination":destination=s;break;
 			case "firm":firm=s;break;
+			case "city":city=s;break;
 			case "weightCost":weightCost=Double.parseDouble(s);break;
 			case "volumeCost":volumeCost=Double.parseDouble(s);break;
 			case "frequency":frequency=Double.parseDouble(s);break;
@@ -135,6 +139,7 @@ public class XMLParser {
 		origin="";
 		destination="";
 		firm="";
+		city="";
 		weightCost=0;
 		volumeCost=0;
 		frequency=0;

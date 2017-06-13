@@ -30,7 +30,7 @@ public class parserTests {
 	ZonedDateTime date = ZonedDateTime.now();
 	List<String> s = new ArrayList<String>();
 	List<DayOfWeek> days = new ArrayList<DayOfWeek>();
-	TransportDiscontinued  td = new TransportDiscontinued(date, a, a, a, a, a);
+	TransportDiscontinued  td = new TransportDiscontinued(date, a, a, a, a, a, a);
 	TransportCostUpdate tcu = new TransportCostUpdate(date, a, a, a, 0, 0, 0, 0, 0, 0, days, a, a);
 	MailDelivery md = new MailDelivery(date, a, a, a, 0, 0, a);
 	CustomerPriceUpdate cpu = new CustomerPriceUpdate(date, a, a, a, 0, 0, a);

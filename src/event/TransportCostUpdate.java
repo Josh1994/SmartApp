@@ -101,6 +101,7 @@ public class TransportCostUpdate extends Event{
 		return firm;
 	}
 
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -122,5 +123,14 @@ public class TransportCostUpdate extends Event{
 		return origin.equals(cpu.getOrigin()) &&
 				destination.equals(cpu.getDestination()) &&
 				priority.equals(cpu.getPriority());
+
+	
+	public void setWeightCost(double weight) {
+		this.weightCost = weight;
+	}
+
+	public void setVolumeCost(double vol) {
+		this.volumeCost = vol;
+
 	}
 }
