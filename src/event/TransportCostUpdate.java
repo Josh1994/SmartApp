@@ -124,7 +124,7 @@ public class TransportCostUpdate extends Event{
 				destination.equals(cpu.getDestination()) &&
 				priority.equals(cpu.getPriority());
 
-	
+	}
 	public void setWeightCost(double weight) {
 		this.weightCost = weight;
 	}
