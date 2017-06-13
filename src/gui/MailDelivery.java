@@ -127,7 +127,9 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		critLabels.add("Revenue");
 		critLabels.add("Expenditure");
 		HBox hbox = new HBox(10);
-		VBox vbox = new BusinessMonitor(critLabels).vbox();
+		//TODO
+		VBox vbox = new BusinessMonitor(null).vbox();
+
 		vbox.setPadding(new Insets(20));
 		vbox.setAlignment(Pos.TOP_CENTER);
 		hbox.setPadding(new Insets(20, 20, 20, 20));
@@ -135,7 +137,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		VBox mainContainer = new VBox();
 		mainContainer.setAlignment(Pos.TOP_CENTER);
 		mainContainer.getChildren().addAll(vbox, hbox);
-		
+
 
 		scene = new Scene(mainContainer, 650, 500);
 	}
