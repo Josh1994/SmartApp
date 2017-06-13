@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.Route;
 
 public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
@@ -61,14 +62,14 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		fromLabel.setMinHeight(25);
 		fromText = new ComboBox<String>();
 		fromText.setMinWidth(200.0);
-		fromText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		fromText.getItems().addAll(controller.getModel().getEventManager().getLocationNames());
 		fromText.setEditable(false);
 
 		Label toLabel = new Label("Destination");
 		toLabel.setMinHeight(25);
 		toText = new ComboBox<String>();
 		toText.setMinWidth(200.0);
-		toText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		toText.getItems().addAll(controller.getModel().getEventManager().getLocationNames());
 		toText.setEditable(false);
 
 		Label weightLabel = new Label("Weight");
@@ -173,15 +174,11 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 			if(type!=null && toText.getValue()!=null && fromText.getValue()!=null && !weight.getText().isEmpty() && !volume.getText().isEmpty()){
 				//TODO
 				//need a confirm box showing the total cost and duration first before sending an event to the controller.
-				String message = "Total Cost for Delivery: ";
-				ConfirmDialog confirmDialog = new ConfirmDialog();
-				confirmDialog.display("Mail Delivery Confirmation", message);
-				if(confirmDialog.confirm){
-					mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
-					System.out.println(mdEvent.toString());
-					controller.handleEvent(mdEvent, this);
-				}
-
+				
+				mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
+				System.out.println(mdEvent.toString());
+				controller.handleEvent(mdEvent, this);
+				
 			}
 			else{
 				AlertDialog.display("Invalid Input", "Please enter valid input");
@@ -198,6 +195,18 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 	}
 	public void showError(String errormsg) {
 
+	}
+
+	@Override
+	public void displayRoute(Route route) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Controller getController() {
+		// TODO Auto-generated method stub
+		return this.controller;
 	}
 
 }

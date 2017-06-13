@@ -17,7 +17,7 @@ public class DecisionSupport implements DataEntryGUI{
 	public DecisionSupport(Controller controller){
 		this.controller = controller;
 		bs = new BusinessMonitor(this);
-		eventList = controller.getEventList();
+		eventList = controller.get;
 		//bs.display(route);
 
 	}

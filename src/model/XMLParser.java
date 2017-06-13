@@ -160,14 +160,18 @@ public class XMLParser {
 		return db;
 	}
 
-	public void convertToXML(Database db, String fileName){
+	public boolean convertToXML(Database db, String fileName){
 		try{
 			JAXBContext contextObj = JAXBContext.newInstance(Database.class); 
 			Marshaller marshallerObj = contextObj.createMarshaller();
 			marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);  
 			marshallerObj.marshal(db, new FileOutputStream(fileName));  
+			return true;
 		}catch(Exception e){
 			e.printStackTrace();
+			return false;
+		}finally{
+			return false;
 		}
 	}
 }
