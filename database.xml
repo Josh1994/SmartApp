@@ -36,4 +36,14 @@
         <volumeCost>45.0</volumeCost>
         <weightCost>2.0</weightCost>
     </event>
+    <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transportDiscontinued" eventType="transportDiscontinued">
+        <dateTime>2017-06-13T15:56:44.960+12:00[NZ]</dateTime>
+        <destination>WGTN</destination>
+        <origin>AKLD</origin>
+        <priority>DOMESTIC</priority>
+        <user>dd</user>
+        <city>Paris</city>
+        <firm>A</firm>
+        <type>DOMESTIC</type>
+    </event>
 </database>

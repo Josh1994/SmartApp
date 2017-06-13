@@ -4,6 +4,8 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.javafx.tk.Toolkit;
+
 import controller.Controller;
 import event.Event;
 import gui.base.DataEntryGUI;
@@ -12,7 +14,9 @@ import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Database;
@@ -28,8 +32,10 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 	int counter = 0;
 	Button forwardButton;
 	Button backwardButton;
+	private Scene scene = null;
 
 	public DecisionSupport(Controller controller){
+		BorderPane root = new BorderPane();
 		this.controller = controller;
 
 		forwardButton = new Button();
@@ -49,6 +55,10 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 
 		eventList = controller.getDatabase();
 		//bs.display(route);
+
+		scene = new Scene(root, 600, 400);
+		root.setCenter(mainContainer);
+		root.setBottom(hbox);
 
 	}
 
@@ -73,8 +83,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 			clickForward();
 		}
 		else{
-			LogoutDialog logoutDialog = new LogoutDialog(controller);
-			logoutDialog.display();
+			clickBackward();
 		}
 
 	}
@@ -95,6 +104,9 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		displayRoute(route);
 	}
 
+	public Scene scene() {
+		return scene;
+	}
 	@Override
 	public Controller getController() {
 		// TODO Auto-generated method stub

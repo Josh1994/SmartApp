@@ -341,5 +341,9 @@ public class EventManager {
 		}
 		return firmNames;
 	}
+	
+	public Route getRoute(Event ev){
+		return routeFinder.getRoute(ev.getOrigin(), ev.getDestination(), ev.getPriority());
+	}
 
 }
