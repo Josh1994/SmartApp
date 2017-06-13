@@ -62,7 +62,7 @@ public class BusinessMonitor{
 
 		Label avg = new Label("Average Delivery Time");
 		avg.setMinHeight(25);
-		Label avgVal = new Label();
+		Label avgVal = new Label(avgDelTimeLabel);
 		avgVal.setMinHeight(25);
 		avgBox.getChildren().addAll(avg, avgVal);
 
@@ -78,6 +78,7 @@ public class BusinessMonitor{
 		vbox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 		
 	}
+	
 	
 	
 	
