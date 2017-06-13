@@ -95,6 +95,7 @@ public class RouteFinder {
 
         // Domestic
         if (priority.equals(Event.DOMESTIC)) {
+            if (domesticRoutes.get(origin) == null) {return null;}
             for (Route route : domesticRoutes.get(origin)) {
                 if (route.getDestination().equals(destination)) {
                     return route;
