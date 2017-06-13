@@ -24,7 +24,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 
 	Button eventButton;
 	Button backButton;
-	TextField firm;
+	ComboBox<String> firm;
 	TextField volume;
 	String prio;
 	ChoiceBox<String> priorityBox;
@@ -70,7 +70,9 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 
 		Label firmLabel = new Label("Transport Firm");
 		firmLabel.setMinHeight(25);
-		firm = new TextField();
+		firm = new ComboBox<String>();
+		firm.getItems().addAll(controller.getModel().getEventManager().getFirmNames());
+		firm.setEditable(false);
 		firm.setMaxHeight(10);
 		firm.setMaxWidth(200);
 		
@@ -124,8 +126,8 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		if(event.getSource() == eventButton){
 			System.out.println("Submit Button pressed");
 			prio = priorityBox.getValue();
-			System.out.println(fromText.getValue() +" "+ toText.getValue() +" "+ firm.getText() +" "+ prio);
-			if(fromText.getValue().isEmpty() || toText.getValue().isEmpty() || firm.getText().isEmpty() || prio==null || city.getText().isEmpty() ){
+			System.out.println(fromText.getValue() +" "+ toText.getValue() +" "+ firm.getValue() +" "+ prio);
+			if(fromText.getValue().isEmpty() || toText.getValue().isEmpty() || firm.getValue().isEmpty() || prio==null || city.getText().isEmpty() ){
 				AlertDialog.display("Invalid Input", "Invalid Input Fields");
 			}
 			else{
@@ -145,7 +147,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 				System.out.println(prio);
 				ZonedDateTime zdt = ZonedDateTime.now();
 				User user = controller.getLoggedInUser();
-				event.TransportDiscontinued td = new event.TransportDiscontinued(zdt, user.getUsername(), fromText.getValue(), toText.getValue(), firm.getText(), prio, city.getText());
+				event.TransportDiscontinued td = new event.TransportDiscontinued(zdt, user.getUsername(), fromText.getValue(), toText.getValue(), firm.getValue(), prio, city.getText());
 				System.out.println(td.toString());
 				controller.handleEvent(td, this);
 			}

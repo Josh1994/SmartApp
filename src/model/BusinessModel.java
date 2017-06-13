@@ -53,4 +53,10 @@ public class BusinessModel {
 		// TODO Auto-generated method stub
 		return this.db;
 	}
+	
+	public Route getRoute(Event ev){
+		return eventManager.getRoute(ev);
+	}
+
+	
 }
