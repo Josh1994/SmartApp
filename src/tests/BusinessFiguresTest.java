@@ -2,6 +2,7 @@ package tests;
 
 
 import event.*;
+import model.Database;
 import model.EventManager;
 import model.Route;
 import model.RouteFinder;
@@ -78,8 +79,9 @@ public class BusinessFiguresTest {
         for (Event e : RouteFinderTest.createTCUs()) {
             events.add(e) ;
         }
-        EventManager em = new EventManager(null,
-                (events));
+        Database db = new Database();
+        db.setEvent(events);
+        EventManager em = new EventManager(null, db);
         return em;
     }
 

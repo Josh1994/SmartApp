@@ -36,22 +36,11 @@ public class BusinessModel {
 			}  
         }
         
-        initialiseEventProcessor();
+        this.eventManager = new EventManager(this, db);
     }
     
-    private void initialiseEventProcessor(){
-    	EventProcessor ep = this.controller.getEventProcessor();
-    	List<Event> evList = this.db.getEvent();
-    	for(Event event : evList){
-    		if(event instanceof event.TransportCostUpdate){
-    			event.TransportCostUpdate tcu = (event.TransportCostUpdate)event;
-    			ep.processTCU(tcu);
-    		}
-    	}
-    }
-
-    public void processEvent(Event event) {
-    	db.addEvent(event);
-    	parser.convertToXML(db, "database.xml");
+    public boolean processEvent(Event event) {
+    	eventManager.processSingleEvent(event, false);
+    	return parser.convertToXML(db, "database.xml");
     }
 }
