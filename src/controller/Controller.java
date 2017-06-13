@@ -6,6 +6,7 @@ import gui.base.DataEntryGUI;
 import gui.dialogs.AlertDialog;
 import javafx.stage.Stage;
 import model.BusinessModel;
+import model.Database;
 import model.EventProcessor;
 import model.Route;
 import model.User;
@@ -62,6 +63,12 @@ public class Controller {
 					sourceView.displayRoute(r);
 					
 				}
+			}
+			if(entry instanceof event.TransportDiscontinued){
+				
+			}
+			if(entry instanceof event.CustomerPriceUpdate){
+				
 			}
 			
 			// Then send it to model
@@ -168,5 +175,9 @@ public class Controller {
 	
 	public BusinessModel getModel(){
 		return this.model;
+	}
+	
+	public Database getDatabase(){
+		return model.getDatabase();
 	}
 }

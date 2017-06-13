@@ -12,6 +12,12 @@ import model.Route;
 
 public class BusinessMonitor{
 	private ArrayList <String> critLabels = new ArrayList();
+	String revenueLabel = "";
+	String expLabel = "";
+	String numEvLabel = "";
+	String mailAmountLabel = "";
+	String avgDelTimeLabel = "";
+	String critLabel ="";
 	TextField revenue;
 	TextField expenditure;
 	TextField numEvents;
