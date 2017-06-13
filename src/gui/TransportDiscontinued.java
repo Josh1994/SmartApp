@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.Route;
 import model.User;
 
 public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionEvent>{
@@ -57,14 +58,14 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		fromLabel.setMinHeight(25);
 		fromText = new ComboBox<String>();
 		fromText.setMinWidth(200.0);
-		fromText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		fromText.getItems().addAll(controller.getModel().getEventManager().getLocationNames());
 		fromText.setEditable(false);
 
 		Label toLabel = new Label("Destination");
 		toLabel.setMinHeight(25);
 		toText = new ComboBox<String>();
 		toText.setMinWidth(200.0);
-		toText.getItems().addAll(controller.getEventProcessor().getLocationNames());
+		toText.getItems().addAll(controller.getModel().getEventManager().getLocationNames());
 		toText.setEditable(false);
 
 		Label firmLabel = new Label("Transport Firm");
@@ -159,5 +160,17 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 	}
 	public void showError(String errormsg) {
 
+	}
+
+	@Override
+	public void displayRoute(Route route) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Controller getController() {
+		// TODO Auto-generated method stub
+		return this.controller;
 	}
 }
