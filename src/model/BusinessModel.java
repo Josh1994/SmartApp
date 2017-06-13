@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 import controller.Controller;
+import model.Database;
 import event.Event;
 
 /**

@@ -39,8 +39,8 @@ public class Controller {
 		this.userDatabase = new UserDatabase();
 		this.eventProcessor = new EventProcessor();
 		model = new BusinessModel(this);
-		
-		
+
+
 	}
 
 	public void handleEvent(Event entry, DataEntryGUI sourceView) {
@@ -58,13 +58,19 @@ public class Controller {
 					AlertDialog.display("Route not found", "Route for this delivery is not available");
 				}
 				else{
-					
+
 					boolean b = this.model.processEvent(entry);
 					sourceView.displayRoute(r);
-					
+
 				}
 			}
-			
+			if(entry instanceof event.TransportDiscontinued){
+
+			}
+			if(entry instanceof event.CustomerPriceUpdate){
+
+			}
+
 			// Then send it to model
 			model.processEvent(entry);
 			//notify the user all okay.
@@ -105,8 +111,8 @@ public class Controller {
 		}
 
 	}
-	
-	
+
+
 
 	private boolean validateEvent(Event entry) {
 		// if entry not valid call the source GUI e.g.
@@ -151,50 +157,50 @@ public class Controller {
 		}
 		return false;
 	}
-	
+
 	public boolean logout(){
 		setLoggedInUser(null);
 		handleEvent(Controller.LOGIN);
 		return true;
 	}
-	
+
 	public Route getRoute(event.MailDelivery event){
 		//pass event to model.
 		if(event instanceof event.MailDelivery){
-			
+
 		}
-		
+
 		return null;
 	}
-	
+
 	public BusinessModel getModel(){
 		return this.model;
 	}
-	
+
 	public List<Route> getCritcalRoutes(){
 		return model.getEventManager().getCriticalRoutes();
 	}
-	
+
 	public Route getRoute(Event e){
 		return null;
 	}
-	
+
 	public Route getAverageAir(){
 		return model.getEventManager().getAverageAir();
 	}
-	
+
 	public Route getAverageDomestic(){
 		return model.getEventManager().getAverageDomestic();
 	}
-	
+
 	public Route getAverageSurface(){
 		return model.getEventManager().getAverageSurface();
 	}
-	
+
 	public Route getAverageRoute(){
 		return model.getEventManager().getAverageRoute();
 	}
-	
+
 	public Database getDatabase(){
 		return model.getDatabase();
 	}
