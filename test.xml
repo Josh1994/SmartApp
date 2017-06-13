@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <database>
     <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transportDiscontinued" eventType="transportDiscontinued">
-        <dateTime>2017-06-13T13:40:06.033+12:00[Pacific/Auckland]</dateTime>
+        <dateTime>2017-06-13T14:56:18.993+12:00[Pacific/Auckland]</dateTime>
         <destination>a</destination>
         <origin>a</origin>
         <priority>a</priority>
@@ -11,7 +11,7 @@
         <type>a</type>
     </event>
     <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="transportCostUpdate" eventType="transportCostUpdate">
-        <dateTime>2017-06-13T13:40:06.033+12:00[Pacific/Auckland]</dateTime>
+        <dateTime>2017-06-13T14:56:18.993+12:00[Pacific/Auckland]</dateTime>
         <destination>a</destination>
         <origin>a</origin>
         <priority>a</priority>
@@ -26,7 +26,7 @@
         <weightCost>0.0</weightCost>
     </event>
     <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="mailDelivery" eventType="mailDelivery">
-        <dateTime>2017-06-13T13:40:06.033+12:00[Pacific/Auckland]</dateTime>
+        <dateTime>2017-06-13T14:56:18.993+12:00[Pacific/Auckland]</dateTime>
         <destination>a</destination>
         <origin>a</origin>
         <priority>a</priority>
@@ -36,7 +36,7 @@
         <weight>0.0</weight>
     </event>
     <event xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="customerPriceUpdate" eventType="customerPriceUpdate">
-        <dateTime>2017-06-13T13:40:06.033+12:00[Pacific/Auckland]</dateTime>
+        <dateTime>2017-06-13T14:56:18.993+12:00[Pacific/Auckland]</dateTime>
         <destination>a</destination>
         <origin>a</origin>
         <priority>a</priority>

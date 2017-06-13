@@ -6,6 +6,7 @@ import gui.base.DataEntryGUI;
 import gui.dialogs.AlertDialog;
 import javafx.stage.Stage;
 import model.BusinessModel;
+import model.Database;
 import model.EventProcessor;
 import model.Route;
 import model.User;
@@ -168,5 +169,33 @@ public class Controller {
 	
 	public BusinessModel getModel(){
 		return this.model;
+	}
+	
+	public List<Route> getCritcalRoutes(){
+		return model.getEventManager().getCriticalRoutes();
+	}
+	
+	public Route getRoute(Event e){
+		return null;
+	}
+	
+	public Route getAverageAir(){
+		return model.getEventManager().getAverageAir();
+	}
+	
+	public Route getAverageDomestic(){
+		return model.getEventManager().getAverageDomestic();
+	}
+	
+	public Route getAverageSurface(){
+		return model.getEventManager().getAverageSurface();
+	}
+	
+	public Route getAverageRoute(){
+		return model.getEventManager().getAverageRoute();
+	}
+	
+	public Database getDatabase(){
+		return model.getDatabase();
 	}
 }

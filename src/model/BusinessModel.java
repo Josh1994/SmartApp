@@ -47,4 +47,8 @@ public class BusinessModel {
     public EventManager getEventManager(){
     	return this.eventManager;
     }
+    
+    public Database getDatabase(){
+    	return db;
+    }
 }
