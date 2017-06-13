@@ -25,7 +25,7 @@ import java.time.ZonedDateTime;
  * Created by Jonathan Young StudentID: 300358326 
  * Tests for the XMLParser class
  */
-public class parserTests {
+public class ParserTests {
 	String a = "a";
 	ZonedDateTime date = ZonedDateTime.now();
 	List<String> s = new ArrayList<String>();
