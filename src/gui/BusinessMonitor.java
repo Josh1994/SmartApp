@@ -10,6 +10,12 @@ import javafx.scene.layout.VBox;
 
 public class BusinessMonitor{
 	private ArrayList <String> critLabels = new ArrayList();
+	String revenueLabel = "";
+	String expLabel = "";
+	String numEvLabel = "";
+	String mailAmountLabel = "";
+	String avgDelTimeLabel = "";
+	String critLabel ="";
 	TextField revenue;
 	TextField expenditure;
 	TextField numEvents;
@@ -31,26 +37,26 @@ public class BusinessMonitor{
 
 		Label rev = new Label("Revenue");
 		rev.setMinHeight(25);
-		Label revVal = new Label();
+		Label revVal = new Label(revenueLabel);
 		revVal.setMinHeight(25);
 		revBox.getChildren().addAll(rev, revVal);
 
 		Label expend = new Label("Expenditure");
 		expend.setMinHeight(25);
-		Label expendVal = new Label();
+		Label expendVal = new Label(expLabel);
 		expendVal.setMinHeight(25);
 		expBox.getChildren().addAll(expend, expendVal);
 
 
 		Label numE = new Label("Number of Events");
 		numE.setMinHeight(25);
-		Label numVal = new Label();
+		Label numVal = new Label(numEvLabel);
 		numVal.setMinHeight(25);
 		evntBox.getChildren().addAll(numE, numVal);
 
 		Label mail = new Label("Mail Amount");
 		mail.setMinHeight(25);
-		Label mailVal = new Label();
+		Label mailVal = new Label(mailAmountLabel);
 		mailVal.setMinHeight(25);
 		mailBox.getChildren().addAll(mail, mailVal);
 
@@ -72,6 +78,8 @@ public class BusinessMonitor{
 		vbox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 		
 	}
+	
+	
 	
 	public VBox vbox(){
 		
