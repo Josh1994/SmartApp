@@ -114,7 +114,6 @@ public class BusinessMonitor{
 		//disBox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
 
-
 	public VBox vbox(){
 
 		return vbox;

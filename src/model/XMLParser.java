@@ -40,6 +40,9 @@ public class XMLParser {
 	private ZonedDateTime dateTime = ZonedDateTime.now();
 	private int maxWeight;
 	private int maxVolume;
+	private int weight;
+	private int volume;
+
 	private List<DayOfWeek> day = new ArrayList<DayOfWeek>();
 
 	public XMLParser(String xmlfile) throws Exception{
@@ -91,7 +94,7 @@ public class XMLParser {
 			System.out.println(cNode);
 			parseVariable(cNode);
 		}
-		return new TransportCostUpdate(dateTime, user, origin, destination, weightCost, 
+		return new TransportCostUpdate(dateTime, user, origin, destination, weightCost,
 				volumeCost, maxWeight, maxVolume, frequency, duration, day, firm, priority);
 	}
 
@@ -101,7 +104,7 @@ public class XMLParser {
 			Node cNode = cNodes.item(i);
 			parseVariable(cNode);
 		}
-		return new MailDelivery(dateTime, user, origin, destination, maxWeight, maxVolume, priority);
+		return new MailDelivery(dateTime, user, origin, destination, weight, volume, priority);
 	}
 
 	private CustomerPriceUpdate customerPriceUpdateParser(Node node) {
@@ -130,9 +133,11 @@ public class XMLParser {
 			case "dateTime": dateTime = ZonedDateTime.parse(s);break;
 			case "maxWeight": maxWeight = Integer.parseInt(s);break;
 			case "maxVolume": maxVolume = Integer.parseInt(s);break;
+			case "weight": weight = Integer.parseInt(s);break;
+			case "volume": volume = Integer.parseInt(s);break;
 			case "day":day.add(DayOfWeek.valueOf(s));
 			}
-		}	
+		}
 	}
 
 	private void resetField(){
@@ -149,6 +154,8 @@ public class XMLParser {
 		dateTime = null;
 		maxWeight = 0;
 		maxVolume = 0;
+		weight = 0;
+		volume = 0;
 		day = new ArrayList<DayOfWeek>();
 	}
 
@@ -162,10 +169,10 @@ public class XMLParser {
 
 	public boolean convertToXML(Database db, String fileName){
 		try{
-			JAXBContext contextObj = JAXBContext.newInstance(Database.class); 
+			JAXBContext contextObj = JAXBContext.newInstance(Database.class);
 			Marshaller marshallerObj = contextObj.createMarshaller();
-			marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);  
-			marshallerObj.marshal(db, new FileOutputStream(fileName));  
+			marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshallerObj.marshal(db, new FileOutputStream(fileName));
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
