@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import controller.Controller;
 import gui.base.DataEntryGUI;
 import gui.dialogs.AlertDialog;
+import gui.dialogs.ConfirmDialog;
 import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -149,7 +150,12 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 				User user = controller.getLoggedInUser();
 				event.TransportDiscontinued td = new event.TransportDiscontinued(zdt, user.getUsername(), fromText.getValue(), toText.getValue(), firm.getValue(), prio, city.getText());
 				System.out.println(td.toString());
-				controller.handleEvent(td, this);
+				
+				ConfirmDialog confirmDialog = new ConfirmDialog();
+				confirmDialog.display("Discontinue Service", "Are you sure you would like to delete service for " + firm.getValue());
+				if(confirmDialog.confirm){
+					controller.handleEvent(td, this);
+				}
 			}
 		}
 		if(event.getSource() == backButton){

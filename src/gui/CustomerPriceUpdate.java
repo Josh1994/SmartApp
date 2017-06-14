@@ -6,6 +6,7 @@ import controller.Controller;
 import event.Event;
 import gui.base.DataEntryGUI;
 import gui.dialogs.AlertDialog;
+import gui.dialogs.ConfirmDialog;
 import gui.dialogs.LogoutDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -161,7 +162,11 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 				event.CustomerPriceUpdate cpu = new event.CustomerPriceUpdate(zdt, user.getUsername(), fromText.getValue(), toText.getValue(), w, vol ,prio);
 				System.out.println(cpu.toString());
 
-				controller.handleEvent(cpu, this);
+				ConfirmDialog confirmBox = new ConfirmDialog();
+				confirmBox.display("Confirm Customer Price Change", "Are you sure you would like to update customer price? ");
+				if(confirmBox.confirm){
+					controller.handleEvent(cpu, this);
+				}
 			}
         }
         if(event.getSource() == backButton){
