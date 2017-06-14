@@ -27,6 +27,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 	BusinessMonitor bm;
 	EventManager eventManager;
 	Database fullEventDatabase;
+	List<Route> history;
 	Controller controller;
 	int counter = 0;
 	Button forwardButton;
@@ -61,6 +62,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		root.setCenter(mainContainer);
 		root.setBottom(hbox);
 
+		history = new ArrayList<>();
 		initialize();
 
 	}
@@ -74,11 +76,18 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 	public void initialize(){
 		Database db = new Database();
 		ArrayList <Event> e = new ArrayList <Event> ();
-		e.add(fullEventDatabase.getEvent().get(0));
+		Event event = fullEventDatabase.getEvent().get(0);
+		e.add(event);
 		db.setEvent(e);
 
 		eventManager = new EventManager(null,db);
 		eventManager.getNewRoutes();
+
+		Route route = eventManager.getRoute(event);
+		history.add(route);
+		if (route != null) {
+			displayRoute(route);
+		}
 	}
 
 	public void handle(ActionEvent event) {
@@ -94,12 +103,22 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	public void clickForward(){
 		counter++;
-		if(counter > fullEventDatabase.getEvent().size()-1){ counter =  fullEventDatabase.getEvent().size()-1;};
-		Event eve = fullEventDatabase.getEvent().get(counter);
-		eventManager.processEvent(eve);
-		Route route = eventManager.getRoute(eve);
+		Route route;
+		if(counter > fullEventDatabase.getEvent().size()-1){
+			counter = fullEventDatabase.getEvent().size()-1;
+			return;
+		}
+		Event event = fullEventDatabase.getEvent().get(counter);
+		if (counter < history.size()) {
+			route = history.get(counter);
+		} else {
+			eventManager.processEvent(event);
+			route = eventManager.getRoute(event);
+			history.add(route);
+		}
 		if(route != null){
-		displayRoute(route);}
+			displayRoute(route);
+		}
 		else{
 			System.out.print("Route is null");
 		}
@@ -107,10 +126,15 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	public void clickBackward(){
 		counter--;
-		if(counter < 0 ){counter = 0;};
-		Event eve = fullEventDatabase.getEvent().get(counter);
-		Route route = eventManager.getRoute(eve);
-		displayRoute(route);
+		if(counter < 0 ){
+			counter = 0;
+			return;
+		}
+		//Event eve = fullEventDatabase.getEvent().get(counter);
+		Route route = history.get(counter);
+		if(route != null){
+			displayRoute(route);
+		}
 	}
 
 	public Scene scene() {
