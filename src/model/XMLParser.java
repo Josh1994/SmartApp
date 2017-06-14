@@ -40,8 +40,8 @@ public class XMLParser {
 	private ZonedDateTime dateTime = ZonedDateTime.now();
 	private int maxWeight;
 	private int maxVolume;
-	private int weight;
-	private int volume;
+	private double weight;
+	private double volume;
 
 	private List<DayOfWeek> day = new ArrayList<DayOfWeek>();
 
@@ -133,8 +133,8 @@ public class XMLParser {
 			case "dateTime": dateTime = ZonedDateTime.parse(s);break;
 			case "maxWeight": maxWeight = Integer.parseInt(s);break;
 			case "maxVolume": maxVolume = Integer.parseInt(s);break;
-			case "weight": weight = Integer.parseInt(s);break;
-			case "volume": volume = Integer.parseInt(s);break;
+			case "weight": weight = Double.parseDouble(s);break;
+			case "volume": volume = Double.parseDouble(s);break;
 			case "day":day.add(DayOfWeek.valueOf(s));
 			}
 		}

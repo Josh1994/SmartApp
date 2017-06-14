@@ -86,6 +86,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		Route route = eventManager.getRoute(event);
 		history.add(route);
 		if (route != null) {
+			System.out.format("INIT: null");
 			displayRoute(route);
 		}
 	}
@@ -118,6 +119,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		}
 		if(route != null){
 			displayRoute(route);
+			System.out.format("Run: %s", event.getOrigin());
 		}
 		else{
 			System.out.print("Route is null");

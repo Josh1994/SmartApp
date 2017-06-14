@@ -85,10 +85,6 @@ public class BusinessMonitor{
 
 		vbox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> ac40eb0dd138871e785f546485d33068e4f8222e
 
 	public void display(Route route){
 
@@ -116,8 +112,6 @@ public class BusinessMonitor{
 		//vbox.getChildren().addAll(vbox);
 		//disBox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
-<<<<<<< HEAD
-=======
 
 
 	
@@ -145,7 +139,6 @@ public class BusinessMonitor{
 		this.avgDelTimeLabel = avgDelTime;
 	}
 
->>>>>>> ac40eb0dd138871e785f546485d33068e4f8222e
 	public VBox vbox(){
 
 		return vbox;
