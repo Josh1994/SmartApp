@@ -26,14 +26,15 @@ public class BusinessMonitor{
 	TextField avgDelTime;
 	TextField critRev;
 	DataEntryGUI gui; //Responsible critical routes
-	Label rev, expend, numE, mail, avg, crit;
-	Label revVal, expendVal, numVal, mailVal, avgVal, critVal;
+	Label rev, expend, numE, mail, avg, crit, routeLabel;
+	Label revVal, expendVal, numVal, mailVal, avgVal, critVal, origVal, destVal, prioVal;
 
 	HBox hbox = new HBox(10);
 	VBox vbox;
 	VBox disBox;
 
 	public BusinessMonitor(DataEntryGUI gui){
+		HBox routeBox = new HBox(20);
 		HBox revBox = new HBox(20);
 		HBox expBox = new HBox(20);
 		HBox evntBox = new HBox(20);
@@ -45,6 +46,15 @@ public class BusinessMonitor{
 		this.gui = gui;
 
 
+		routeLabel = new Label("Overall Figures");
+		routeLabel.setMinHeight(25);
+		origVal = new Label(" ");
+		origVal.setMinHeight(25);
+		destVal = new Label(" ");
+		destVal.setMinHeight(25);
+		prioVal = new Label(" ");
+		prioVal.setMinHeight(25);
+		routeBox.getChildren().addAll(routeLabel, origVal, destVal, prioVal);
 
 		rev = new Label("Revenue");
 		rev.setMinHeight(25);
@@ -83,25 +93,30 @@ public class BusinessMonitor{
 //		hbox.getChildren().addAll(rev, expend, numE, mail, avg, crit);
 //		vbox.getChildren().add(hbox);
 
-		vbox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
+		vbox.getChildren().addAll(routeBox, revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> ac40eb0dd138871e785f546485d33068e4f8222e
 
 	public void display(Route route){
 
 		revVal.setText(Double.toString(route.getRevenue()));
-
 		expendVal.setText(Double.toString(route.getExpenditure()));
-
 		numVal.setText(Double.toString(route.getNumberOfEvents()));
-
 		mailVal.setText(Double.toString(route.getAmountOfmail()));
-
 		avgVal.setText(Double.toString(route.getAvgDeliveryTime()));
 
+
+		if (route.getDestination().equals("AVG")){
+			routeLabel.setText("Overall Figures");
+			origVal.setText(" ");
+			destVal.setText(" ");
+			prioVal.setText(" ");
+		}
+		else{
+			routeLabel.setText("Route: ");
+			origVal.setText(route.getOrigin());
+			destVal.setText(route.getDestination());
+			prioVal.setText(route.getPriority());
+		}
 //		Critical Routes obtaining only 5 at most
 //		ArrayList <Route> critRoutes = gui.getController().getModel().getEventManager().getCriticalRoutes().take(5) ;
 //		for (Route crit : critRoutes){
@@ -116,36 +131,31 @@ public class BusinessMonitor{
 		//vbox.getChildren().addAll(vbox);
 		//disBox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
-<<<<<<< HEAD
-=======
 
-
-	
 	public void setRevenue(String revenue){
 		this.revenueLabel = revenue;
 	}
-	
+
 	public void setExpenditure(String exp){
 		this.expLabel = exp;
 	}
-	
+
 	public void setCritLabels(ArrayList<String> critLabels){
 		this.critLabels = critLabels;
 	}
-	
+
 	public void setNumEvents(String numEv){
 		this.numEvLabel = numEv;
 	}
-	
+
 	public void setMailAmount(String amount){
 		this.mailAmountLabel = amount;
 	}
-	
+
 	public void setAveDelTime(String avgDelTime){
 		this.avgDelTimeLabel = avgDelTime;
 	}
 
->>>>>>> ac40eb0dd138871e785f546485d33068e4f8222e
 	public VBox vbox(){
 
 		return vbox;
