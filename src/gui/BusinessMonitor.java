@@ -85,6 +85,10 @@ public class BusinessMonitor{
 
 		vbox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> ac40eb0dd138871e785f546485d33068e4f8222e
 
 	public void display(Route route){
 
@@ -112,6 +116,36 @@ public class BusinessMonitor{
 		//vbox.getChildren().addAll(vbox);
 		//disBox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
 	}
+<<<<<<< HEAD
+=======
+
+
+	
+	public void setRevenue(String revenue){
+		this.revenueLabel = revenue;
+	}
+	
+	public void setExpenditure(String exp){
+		this.expLabel = exp;
+	}
+	
+	public void setCritLabels(ArrayList<String> critLabels){
+		this.critLabels = critLabels;
+	}
+	
+	public void setNumEvents(String numEv){
+		this.numEvLabel = numEv;
+	}
+	
+	public void setMailAmount(String amount){
+		this.mailAmountLabel = amount;
+	}
+	
+	public void setAveDelTime(String avgDelTime){
+		this.avgDelTimeLabel = avgDelTime;
+	}
+
+>>>>>>> ac40eb0dd138871e785f546485d33068e4f8222e
 	public VBox vbox(){
 
 		return vbox;
