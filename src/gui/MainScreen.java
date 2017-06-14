@@ -33,7 +33,7 @@ private Scene scene = null;
 			        }
 			});
 
-		Button button2 = new Button ("Business Monitor", null);
+		Button button2 = new Button ("Decision Support", null);
 		button2.setMaxSize(150, 100);
 		button2.setWrapText(true);
 		//Mouse event handling for Mail Delivery
@@ -41,6 +41,7 @@ private Scene scene = null;
 			    new EventHandler<MouseEvent>() {
 			        @Override public void handle(MouseEvent e) {
 			            System.out.println("Business Monitor button clicked");
+			            controller.handleEvent(Controller.DECISIONSUPPORT);
 			        }
 			});
 

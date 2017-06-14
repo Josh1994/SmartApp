@@ -39,8 +39,8 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 	ArrayList <String> critLabels = new ArrayList();
 	static Scene scene;
 	Controller controller;
-
-
+	BusinessMonitor bm;
+	VBox vbox;
 
 	public MailDelivery(Controller controller){
 
@@ -128,7 +128,10 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		critLabels.add("Revenue");
 		critLabels.add("Expenditure");
 		HBox hbox = new HBox(10);
-		VBox vbox = new BusinessMonitor(critLabels).vbox();
+		//TODO
+		bm = new BusinessMonitor(this);
+		vbox = bm.vbox();
+
 		vbox.setPadding(new Insets(20));
 		vbox.setAlignment(Pos.TOP_CENTER);
 		hbox.setPadding(new Insets(20, 20, 20, 20));
@@ -136,7 +139,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		VBox mainContainer = new VBox();
 		mainContainer.setAlignment(Pos.TOP_CENTER);
 		mainContainer.getChildren().addAll(vbox, hbox);
-		
+
 
 		scene = new Scene(mainContainer, 650, 500);
 	}
@@ -172,11 +175,11 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 			if(type!=null && toText.getValue()!=null && fromText.getValue()!=null && !weight.getText().isEmpty() && !volume.getText().isEmpty()){
 				//TODO
 				//need a confirm box showing the total cost and duration first before sending an event to the controller.
-				
+
 				mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
 				System.out.println(mdEvent.toString());
 				controller.handleEvent(mdEvent, this);
-				
+
 			}
 			else{
 				AlertDialog.display("Invalid Input", "Please enter valid input");
@@ -201,8 +204,11 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		StringBuilder sb = new StringBuilder();
 		sb.append("Route: ");
 		sb.append(route.toString());
-		AlertDialog.display("Route", sb.toString());
 		
+		bm.display(route);
+		this.vbox = bm.vbox();
+		//AlertDialog.display("Route", sb.toString());
+
 	}
 
 	@Override

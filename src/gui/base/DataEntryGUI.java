@@ -8,6 +8,6 @@ import model.Route;
  */
 public interface DataEntryGUI {
     public void showError(String errmsg);
-    public void displayRoute(Route route);
     public Controller getController();
+    public void displayRoute(Route route);
 }

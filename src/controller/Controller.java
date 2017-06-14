@@ -23,6 +23,7 @@ public class Controller {
 	public static final String ACCOUNTMANAGE = "ACCOUNTMANAGE";
 	public static final String MAINSCREEN = "MAINSCREEN";
 	public static final String BUSINESS = "BUSINESS";
+	public static final String DECISIONSUPPORT = "DECISION";
 
 	Stage primaryStage;
 	DataEntryGUI currentView;
@@ -49,7 +50,14 @@ public class Controller {
 		// first check for accuracy
 		if (validateEvent(entry)) {
 			if(entry instanceof event.TransportCostUpdate){
-				this.model.processEvent(entry);
+				boolean b = model.processEvent(entry);
+				Route r = getRoute(entry);
+				if(r != null){
+					sourceView.displayRoute(r);
+				}
+				else{
+					System.out.println("No route found");
+				}
 			}
 			if(entry instanceof event.MailDelivery){
 				//get route.
@@ -68,11 +76,28 @@ public class Controller {
 
 			}
 			if(entry instanceof event.CustomerPriceUpdate){
-
+				boolean b = model.processEvent(entry);
+				Route r = getRoute(entry);
+				if(r != null){
+					sourceView.displayRoute(r);
+				}
+				else{
+					System.out.println("Route not found");
+				}
+			}
+			if(entry instanceof event.CustomerPriceUpdate){
+				boolean b = model.processEvent(entry);
+				Route r = getRoute(entry);
+				if(r != null){
+					sourceView.displayRoute(r);
+				}
+				else{
+					System.out.println("Route not found");
+				}
 			}
 
 			// Then send it to model
-			model.processEvent(entry);
+
 			//notify the user all okay.
 		}
 		// if event is not validated, we must notify the user.
@@ -108,6 +133,9 @@ public class Controller {
 		}if(nextScreen.equals(ACCOUNTMANAGE)){
 			UserAccountManagement  userManage = new UserAccountManagement(this);
 			primaryStage.setScene(userManage.scene());
+		}if(nextScreen.equals(DECISIONSUPPORT)){
+			DecisionSupport ds = new DecisionSupport(this);
+			primaryStage.setScene(ds.scene());
 		}
 
 	}
@@ -173,16 +201,18 @@ public class Controller {
 		return null;
 	}
 
+	public Route getRoute(Event event){
+		//pass event to model.
+		return model.getRoute(event);
+
+	}
+
 	public BusinessModel getModel(){
 		return this.model;
 	}
 
 	public List<Route> getCritcalRoutes(){
 		return model.getEventManager().getCriticalRoutes();
-	}
-
-	public Route getRoute(Event e){
-		return null;
 	}
 
 	public Route getAverageAir(){
@@ -204,4 +234,5 @@ public class Controller {
 	public Database getDatabase(){
 		return model.getDatabase();
 	}
+
 }

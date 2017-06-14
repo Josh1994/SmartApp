@@ -52,4 +52,9 @@ public class BusinessModel {
     public Database getDatabase(){
     	return db;
     }
+
+	
+	public Route getRoute(Event ev){
+		return eventManager.getRoute(ev);
+	}
 }
