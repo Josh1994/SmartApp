@@ -175,10 +175,29 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 			if(type!=null && toText.getValue()!=null && fromText.getValue()!=null && !weight.getText().isEmpty() && !volume.getText().isEmpty()){
 				//TODO
 				//need a confirm box showing the total cost and duration first before sending an event to the controller.
+				
 
 				mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
 				System.out.println(mdEvent.toString());
-				controller.handleEvent(mdEvent, this);
+				ConfirmDialog confirmDialog = new ConfirmDialog();
+				double cost = 0;
+				
+				try{
+					cost = controller.getRoute(mdEvent).getEffectiveCost();
+					String message = "Total Cost for this delivery is: $" + cost;
+					String title = "Mail Delivery";
+					confirmDialog.display(title, message);
+					if(confirmDialog.confirm){
+						controller.handleEvent(mdEvent, this);
+					}
+				}
+				catch(java.lang.NullPointerException e){
+					AlertDialog.display("No Route Found", "No Route Found");
+				}
+				
+				
+				
+				
 
 			}
 			else{
