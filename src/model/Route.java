@@ -143,6 +143,31 @@ public class Route implements Comparable<Route> {
 		isCombinedRoute = true;
 	}
 
+	public Route(Route route) {
+		this.stages = new ArrayList<>();
+		for (int i = 0 ; i < route.stages.size(); i++) {
+			this.stages.add(route.stages.get(i));
+		}
+
+		this.origin = route.origin;
+		this.destination = route.getDestination();
+		this.weightCost = route.weightCost;
+		this.volumeCost = route.volumeCost;
+		this.maxWeight = route.maxWeight ;
+		this.maxVolume = route.maxVolume;
+		this.priority = route.priority;
+
+		this.revenue = route.revenue;
+		this.expenditure = route.expenditure;
+		this.numberOfEvents = route.numberOfEvents;
+		this.amountOfMail = route.amountOfMail;
+		this.weightOfMail = route.weightOfMail;
+		this.volumeOfMail = route.volumeOfMail;
+		this.avgDeliveryTime = route.avgDeliveryTime;
+
+		this.effectiveCost = (this.weightCost * this.weightCost) + (this.volumeCost * this.volumeCost);
+	}
+
 	public Route(String origin, String destination, double weightCost, double volumeCost, int maxWeight,
 				 int maxVolume, String priority) {
 		this.origin = origin;

@@ -63,6 +63,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		root.setBottom(hbox);
 
 		history = new ArrayList<>();
+
 		initialize();
 
 	}
@@ -80,6 +81,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		e.add(event);
 		db.setEvent(e);
 
+
 		eventManager = new EventManager(null,db);
 		eventManager.getNewRoutes();
 
@@ -87,7 +89,8 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		history.add(route);
 		if (route != null) {
 			displayRoute(route);
-		}
+			history.add(new Route(route));
+		} else history.add(route);
 	}
 
 	public void handle(ActionEvent event) {
@@ -114,10 +117,13 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		} else {
 			eventManager.processEvent(event);
 			route = eventManager.getRoute(event);
-			history.add(route);
+			if (route != null) history.add(new Route(route));
+			else history.add(route);
 		}
 		if(route != null){
 			displayRoute(route);
+
+			System.out.format("Run: %s", event.getOrigin());
 		}
 		else{
 			System.out.print("Route is null");

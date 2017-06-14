@@ -51,7 +51,7 @@ public class Controller {
 		if (validateEvent(entry)) {
 			if(entry instanceof event.TransportCostUpdate){
 				boolean b = model.processEvent(entry);
-				Route r = getRoute(entry);
+				Route r = model.getEventManager().getAverageRoute();
 				if(r != null){
 					sourceView.displayRoute(r);
 				}
