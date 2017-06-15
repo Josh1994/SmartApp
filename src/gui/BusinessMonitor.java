@@ -3,6 +3,9 @@ package gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import event.*;
+import event.TransportCostUpdate;
+import event.TransportDiscontinued;
 import gui.base.DataEntryGUI;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -27,7 +30,8 @@ public class BusinessMonitor{
 	TextField critRev;
 	DataEntryGUI gui; //Responsible critical routes
 	Label rev, expend, numE, mail, avg, crit, routeLabel;
-	Label revVal, expendVal, numVal, mailVal, avgVal, critVal, origVal, destVal, prioVal;
+	Label revVal, expendVal, numVal, mailVal, avgVal, critVal,
+			origVal, destVal, prioVal, mailW, mailWVal, mailV, mailVVal, eventLabel;
 
 	HBox hbox = new HBox(10);
 	VBox vbox;
@@ -75,11 +79,19 @@ public class BusinessMonitor{
 		numVal.setMinHeight(25);
 		evntBox.getChildren().addAll(numE, numVal);
 
-		mail = new Label("Mail Amount");
+		mail = new Label("Mail Totals, Items:");
 		mail.setMinHeight(25);
 		mailVal = new Label("0");
 		mailVal.setMinHeight(25);
-		mailBox.getChildren().addAll(mail, mailVal);
+		mailW = new Label("Weight:");
+		mailW.setMinHeight(25);
+		mailWVal = new Label("0");
+		mailWVal.setMinHeight(25);
+		mailV = new Label("Volume:");
+		mailV.setMinHeight(25);
+		mailVVal = new Label("0");
+		mailVVal.setMinHeight(25);
+		mailBox.getChildren().addAll(mail, mailVal, mailW, mailWVal, mailV, mailVVal);
 
 		avg = new Label("Average Delivery Time");
 		avg.setMinHeight(25);
@@ -87,13 +99,18 @@ public class BusinessMonitor{
 		avgVal.setMinHeight(25);
 		avgBox.getChildren().addAll(avg, avgVal);
 
-		crit = new Label("Critical Routes");
+		crit = new Label(" ");
 		crit.setMinHeight(25);
+
+		eventLabel = new Label(" ");
+		eventLabel.setMinHeight(25);
+
+
 //
 //		hbox.getChildren().addAll(rev, expend, numE, mail, avg, crit);
 //		vbox.getChildren().add(hbox);
 
-		vbox.getChildren().addAll(routeBox, revBox, expBox, evntBox, mailBox, avgBox, critBox);
+		vbox.getChildren().addAll(routeBox, revBox, expBox, evntBox, mailBox, avgBox, crit, eventLabel);
 	}
 
 
@@ -103,9 +120,11 @@ public class BusinessMonitor{
 		expendVal.setText(Double.toString(route.getExpenditure()));
 		numVal.setText(Double.toString(route.getNumberOfEvents()));
 		mailVal.setText(Double.toString(route.getAmountOfmail()));
+		mailWVal.setText(Double.toString(route.getWeightOfMail()));
+		mailVVal.setText(Double.toString(route.getVolumeOfMail()));
 		avgVal.setText(Double.toString(route.getAvgDeliveryTime()));
 
-
+		if (route.isCombinedRoute()) route = route.getInternational();
 		if (route.getDestination().equals("AVG")){
 			routeLabel.setText("Overall Figures");
 			origVal.setText(" ");
@@ -117,6 +136,8 @@ public class BusinessMonitor{
 			origVal.setText(route.getOrigin());
 			destVal.setText(route.getDestination());
 			prioVal.setText(route.getPriority());
+			if (route.isCriticalRoute()) crit.setText("*** CRITICAL ROUTE ***");
+			else crit.setText("Profitable Route.");
 		}
 //		Critical Routes obtaining only 5 at most
 //		ArrayList <Route> critRoutes = gui.getController().getModel().getEventManager().getCriticalRoutes().take(5) ;
@@ -131,6 +152,25 @@ public class BusinessMonitor{
 //		}
 		//vbox.getChildren().addAll(vbox);
 		//disBox.getChildren().addAll(revBox, expBox, evntBox, mailBox, avgBox, critBox);
+	}
+
+	public void displayEvent(Event event) {
+		/**
+		String eventString = event.getOrigin() + " , " + event.getDestination() + " , " + event.getPriority();
+		if (event instanceof event.TransportCostUpdate) {
+			TransportCostUpdate tcu = (TransportCostUpdate) event;
+			eventString = "TransportCostUpdate: " + eventString + " , " + tcu.getFirm();
+		} else if (event instanceof event.MailDelivery) {
+			eventString = "MailDelivery: " + eventString;
+		}
+		if (event instanceof event.CustomerPriceUpdate) {
+			eventString = "CustomerPriceUpdate: " + eventString;
+		} else if (event instanceof event.TransportDiscontinued) {
+			TransportDiscontinued td = (TransportDiscontinued) event;
+			eventString = "TransportDiscontinued: " + eventString + " , " + td.getFirm();
+		}
+		 */
+		eventLabel.setText(event.toString());
 	}
 
 	public VBox vbox(){
