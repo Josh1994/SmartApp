@@ -21,7 +21,7 @@ public class MailDelivery extends Event {
 	
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
-		sb.append("MailDeliver Event");
+		sb.append("MailDelivery Event");
 		sb.append("\nOrigin: " + this.origin);
 		sb.append("\nDestination: " + this.destination);
 		sb.append("\nPriority: " + this.priority);

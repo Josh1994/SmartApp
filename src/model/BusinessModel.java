@@ -7,7 +7,7 @@ import model.Database;
 import event.Event;
 
 /**
- * Created by phoal on 5/25/2017.
+ * Initiated by phil 5/25/2017.
  * For all the business logic
  * You can create another class from here and create a reference to it to do a specific job.
  */

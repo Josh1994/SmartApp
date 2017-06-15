@@ -5,8 +5,9 @@ import event.*;
 import java.util.*;
 
 /**
- * Created by phoal on 5/25/2017.
+ * Created by phil on 5/25/2017.
  * Module to manage how events are processed.
+ * getLocationNames(), getFirmNames, getRoute() added by Julian 6/13/2017
  */
 public class EventManager {
     private BusinessModel model;

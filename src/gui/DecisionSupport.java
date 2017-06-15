@@ -28,10 +28,12 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 	EventManager eventManager;
 	Database fullEventDatabase;
 	List<Route> history;
+	List<Event> eventHistory;
 	Controller controller;
 	int counter = 0;
 	Button forwardButton;
 	Button backwardButton;
+	Button backButton;
 	private Scene scene = null;
 
 	public DecisionSupport(Controller controller){
@@ -49,10 +51,14 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		backwardButton.setText("Backward");
 		backwardButton.setOnAction(this);
 
+		backButton = new Button();
+		backButton.setText("Exit");
+		backButton.setOnAction(this);
+
 		bm = new BusinessMonitor(this);
 		VBox vbox = bm.vbox();
 		HBox hbox = new HBox(10);
-		hbox.getChildren().addAll(forwardButton, backwardButton);
+		hbox.getChildren().addAll(forwardButton, backwardButton, backButton);
 		VBox mainContainer = new VBox();
 		mainContainer.setAlignment(Pos.TOP_CENTER);
 		mainContainer.getChildren().addAll(vbox);
@@ -63,6 +69,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		root.setBottom(hbox);
 
 		history = new ArrayList<>();
+		eventHistory = new ArrayList<>();
 
 		initialize();
 
@@ -86,16 +93,18 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		eventManager.getNewRoutes();
 
 		Route route = eventManager.getRoute(event);
-		history.add(route);
 		if (route != null) {
 			displayRoute(route);
 			history.add(new Route(route));
 		} else history.add(route);
+		eventHistory.add(event);
+		bm.displayEvent(event);
 	}
 
 	public void handle(ActionEvent event) {
-
-		if(event.getSource() == forwardButton){
+		if(event.getSource() == backButton) {
+			controller.handleEvent(Controller.EVENTGUI);
+		} else if(event.getSource() == forwardButton){
 			clickForward();
 		}
 		else{
@@ -128,6 +137,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		else{
 			System.out.print("Route is null");
 		}
+		bm.displayEvent(event);
 	}
 
 	public void clickBackward(){
@@ -136,11 +146,12 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 			counter = 0;
 			return;
 		}
-		//Event eve = fullEventDatabase.getEvent().get(counter);
+		Event event = fullEventDatabase.getEvent().get(counter);
 		Route route = history.get(counter);
 		if(route != null){
 			displayRoute(route);
 		}
+		bm.displayEvent(event);
 	}
 
 	public Scene scene() {
