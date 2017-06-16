@@ -52,7 +52,7 @@ private Scene scene = null;
 
 		//Button Creation
 		Button button = new Button ("Transport Cost Update", transportView);
-		button.setMaxSize(150, 100);
+		button.setMaxSize(190, 100);
 		button.setWrapText(true);
 		//Mouse event handling for Transport Cost
 		button.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -64,7 +64,7 @@ private Scene scene = null;
 			});
 
 		Button button2 = new Button ("Mail Delivery", mailView);
-		button2.setMaxSize(150, 100);
+		button2.setMaxSize(190, 100);
 		button2.setWrapText(true);
 		//Mouse event handling for Mail Delivery
 		button2.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -76,7 +76,7 @@ private Scene scene = null;
 			});
 
 		Button button3 = new Button ("Customer Price Update", customerView);
-		button3.setMaxSize(150, 100);
+		button3.setMaxSize(190, 100);
 		button3.setWrapText(true);
 		//Mouse event handling for Customer Price Update
 		button3.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -89,7 +89,7 @@ private Scene scene = null;
 
 
 		Button button4 = new Button ("Transport Discontinued", tdView);
-		button4.setMaxSize(150, 100);
+		button4.setMaxSize(190, 100);
 		button4.setWrapText(true);
 		//Mouse event handling for Transport Discontinued
 		button4.addEventHandler(MouseEvent.MOUSE_CLICKED,
