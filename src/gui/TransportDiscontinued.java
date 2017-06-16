@@ -33,7 +33,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 	ComboBox<String> fromText;
 	ComboBox<String> toText;
 	Button logoutButton;
-
+	Label messageLabel;
 	static Scene scene;
 	Controller controller;
 
@@ -90,6 +90,9 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		city.setMaxHeight(10);
 		city.setMaxWidth(200);
 
+		messageLabel = new Label("Message");
+		messageLabel.setMinHeight(25);
+
 
 		VBox vbox1 = new VBox(10);
 		vbox1.setPadding(new Insets(10, 10, 10, 10));
@@ -109,6 +112,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		vbox2.getChildren().add(priorityBox);
 		vbox2.getChildren().add(city);
 		vbox2.getChildren().add(eventButton);
+		vbox2.getChildren().add(messageLabel);
 
 		HBox hbox = new HBox(20);
 		hbox.setPadding(new Insets(20, 20, 20, 20));
@@ -170,13 +174,17 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 
 	}
 
+	public void showMessage(String msg) {
+		messageLabel.setText("Message:  " + msg );
+	}
+
 	@Override
 	public void displayRoute(Route route) {
 		// TODO Auto-generated method stub
 		StringBuilder sb = new StringBuilder();
 		sb.append("Route: ");
 		sb.append(route.toString());
-		AlertDialog.display("Route", sb.toString());
+		//AlertDialog.display("Route", sb.toString());
 	}
 
 	@Override

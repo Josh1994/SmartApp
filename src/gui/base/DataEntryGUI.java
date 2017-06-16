@@ -10,4 +10,5 @@ public interface DataEntryGUI {
     public void showError(String errmsg);
     public Controller getController();
     public void displayRoute(Route route);
+    public void showMessage(String msg);
 }

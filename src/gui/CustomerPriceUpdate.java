@@ -37,6 +37,8 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 
     TextField weight;
     TextField volume;
+
+    Label messageLabel;
 	String prio;
     ChoiceBox<String> priorityBox;
 
@@ -96,6 +98,9 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 		priorityBox.getItems().addAll("Land", "Air", "Sea", "Domestic");
 		priorityBox.setValue("Land");
 
+        messageLabel = new Label("Message: ");
+        messageLabel.setMinHeight(25);
+
 
 
         VBox vbox1 = new VBox(10);
@@ -116,6 +121,7 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
         vbox2.getChildren().add(volume);
         vbox2.getChildren().add(priorityBox);
         vbox2.getChildren().add(eventButton);
+        vbox2.getChildren().add(messageLabel);
 
         HBox hbox = new HBox(20);
         hbox.setPadding(new Insets(20, 20, 20, 20));
@@ -130,7 +136,9 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 
     @Override
     public void handle(ActionEvent event) {
+        event.CustomerPriceUpdate cpu;
         // TODO Auto-generated method stub
+        messageLabel.setText("Message:  " );
         if(event.getSource() == eventButton){
 			System.out.println("Submit Button pressed");
 			prio = priorityBox.getValue();
@@ -155,12 +163,17 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 					prio = Event.DOMESTIC;
 				}
 				System.out.println(prio);
-				ZonedDateTime zdt = ZonedDateTime.now();
-				User user = controller.getLoggedInUser();
-				double w = Double.parseDouble(weight.getText());
-				double vol = Double.parseDouble(volume.getText());
-				event.CustomerPriceUpdate cpu = new event.CustomerPriceUpdate(zdt, user.getUsername(), fromText.getValue(), toText.getValue(), w, vol ,prio);
-				System.out.println(cpu.toString());
+				try {
+                    ZonedDateTime zdt = ZonedDateTime.now();
+                    User user = controller.getLoggedInUser();
+                    double w = Double.parseDouble(weight.getText());
+                    double vol = Double.parseDouble(volume.getText());
+                    cpu = new event.CustomerPriceUpdate(zdt, user.getUsername(), fromText.getValue(), toText.getValue(), w, vol, prio);
+                    System.out.println(cpu.toString());
+                } catch (NumberFormatException nfe) {
+				    showMessage("Message: You have entered an incorrect number amount in field.");
+				    return;
+                }
 
 				ConfirmDialog confirmBox = new ConfirmDialog();
 				confirmBox.display("Confirm Customer Price Change", "Are you sure you would like to update customer price? ");
@@ -180,6 +193,11 @@ public class CustomerPriceUpdate implements DataEntryGUI,EventHandler<ActionEven
 
     public void showError(String errormsg) {
 
+    }
+
+
+    public void showMessage(String msg) {
+        messageLabel.setText("Message:  " + msg );
     }
 
 	@Override

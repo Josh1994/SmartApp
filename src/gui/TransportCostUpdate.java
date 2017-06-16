@@ -52,6 +52,9 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	TextField duration;
 	TextField maxWeight;
 	TextField maxVolume;
+	Label messageLabel;
+	BusinessMonitor bm;
+	VBox vbox;
 	
 	static Scene scene;
 	Controller controller;
@@ -174,8 +177,9 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		
 		
 		HBox typeHBox = new HBox(land,sea,air, domestic);
-		
-		
+
+		messageLabel = new Label("Message: ");
+		messageLabel.setMinHeight(25);
 		
 		VBox vbox1 = new VBox(10);
 		vbox1.setPadding(new Insets(10, 10, 10, 10));
@@ -207,12 +211,19 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		vbox2.getChildren().add(frequency);
 		vbox2.getChildren().add(duration);
 		vbox2.getChildren().add(eventButton);
+		vbox2.getChildren().add(messageLabel);
+
+		bm = new BusinessMonitor(this);
+		vbox = bm.vbox();
 		
 		HBox hbox = new HBox(20);
 		hbox.setPadding(new Insets(20, 20, 20, 20));
 		hbox.getChildren().addAll(vbox1, vbox2);
+
+		VBox mainBox = new VBox( );
+		mainBox.getChildren().addAll(hbox);
 		
-		scene = new Scene(hbox, 800, 550);
+		scene = new Scene(mainBox, 800, 550);
 	}
 	
 	public static Scene scene() {
@@ -221,6 +232,9 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	
 	@Override
 	public void handle(ActionEvent event) {
+		messageLabel.setText("Message:  ");
+		double weightPr, volPr ,freq,dur;
+		int maxWei ,maxVol;
 		// TODO Auto-generated method stub
 		if(event.getSource() == eventButton){
 			
@@ -291,12 +305,18 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 					
 					String from = origin.getValue();
 					String to = destination.getValue();
-					double weightPr = Double.parseDouble(weightPrice.getText());
-					double volPr = Double.parseDouble(volumePrice.getText());
-					double freq = Double.parseDouble(frequency.getText());
-					double dur = Double.parseDouble(duration.getText());
-					int maxWei = Integer.parseInt(maxWeight.getText());
-					int maxVol = Integer.parseInt(maxVolume.getText());
+
+					try {
+						weightPr = Double.parseDouble(weightPrice.getText());
+						volPr = Double.parseDouble(volumePrice.getText());
+						freq = Double.parseDouble(frequency.getText());
+						dur = Double.parseDouble(duration.getText());
+						maxWei = Integer.parseInt(maxWeight.getText());
+						maxVol = Integer.parseInt(maxVolume.getText());
+					} catch (NumberFormatException nfe) {
+						showMessage("Message: You have entered an incorrect number amount in field.");
+						return;
+					}
 					ZonedDateTime zdt = ZonedDateTime.now();
 					User user = controller.getLoggedInUser();
 					//make transport cost update event and send it to the controller
@@ -319,6 +339,9 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	public void showError(String errormsg) {
 
 	}
+	public void showMessage(String msg) {
+		messageLabel.setText("Message:  " + msg);
+	}
 
 	@Override
 	public void displayRoute(Route route) {
@@ -327,9 +350,9 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		StringBuilder sb = new StringBuilder();
 		sb.append("Route: ");
 		sb.append(route.toString());
-		
-		AlertDialog.display("Route", sb.toString());
-		
+		bm.display(route);
+		//AlertDialog.display("Route", sb.toString());
+
 	}
 
 	@Override

@@ -37,6 +37,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 	private Scene scene = null;
 
 	public DecisionSupport(Controller controller){
+		this.controller = controller;
 		BorderPane root = new BorderPane();
 
 		this.fullEventDatabase = controller.getDatabase();
@@ -80,6 +81,11 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		// TODO Auto-generated method stub
 
 	}
+	@Override
+	public void showMessage(String msg) {
+		// TODO Auto-generated method stub
+
+	}
 
 	public void initialize(){
 		Database db = new Database();
@@ -96,7 +102,11 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		if (route != null) {
 			displayRoute(route);
 			history.add(new Route(route));
-		} else history.add(route);
+		} else {
+			//Route r = controller.getModel().getEventManager().getAverageRoute();
+			history.add(route);
+			//if (r != null) displayRoute(r);
+		}
 		eventHistory.add(event);
 		bm.displayEvent(event);
 	}
@@ -160,7 +170,7 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 	@Override
 	public Controller getController() {
 		// TODO Auto-generated method stub
-		return null;
+		return controller;
 	}
 
 	@Override

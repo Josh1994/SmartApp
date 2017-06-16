@@ -23,13 +23,16 @@ public class TransportDiscontinued extends Event {
 		StringBuilder sb = new StringBuilder();
 		sb.append("TransportDiscontinued Event");
 		sb.append("\nFirm: " + this.firm);
+		/*
 		if(this.city != null){
 		sb.append("\nCity: "+ this.city);
 		}
+		*/
 		sb.append("\nOrigin: " + this.origin);
 		sb.append("\nDestination: " + this.destination);
 		sb.append("\nPriority: " + this.priority);
-		sb.append("\nUser: "+ this.user);
+
+		//sb.append("\nUser: "+ this.user);
 		return sb.toString();
 	}
 

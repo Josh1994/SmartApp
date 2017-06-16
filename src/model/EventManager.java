@@ -52,11 +52,16 @@ public class EventManager {
         this.averageRoute = new Route("AVERAGE OVERALL", "AVG", 0, 0,
                 0, 0, "AVG");
         this.averageDomestic = new Route("AVERAGE DOMESTIC", "AVG", 0, 0,
-                0, 0, "AVG");
+                0, 0, Event.DOMESTIC);
         this.averageAir = new Route("AVERAGE AIR", "AVG", 0, 0,
-                0, 0, "AVG");
+                0, 0, Event.AIR);
         this.averageSurface = new Route("AVERAGE SURFACE", "AVG", 0, 0,
-                0, 0, "AVG");
+                0, 0, Event.SEA);
+
+        this.avgDeliveryTimes = new ArrayList<>();
+        this.avgDomesticDeliveryTimes = new ArrayList<>();
+        this.avgAirDeliveryTimes = new ArrayList<>();
+        this.avgSurfaceDeliveryTimes = new ArrayList<>();
 
         processAllEvents(db.getEvent());
     }
@@ -68,6 +73,7 @@ public class EventManager {
         for (Event event : events) {
             processSingleEvent(event, true);
         }
+
     }
 
     /**
@@ -157,17 +163,16 @@ public class EventManager {
         route.setVolumeOfMail(route.getVolumeOfMail() + costs[3]);
 
         String priority = route.getPriority();
+
+
         if (priority.equals("AVG")) {
-            // Do nothing
+            avgDeliveryTimes.add(costs[4]);
         } else if (priority.equals(Event.DOMESTIC)) {
-            avgDeliveryTimes.add(route.getAvgDeliveryTime());
-            avgDomesticDeliveryTimes.add(route.getAvgDeliveryTime());
-        } else if (priority.equals(Event.DOMESTIC)) {
-            avgDeliveryTimes.add(route.getAvgDeliveryTime());
-            avgAirDeliveryTimes.add(route.getAvgDeliveryTime());
+            avgDomesticDeliveryTimes.add(costs[4]);
+        } else if (priority.equals(Event.AIR)) {
+            avgAirDeliveryTimes.add(costs[4]);
         } else  {
-            avgDeliveryTimes.add(route.getAvgDeliveryTime());
-            avgSurfaceDeliveryTimes.add(route.getAvgDeliveryTime());
+            avgSurfaceDeliveryTimes.add(costs[4]);
         }
     }
     // Helper - only add if not present
@@ -347,4 +352,13 @@ public class EventManager {
 		return routeFinder.getRoute(ev.getOrigin(), ev.getDestination(), ev.getPriority());
 	}
 
+	public double getAvgDeliveryTime() {
+	    double avg = 0;
+	    for (double d : avgDeliveryTimes) {
+	        avg += d;
+        }
+        System.out.format("ADT: %f", avg / avgDeliveryTimes.size());
+        return avg / avgDeliveryTimes.size();
+
+    }
 }
