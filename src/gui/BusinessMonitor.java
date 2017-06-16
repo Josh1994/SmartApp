@@ -111,6 +111,11 @@ public class BusinessMonitor{
 //		vbox.getChildren().add(hbox);
 
 		vbox.getChildren().addAll(routeBox, revBox, expBox, evntBox, mailBox, avgBox, crit, eventLabel);
+
+		Route avgRoute = gui.getController().getAverageRoute();
+		if (avgRoute != null) {
+			display(avgRoute);
+		}
 	}
 
 

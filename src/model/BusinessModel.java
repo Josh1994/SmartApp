@@ -38,6 +38,7 @@ public class BusinessModel {
         }
         
         this.eventManager = new EventManager(this, db);
+
     }
     
     public boolean processEvent(Event event) {

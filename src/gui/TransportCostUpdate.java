@@ -53,6 +53,8 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 	TextField maxWeight;
 	TextField maxVolume;
 	Label messageLabel;
+	BusinessMonitor bm;
+	VBox vbox;
 	
 	static Scene scene;
 	Controller controller;
@@ -210,12 +212,18 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		vbox2.getChildren().add(duration);
 		vbox2.getChildren().add(eventButton);
 		vbox2.getChildren().add(messageLabel);
+
+		bm = new BusinessMonitor(this);
+		vbox = bm.vbox();
 		
 		HBox hbox = new HBox(20);
 		hbox.setPadding(new Insets(20, 20, 20, 20));
 		hbox.getChildren().addAll(vbox1, vbox2);
+
+		VBox mainBox = new VBox( );
+		mainBox.getChildren().addAll(hbox);
 		
-		scene = new Scene(hbox, 800, 550);
+		scene = new Scene(mainBox, 800, 550);
 	}
 	
 	public static Scene scene() {
@@ -342,9 +350,9 @@ public class TransportCostUpdate implements DataEntryGUI,EventHandler<ActionEven
 		StringBuilder sb = new StringBuilder();
 		sb.append("Route: ");
 		sb.append(route.toString());
-		
-		AlertDialog.display("Route", sb.toString());
-		
+		bm.display(route);
+		//AlertDialog.display("Route", sb.toString());
+
 	}
 
 	@Override

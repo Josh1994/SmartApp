@@ -73,6 +73,7 @@ public class EventManager {
         for (Event event : events) {
             processSingleEvent(event, true);
         }
+
     }
 
     /**

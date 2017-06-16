@@ -184,7 +184,7 @@ public class TransportDiscontinued implements DataEntryGUI, EventHandler<ActionE
 		StringBuilder sb = new StringBuilder();
 		sb.append("Route: ");
 		sb.append(route.toString());
-		AlertDialog.display("Route", sb.toString());
+		//AlertDialog.display("Route", sb.toString());
 	}
 
 	@Override
