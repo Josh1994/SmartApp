@@ -80,6 +80,11 @@ public class DecisionSupport implements DataEntryGUI, EventHandler<ActionEvent>{
 		// TODO Auto-generated method stub
 
 	}
+	@Override
+	public void showMessage(String msg) {
+		// TODO Auto-generated method stub
+
+	}
 
 	public void initialize(){
 		Database db = new Database();

@@ -287,7 +287,7 @@ public class Route implements Comparable<Route> {
 		weightOfMail += md.getWeight();
 		volumeOfMail += md.getVolume();
 
-		double[] costs = {costE, costC, md.getWeight(), md.getVolume()};
+		double[] costs = {costE, costC, md.getWeight(), md.getVolume(), getAvgDeliveryTime()};
 		return costs;
 	}
 
@@ -340,6 +340,7 @@ public class Route implements Comparable<Route> {
 	 * @return
 	 */
 	private double deliveryTime(List<TransportCostUpdate> tcus) {
+		if (this.stages == null || this.stages.isEmpty()) return avgDeliveryTime;
 		double hours = 0;
 		for (TransportCostUpdate tcu : tcus) {
 			hours += tcu.getFrequency() * 0.5 + tcu.getDuration();

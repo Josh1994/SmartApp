@@ -79,7 +79,7 @@ public class BusinessMonitor{
 		numVal.setMinHeight(25);
 		evntBox.getChildren().addAll(numE, numVal);
 
-		mail = new Label("Mail Totals, Items:");
+		mail = new Label("Mail Totals    Items:");
 		mail.setMinHeight(25);
 		mailVal = new Label("0");
 		mailVal.setMinHeight(25);
@@ -118,11 +118,11 @@ public class BusinessMonitor{
 
 		revVal.setText(Double.toString(route.getRevenue()));
 		expendVal.setText(Double.toString(route.getExpenditure()));
-		numVal.setText(Double.toString(route.getNumberOfEvents()));
+		//numVal.setText(Double.toString(gui.getController().getModel().getEventManager().getTotalEvents()));
 		mailVal.setText(Double.toString(route.getAmountOfmail()));
 		mailWVal.setText(Double.toString(route.getWeightOfMail()));
 		mailVVal.setText(Double.toString(route.getVolumeOfMail()));
-		avgVal.setText(Double.toString(route.getAvgDeliveryTime()));
+		//avgVal.setText(Double.toString(gui.getController().getModel().getEventManager().getAvgDeliveryTime()));
 
 		if (route.isCombinedRoute()) route = route.getInternational();
 		if (route.getDestination().equals("AVG")){
@@ -130,12 +130,17 @@ public class BusinessMonitor{
 			origVal.setText(" ");
 			destVal.setText(" ");
 			prioVal.setText(" ");
+			numVal.setText(Double.toString(gui.getController().getModel().getEventManager().getTotalEvents()));
+			avgVal.setText(Double.toString(gui.getController().getModel().getEventManager().getAvgDeliveryTime()));
 		}
 		else{
 			routeLabel.setText("Route: ");
 			origVal.setText(route.getOrigin());
 			destVal.setText(route.getDestination());
 			prioVal.setText(route.getPriority());
+			numVal.setText(Double.toString(route.getNumberOfEvents()));
+			avgVal.setText(Double.toString(route.getAvgDeliveryTime()));
+
 			if (route.isCriticalRoute()) crit.setText("*** CRITICAL ROUTE ***");
 			else crit.setText("Profitable Route.");
 		}

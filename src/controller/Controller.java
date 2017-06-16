@@ -55,13 +55,11 @@ public class Controller {
 				if(r != null){
 					sourceView.displayRoute(r);
 				}
-				else{
-					System.out.println("No route found");
-				}
+				sourceView.showMessage("Your event has been successfully processed.");
 			}
 			if(entry instanceof event.MailDelivery){
 				//get route.
-				Route r = getRoute((event.MailDelivery)entry);
+				Route r = model.getEventManager().getAverageRoute();
 				if(r == null){
 					AlertDialog.display("Route not found", "Route for this delivery is not available");
 				}
@@ -69,14 +67,15 @@ public class Controller {
 
 					boolean b = this.model.processEvent(entry);
 					sourceView.displayRoute(r);
-
+					sourceView.showMessage("Message: Your event has been successfully processes.");
 				}
 			}
 			if(entry instanceof event.TransportDiscontinued){
 				boolean b = model.processEvent(entry);
-				Route r = getRoute(entry);
+				Route r = model.getEventManager().getAverageRoute();
 				if(r != null){
 					sourceView.displayRoute(r);
+					sourceView.showMessage("Message: Your event has been successfully processes.");
 				}
 				else{
 					System.out.println("Route not found");
@@ -84,9 +83,10 @@ public class Controller {
 			}
 			if(entry instanceof event.CustomerPriceUpdate){
 				boolean b = model.processEvent(entry);
-				Route r = getRoute(entry);
+				Route r = model.getEventManager().getAverageRoute();
 				if(r != null){
 					sourceView.displayRoute(r);
+					sourceView.showMessage("Message: Your event has been successfully processes.");
 				}
 				else{
 					System.out.println("Route not found");

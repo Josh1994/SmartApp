@@ -25,7 +25,9 @@ public class MailDelivery extends Event {
 		sb.append("\nOrigin: " + this.origin);
 		sb.append("\nDestination: " + this.destination);
 		sb.append("\nPriority: " + this.priority);
-		sb.append("\nUser: "+ this.user);
+		sb.append("\nPrice per kg: " + this.weight);
+		sb.append("\nPrice per cubic cm: " + this.volume);
+		//sb.append("\nUser: "+ this.user);
 		
 		return sb.toString();
 	}

@@ -36,6 +36,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 	RadioButton sea;
 	RadioButton air;
 	RadioButton domestic;
+	Label messageLabel;
 	ArrayList <String> critLabels = new ArrayList();
 	static Scene scene;
 	Controller controller;
@@ -101,6 +102,9 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		sea.setToggleGroup(type);
 		domestic.setToggleGroup(type);
 
+		messageLabel = new Label("Message: ");
+		messageLabel.setMinHeight(25);
+
 
 		HBox hboxType = new HBox(land,air,sea,domestic);
 
@@ -124,6 +128,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 		vbox2.getChildren().add(volume);
 		vbox2.getChildren().add(hboxType);
 		vbox2.getChildren().add(eventButton);
+		vbox2.getChildren().add(messageLabel);
 
 		critLabels.add("Revenue");
 		critLabels.add("Expenditure");
@@ -150,7 +155,9 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 
 	@Override
 	public void handle(ActionEvent event) {
-
+		messageLabel.setText("Message:  ");
+		double cost = 0;
+		ConfirmDialog confirmDialog = new ConfirmDialog();
 		if(event.getSource() == eventButton){
 			/**
 			 * Create MailDelivery( from fields ) Event
@@ -172,16 +179,20 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 			}
 			ZonedDateTime timeNow = ZonedDateTime.now();
 			String user = controller.getLoggedInUser().getUsername();
-			if(type!=null && toText.getValue()!=null && fromText.getValue()!=null && !weight.getText().isEmpty() && !volume.getText().isEmpty()){
+			if(type!=null && toText.getValue()!=null && fromText.getValue()!=null && !weight.getText().isEmpty()
+					&& !volume.getText().isEmpty()){
 				//TODO
 				//need a confirm box showing the total cost and duration first before sending an event to the controller.
-				
 
-				mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
-				System.out.println(mdEvent.toString());
-				ConfirmDialog confirmDialog = new ConfirmDialog();
-				double cost = 0;
-				
+				try {
+					mdEvent = new event.MailDelivery(timeNow, user, fromText.getValue(), toText.getValue(), Double.parseDouble(weight.getText()), Double.parseDouble(volume.getText()), type);
+					System.out.println(mdEvent.toString());
+
+				} catch (NumberFormatException nfe) {
+					showMessage("Message: You have entered an incorrect number amount in field.");
+					return;
+				}
+				//controller.handleEvent(mdEvent, this);
 				try{
 					cost = controller.getRoute(mdEvent).getEffectiveCost();
 					String message = "Total Cost for this delivery is: $" + cost;
@@ -194,6 +205,7 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 				catch(java.lang.NullPointerException e){
 					AlertDialog.display("No Route Found", "No Route Found");
 				}
+
 				
 				
 				
@@ -215,6 +227,10 @@ public class MailDelivery implements DataEntryGUI, EventHandler<ActionEvent>{
 	}
 	public void showError(String errormsg) {
 
+	}
+
+	public void showMessage(String msg) {
+		messageLabel.setText("Message:  " + msg );
 	}
 
 	@Override
